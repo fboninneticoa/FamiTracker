@@ -16,6 +16,7 @@ This repository contains every single public release of the official FamiTracker
 
 * Visual Studio and the entire Visual C++ workspace should be installed.
 * Install [Github for Visual Studio](https://visualstudio.github.com/) or [GitHub Desktop](https://desktop.github.com)
+* (Optional) Clone the [NSF-Driver](https://github.com/Camano/NSF-Driver) repo within the same folder as FamiTracker is in.
 
 ### Clone and Build
 
