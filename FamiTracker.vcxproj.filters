@@ -237,11 +237,11 @@
     <Filter Include="HTML Help Topics\Interface\Dialogs">
       <UniqueIdentifier>{cdca4b07-0ef5-4f88-acc8-26bc5fd190b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NSF driver">
-      <UniqueIdentifier>{f6a120a9-cd9c-486e-ba1b-0e37585b55e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HTML">
       <UniqueIdentifier>{a680e1cb-8f03-4374-b42c-e56f0a19063c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NSF-Driver">
+      <UniqueIdentifier>{f6a120a9-cd9c-486e-ba1b-0e37585b55e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1225,49 +1225,48 @@
     <None Include="hlp\speed.htm">
       <Filter>HTML Help Topics\Interface\Dialogs</Filter>
     </None>
-    <None Include="..\nsf driver\apu.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\driver.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\effects.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\fds.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\init.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\instrument.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\mmc5.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\n106.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\player.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\vrc6.s">
-      <Filter>NSF driver</Filter>
-    </None>
-    <None Include="..\nsf driver\vrc7.s">
-      <Filter>NSF driver</Filter>
-    </None>
     <None Include="res\export_report.htm">
       <Filter>HTML</Filter>
     </None>
     <None Include="FamiTracker.reg" />
     <None Include="packages.config" />
+    <None Include="..\NSF-Driver\apu.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\driver.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\effects.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\fds.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\init.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\instrument.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\mmc5.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\n106.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\player.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\vrc6.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
+    <None Include="..\NSF-Driver\vrc7.s">
+      <Filter>NSF-Driver</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />
     <Text Include="Texts\FastTracker effects.txt" />
-    <Text Include="gpl.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
