@@ -11,7 +11,7 @@ Before you start
 
 
 
-      The first number is what effect to use and the two following is the data for the first one. All effects are entered in hexadecimal. The word tick goes back to the Amiga and means number of VBL’s to wait until playing next row. When using a command FT2 will use the first tick to play the note and the following ticks for effect. 
+      The first number is what effect to use and the two following is the data for the first one. All effects are entered in hexadecimal. The word tick goes back to the Amiga and means number of VBLâ€™s to wait until playing next row. When using a command FT2 will use the first tick to play the note and the following ticks for effect. 
 
             ---   -- F03 <- Sets speed to three ticks per row
             C-5 1 -- A0F
@@ -293,9 +293,4 @@ Before you start
 
             Syntax: X2 + Speed
 
-            This command works as fine portamento up/down, but the speed will be divided by four. 
-
-
-web hosting • domain names • web design
-online games • photo sharing
-free blog • advertising online
+            This command works as fine portamento up/down, but the speed will be divided by four.
