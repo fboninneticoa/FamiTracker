@@ -28,6 +28,7 @@
 #include "InstrumentEditPanel.h"
 #include "InstrumentEditDlg.h"
 #include "SequenceEditor.h"
+#include <algorithm>
 
 // CInstrumentEditPanel dialog
 //

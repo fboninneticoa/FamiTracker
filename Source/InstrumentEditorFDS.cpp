@@ -31,6 +31,7 @@
 #include "MainFrm.h"
 #include "SoundGen.h"
 #include "Clipboard.h"
+#include <algorithm>
 
 // CInstrumentEditorFDS dialog
 

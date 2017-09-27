@@ -30,6 +30,7 @@
 #include "PCMImport.h"
 #include "Settings.h"
 #include "SoundGen.h"
+#include <algorithm>
 
 const TCHAR *CInstrumentEditorDPCM::KEY_NAMES[] = {_T("C"), _T("C#"), _T("D"), _T("D#"), _T("E"), _T("F"), _T("F#"), _T("G"), _T("G#"), _T("A"), _T("A#"), _T("B")};
 LPCTSTR NO_SAMPLE_STR = _T("(no sample)");

@@ -1,0 +1,1282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes">
+      <UniqueIdentifier>{ff507fb3-b5a4-48f0-8833-331df9ee4df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Config">
+      <UniqueIdentifier>{691f69b9-36ec-4991-aa6e-5fadb6fd70c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument">
+      <UniqueIdentifier>{c331a975-2a6b-4471-b08e-08f62b58eb61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument\Related">
+      <UniqueIdentifier>{9c84b0cd-58e0-43c7-8455-457b4b1c7046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument\Related\Sequence editor">
+      <UniqueIdentifier>{20c80e7e-7901-4494-801c-e4a39e551c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument\Related\Resampler">
+      <UniqueIdentifier>{6348d5c7-e58f-431a-9557-8ff4244e10e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument\Related\DPCM Editor">
+      <UniqueIdentifier>{e4fb76c3-b4e8-4936-af34-381dd9aa2357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Instrument\Instrument panels">
+      <UniqueIdentifier>{19c02eee-1341-48fd-a9b4-486d8c318eeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Dialog Boxes\Wave export">
+      <UniqueIdentifier>{a8d2e63e-c839-406a-ab1e-768945015d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter">
+      <UniqueIdentifier>{1aa6e684-c952-47aa-b14a-09926065dcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter\Custom Exporter">
+      <UniqueIdentifier>{c5b4cbff-5639-4cb5-a1ea-0f53bd0502da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter\Test">
+      <UniqueIdentifier>{ba548f7f-ebc6-4f5d-b8f0-e8d585f1c7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter\Text">
+      <UniqueIdentifier>{5de6a389-1fd1-4192-a6dc-9cd3418886c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter\Chunk">
+      <UniqueIdentifier>{d3e21637-cdc0-4419-b6fc-8f1498e1a950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Document Data Types">
+      <UniqueIdentifier>{963ceb4c-a43c-40a4-a8fd-cea91867be6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Document Data Types\Instruments">
+      <UniqueIdentifier>{cc6bdc0d-932f-460c-b668-961a94049340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visualizer">
+      <UniqueIdentifier>{c4a2c7be-131f-4508-8add-b0f3d0464e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visualizer\Visualizers">
+      <UniqueIdentifier>{2ead6b0f-a79f-48ec-9cd8-b976e5eb4a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver">
+      <UniqueIdentifier>{bb45dea4-741d-40a1-bfcd-a0a451259e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Emulation">
+      <UniqueIdentifier>{a543cfcd-26ba-4116-9281-205d97a971b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Emulation\Internal">
+      <UniqueIdentifier>{479a06b4-34c5-41e7-9c79-7cdd6077a4fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Emulation\Expansion">
+      <UniqueIdentifier>{8a00fea1-6a76-4351-83e7-69b474b26f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Emulation\Expansion\External">
+      <UniqueIdentifier>{b5d3d249-1c71-4316-98ba-5e1292034019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Emulation\Blip_Buffer">
+      <UniqueIdentifier>{2026927e-db83-4e45-bec4-a6219cac659c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Channels">
+      <UniqueIdentifier>{3fe17b8f-c04a-43a3-a04d-d6d151b86165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Driver\Audio">
+      <UniqueIdentifier>{e67a804d-5973-4ffb-88db-ace97277c518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Other">
+      <UniqueIdentifier>{96c6d082-8e5d-4d00-bf94-bfdc76aea2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MIDI">
+      <UniqueIdentifier>{b37e1497-86c4-4150-9a9d-bb79a8b023dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pattern Editor">
+      <UniqueIdentifier>{f97f19a0-f326-4160-b987-1fc2986befd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Frame Editor">
+      <UniqueIdentifier>{088ff9f0-24d8-416c-8040-45fafec6cab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Custom Controls">
+      <UniqueIdentifier>{af4071a6-1ec6-4811-add1-14f0cbed6634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{f521ce1f-25e5-4a9b-ad3d-c2db6c2ce338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers">
+      <UniqueIdentifier>{4297efaa-73e6-4cd3-9857-3645f6bc971b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Emulation Headers">
+      <UniqueIdentifier>{c3748145-3a87-45d5-829f-b7384bb3e145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Emulation Headers\Internal Headers">
+      <UniqueIdentifier>{903b1b45-520d-4b57-9b8e-40024ded030c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers">
+      <UniqueIdentifier>{89080f0a-6fca-47ca-a82f-3aaa1e33a45c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External">
+      <UniqueIdentifier>{df0b38a1-d049-4687-96a3-d10d9a41ee8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Blip_Buffer Headers">
+      <UniqueIdentifier>{927f18d8-ed45-4809-95b2-9513ebebb1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Channels Headers">
+      <UniqueIdentifier>{05fa9721-6d5c-442e-bb36-3c5efdb6b2e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound Driver Headers\Audio Headers">
+      <UniqueIdentifier>{9b3f993d-2ae9-4c80-b032-60df2ea76e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers">
+      <UniqueIdentifier>{11df9041-02c2-4531-aa2f-895c967464f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Config Headers">
+      <UniqueIdentifier>{106f6dd2-917a-4027-9942-843ce9b27322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers">
+      <UniqueIdentifier>{efc85ec1-a07b-46cf-816c-a9436891e32e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers">
+      <UniqueIdentifier>{bb11ae11-3167-4d0e-9638-ce93a3113f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Sequence editor Headers">
+      <UniqueIdentifier>{b4e7569c-7bb3-4669-a9ca-cd896d4a3ec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Resampler Headers">
+      <UniqueIdentifier>{0bf0795a-be83-428b-8d61-32db81a39618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\DPCM Editor Headers">
+      <UniqueIdentifier>{2ba26ab3-4ee9-41a0-991b-1e967cfe8bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog">
+      <UniqueIdentifier>{eed37fcd-a218-42cd-a7dc-10b5e820c23c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Visualizer Headers">
+      <UniqueIdentifier>{d7a12e36-f020-480c-b385-752f898e4750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Visualizer Headers\Visualizers Headers">
+      <UniqueIdentifier>{2fb00a62-64b2-4abb-8a15-f89f58552902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Export Headers">
+      <UniqueIdentifier>{fb9215a1-4bec-4994-82c7-fbc0a1234969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Export Headers\Custom Exporter Headers">
+      <UniqueIdentifier>{abf6fdec-2417-4d47-bd1e-980de2401838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Export Headers\Chunk Headers">
+      <UniqueIdentifier>{aba41421-a28a-4659-899e-e9e799cec2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Export Headers\Text Headers">
+      <UniqueIdentifier>{6f088109-371c-470f-acc8-6e847c44d614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Export Headers\Test Headers">
+      <UniqueIdentifier>{ee5ec3d0-6f91-41f2-b26e-a5d008c251e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Other Headers">
+      <UniqueIdentifier>{7874628e-01a1-4719-9aa1-ea205b6ccf1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MIDI Headers">
+      <UniqueIdentifier>{82b3765d-a49b-4d79-b8dd-d8fc04d5f312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Document Data Type Headers">
+      <UniqueIdentifier>{44a7e74b-e7d3-47bb-910c-19d7a915be68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Document Data Type Headers\Instrument Headers">
+      <UniqueIdentifier>{5b29e2b8-efef-4ec2-be2d-bf13c9fcc55e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pattern Editor Headers">
+      <UniqueIdentifier>{38eb6bdb-0846-4eb7-a945-5c39b9f97281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Frame Editor Headers">
+      <UniqueIdentifier>{41f472e8-bf67-485d-8f74-5e3015ed9809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Custom Control Headers">
+      <UniqueIdentifier>{e0f97665-b6e9-45a1-8c1e-f1cbc7d5a4d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components Headers">
+      <UniqueIdentifier>{13cf9fd8-5627-478a-a309-85392f8c9510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Icons">
+      <UniqueIdentifier>{cb194114-3d1c-4754-bd2d-ea5f20bff0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Bitmaps">
+      <UniqueIdentifier>{23a28e4e-9a79-4069-acdb-d26e846a744b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Files">
+      <UniqueIdentifier>{de36985f-4654-4d3b-8e73-e10685e69dfa}</UniqueIdentifier>
+      <Extensions>hhp;hhc;hhk;gif;jpg</Extensions>
+    </Filter>
+    <Filter Include="HTML Help Topics">
+      <UniqueIdentifier>{ca6c7a9f-190e-4e11-8b67-fbe090411b1a}</UniqueIdentifier>
+      <Extensions>htm;html</Extensions>
+    </Filter>
+    <Filter Include="HTML Help Topics\Images">
+      <UniqueIdentifier>{77cc567b-cf22-45b6-ac1c-b0fede8877d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\Chips">
+      <UniqueIdentifier>{bbd6196f-95be-4163-8242-a260cb9d5574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\CSS">
+      <UniqueIdentifier>{e1d66334-2328-4e2e-9649-53a1a1b03e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\Interface">
+      <UniqueIdentifier>{f17c9a21-b727-4a51-8581-ece5d81c2741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\Interface\Configuration">
+      <UniqueIdentifier>{bad24482-668a-4058-bdc3-a2581118646b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\Interface\Menus">
+      <UniqueIdentifier>{20ae9c32-be3a-435b-927b-0d1b814a1980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML Help Topics\Interface\Dialogs">
+      <UniqueIdentifier>{cdca4b07-0ef5-4f88-acc8-26bc5fd190b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NSF driver">
+      <UniqueIdentifier>{f6a120a9-cd9c-486e-ba1b-0e37585b55e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTML">
+      <UniqueIdentifier>{a680e1cb-8f03-4374-b42c-e56f0a19063c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FamiTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FamiTrackerDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FamiTrackerView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AboutDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CommentsDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DialogReBar.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ExportDialog.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleImportDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModulePropertiesDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PerformanceDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpeedDlg.cpp">
+      <Filter>Source Files\Dialog Boxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigAppearance.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigGeneral.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigMIDI.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigMixer.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigShortcuts.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigSound.cpp">
+      <Filter>Source Files\Dialog Boxes\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditDlg.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModSequenceEditor.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PCMImport.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WaveEditor.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphEditor.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Sequence editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SequenceEditor.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Sequence editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SequenceSetting.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Sequence editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SizeEditor.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Sequence editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\resampler\resample.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\resampler\sinc.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\Resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SampleEditorDlg.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\DPCM Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SampleEditorView.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Related\DPCM Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditor2A03.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorDPCM.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorFDS.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorFDSEnvelope.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorN163.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorN163Wave.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorS5B.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorVRC6.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditorVRC7.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentEditPanel.cpp">
+      <Filter>Source Files\Dialog Boxes\Instrument\Instrument panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CreateWaveDlg.cpp">
+      <Filter>Source Files\Dialog Boxes\Wave export</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WavProgressDlg.cpp">
+      <Filter>Source Files\Dialog Boxes\Wave export</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CommandLineExport.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatternCompiler.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CustomExporter.cpp">
+      <Filter>Source Files\Exporter\Custom Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CustomExporter_C_Interface.cpp">
+      <Filter>Source Files\Exporter\Custom Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CustomExporters.cpp">
+      <Filter>Source Files\Exporter\Custom Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DocumentWrapper.cpp">
+      <Filter>Source Files\Exporter\Custom Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ExportTest\ExportTest.cpp">
+      <Filter>Source Files\Exporter\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextExporter.cpp">
+      <Filter>Source Files\Exporter\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Chunk.cpp">
+      <Filter>Source Files\Exporter\Chunk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChunkRenderBinary.cpp">
+      <Filter>Source Files\Exporter\Chunk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChunkRenderText.cpp">
+      <Filter>Source Files\Exporter\Chunk</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DSample.cpp">
+      <Filter>Source Files\Document Data Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatternData.cpp">
+      <Filter>Source Files\Document Data Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sequence.cpp">
+      <Filter>Source Files\Document Data Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Instrument.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Instrument2A03.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentFDS.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentN163.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentS5B.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentVRC6.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentVRC7.cpp">
+      <Filter>Source Files\Document Data Types\Instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VisualizerWnd.cpp">
+      <Filter>Source Files\Visualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VisualizerScope.cpp">
+      <Filter>Source Files\Visualizer\Visualizers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VisualizerSpectrum.cpp">
+      <Filter>Source Files\Visualizer\Visualizers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VisualizerStatic.cpp">
+      <Filter>Source Files\Visualizer\Visualizers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelMap.cpp">
+      <Filter>Source Files\Sound Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundGen.cpp">
+      <Filter>Source Files\Sound Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TrackerChannel.cpp">
+      <Filter>Source Files\Sound Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\APU.cpp">
+      <Filter>Source Files\Sound Driver\Emulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\Mixer.cpp">
+      <Filter>Source Files\Sound Driver\Emulation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\DPCM.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\Noise.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\Square.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\Triangle.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\FDS.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\MMC5.CPP">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\N163.CPP">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\S5B.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Apu\VRC6.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\VRC7.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\emu2149.c">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\emu2413.c">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\APU\FDSSound.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Expansion\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Blip_Buffer\Blip_Buffer.cpp">
+      <Filter>Source Files\Sound Driver\Emulation\Blip_Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelHandler.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Channels2A03.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsFDS.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsMMC5.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsN163.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsS5B.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsVRC6.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChannelsVRC7.cpp">
+      <Filter>Source Files\Sound Driver\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DirectSound.cpp">
+      <Filter>Source Files\Sound Driver\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FFT\Fft.cpp">
+      <Filter>Source Files\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MIDI.cpp">
+      <Filter>Source Files\MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Clipboard.cpp">
+      <Filter>Source Files\Pattern Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatternAction.cpp">
+      <Filter>Source Files\Pattern Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatternEditor.cpp">
+      <Filter>Source Files\Pattern Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatternEditorTypes.cpp">
+      <Filter>Source Files\Pattern Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameAction.cpp">
+      <Filter>Source Files\Frame Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameEditor.cpp">
+      <Filter>Source Files\Frame Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ControlPanelDlg.cpp">
+      <Filter>Source Files\Custom Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CustomControls.cpp">
+      <Filter>Source Files\Custom Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentListCtrl.cpp">
+      <Filter>Source Files\Custom Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Accelerator.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Action.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DocumentFile.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InstrumentFileTree.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Settings.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WaveFile.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FamiTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FamiTrackerDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FamiTrackerTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FamiTrackerView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MainFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelMap.h">
+      <Filter>Header Files\Sound Driver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common.h">
+      <Filter>Header Files\Sound Driver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundGen.h">
+      <Filter>Header Files\Sound Driver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TrackerChannel.h">
+      <Filter>Header Files\Sound Driver Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\APU.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\Channel.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\Mixer.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\Types.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\DPCM.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Internal Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\Noise.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Internal Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\Square.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Internal Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\Triangle.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Internal Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\External.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\FDS.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\MMC5.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\N163.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\S5B.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Apu\VRC6.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\VRC7.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\2413tone.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\emu2149.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\emu2413.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\FDSSound.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\APU\vrc7tone.h">
+      <Filter>Header Files\Sound Driver Headers\Emulation Headers\Expansion Headers\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Blip_Buffer\Blip_Buffer.h">
+      <Filter>Header Files\Sound Driver Headers\Blip_Buffer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelHandler.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Channels2A03.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsFDS.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsMMC5.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsN163.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsS5B.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsVRC6.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsVRC7.h">
+      <Filter>Header Files\Sound Driver Headers\Channels Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DirectSound.h">
+      <Filter>Header Files\Sound Driver Headers\Audio Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AboutDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChannelsDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommentsDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CreateWaveDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogReBar.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ExportDialog.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleImportDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModulePropertiesDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerformanceDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpeedDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WavProgressDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigAppearance.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigGeneral.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigMIDI.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigMixer.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigShortcuts.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigSound.h">
+      <Filter>Header Files\Dialog Boxes Headers\Config Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModSequenceEditor.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PCMImport.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WaveEditor.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphEditor.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Sequence editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SequenceEditor.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Sequence editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SequenceSetting.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Sequence editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SizeEditor.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Sequence editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\resampler\resample.hpp">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Resampler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\resampler\sinc.hpp">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\Resampler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SampleEditorDlg.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\DPCM Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SampleEditorView.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Related Headers\DPCM Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditor2A03.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorDPCM.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorFDS.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorFDSEnvelope.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorN163.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorN163Wave.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorS5B.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorVRC6.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditorVRC7.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentEditPanel.h">
+      <Filter>Header Files\Dialog Boxes Headers\Instrument Headers\Instrument dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VisualizerWnd.h">
+      <Filter>Header Files\Visualizer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VisualizerScope.h">
+      <Filter>Header Files\Visualizer Headers\Visualizers Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VisualizerSpectrum.h">
+      <Filter>Header Files\Visualizer Headers\Visualizers Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VisualizerStatic.h">
+      <Filter>Header Files\Visualizer Headers\Visualizers Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CommandLineExport.h">
+      <Filter>Header Files\Export Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler.h">
+      <Filter>Header Files\Export Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Driver.h">
+      <Filter>Header Files\Export Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatternCompiler.h">
+      <Filter>Header Files\Export Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomExporter.h">
+      <Filter>Header Files\Export Headers\Custom Exporter Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomExporter_C_Interface.h">
+      <Filter>Header Files\Export Headers\Custom Exporter Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomExporterInterfaces.h">
+      <Filter>Header Files\Export Headers\Custom Exporter Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomExporters.h">
+      <Filter>Header Files\Export Headers\Custom Exporter Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DocumentWrapper.h">
+      <Filter>Header Files\Export Headers\Custom Exporter Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Chunk.h">
+      <Filter>Header Files\Export Headers\Chunk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChunkRenderBinary.h">
+      <Filter>Header Files\Export Headers\Chunk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ChunkRenderText.h">
+      <Filter>Header Files\Export Headers\Chunk Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextExporter.h">
+      <Filter>Header Files\Export Headers\Text Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ExportTest\ExportTest.h">
+      <Filter>Header Files\Export Headers\Test Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FFT\Complex.h">
+      <Filter>Header Files\Other Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FFT\Fft.h">
+      <Filter>Header Files\Other Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MIDI.h">
+      <Filter>Header Files\MIDI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DSample.h">
+      <Filter>Header Files\Document Data Type Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatternData.h">
+      <Filter>Header Files\Document Data Type Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sequence.h">
+      <Filter>Header Files\Document Data Type Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Instrument.h">
+      <Filter>Header Files\Document Data Type Headers\Instrument Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Clipboard.h">
+      <Filter>Header Files\Pattern Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ColorScheme.h">
+      <Filter>Header Files\Pattern Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatternAction.h">
+      <Filter>Header Files\Pattern Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatternEditor.h">
+      <Filter>Header Files\Pattern Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatternEditorTypes.h">
+      <Filter>Header Files\Pattern Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameAction.h">
+      <Filter>Header Files\Frame Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameEditor.h">
+      <Filter>Header Files\Frame Editor Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ControlPanelDlg.h">
+      <Filter>Header Files\Custom Control Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CustomControls.h">
+      <Filter>Header Files\Custom Control Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Accelerator.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Action.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DocumentFile.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InstrumentFileTree.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Settings.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WaveFile.h">
+      <Filter>Header Files\Components Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FamiTracker.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Application.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Document.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_2A03.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_2A07.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_FDS.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_N163.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_S5B.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_VRC6.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\Inst_VRC7.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\LeftArrow.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\RightArrow.ico">
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\About.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\InstrumentToolbar-16.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\InstrumentToolbar-256.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\key_black_pressed.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\key_black_unpressed.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\key_white_pressed.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\key_white_unpressed.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\MainToolbar-16.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\MainToolbar-256.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="res\VisualizerBg.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="hlp\img\frame_editor.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\Icon.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\inst_2a03.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\inst_dpcm.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\inst_fds.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\inst_n163.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\inst_vrc7.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_edit.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_file.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_help.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_instrument.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_module.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_tracker.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\menu_view.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\pattern.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\properties.PNG">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\toolbar1.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+    <Image Include="hlp\img\toolbar2.png">
+      <Filter>HTML Help Topics\Images</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hlp\FamiTracker.hhc">
+      <Filter>HTML Help Files</Filter>
+    </None>
+    <None Include="hlp\FamiTracker.hhk">
+      <Filter>HTML Help Files</Filter>
+    </None>
+    <None Include="hlp\changelog.htm">
+      <Filter>HTML Help Topics</Filter>
+    </None>
+    <None Include="hlp\faq.htm">
+      <Filter>HTML Help Topics</Filter>
+    </None>
+    <None Include="hlp\main_index.htm">
+      <Filter>HTML Help Topics</Filter>
+    </None>
+    <None Include="hlp\2a03.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\fds.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\mmc5.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\n163.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\sound_overview.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\sunsoft.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\vrc6.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\vrc7.htm">
+      <Filter>HTML Help Topics\Chips</Filter>
+    </None>
+    <None Include="hlp\style.css">
+      <Filter>HTML Help Topics\CSS</Filter>
+    </None>
+    <None Include="hlp\command_line.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\control_panel.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\effect_list.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\interface.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\menus.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\pattern_editor.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\shortcuts.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\text_export.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\toolbar.htm">
+      <Filter>HTML Help Topics\Interface</Filter>
+    </None>
+    <None Include="hlp\config_appearance.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\config_general.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\config_midi.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\config_mixer.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\config_shortcuts.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\config_sound.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\configuration.htm">
+      <Filter>HTML Help Topics\Interface\Configuration</Filter>
+    </None>
+    <None Include="hlp\menu_edit.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_file.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_help.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_instrument.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_module.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_tracker.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\menu_view.htm">
+      <Filter>HTML Help Topics\Interface\Menus</Filter>
+    </None>
+    <None Include="hlp\comments.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\dpcm_editor.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\dpcm_import.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\export_wave.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\nsf_export.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\performance.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\properties.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="hlp\speed.htm">
+      <Filter>HTML Help Topics\Interface\Dialogs</Filter>
+    </None>
+    <None Include="..\nsf driver\apu.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\driver.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\effects.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\fds.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\init.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\instrument.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\mmc5.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\n106.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\player.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\vrc6.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="..\nsf driver\vrc7.s">
+      <Filter>NSF driver</Filter>
+    </None>
+    <None Include="res\export_report.htm">
+      <Filter>HTML</Filter>
+    </None>
+    <None Include="FamiTracker.reg" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+    <Text Include="Texts\FastTracker effects.txt" />
+    <Text Include="gpl.txt" />
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="resource.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="hlp\FamiTracker.hhp">
+      <Filter>HTML Help Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\FamiTracker.manifest" />
+  </ItemGroup>
+</Project>

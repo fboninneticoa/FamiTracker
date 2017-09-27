@@ -28,6 +28,7 @@
 #include "InstrumentEditPanel.h"
 #include "InstrumentEditorVRC7.h"
 #include "Clipboard.h"
+#include <algorithm>
 
 static unsigned char default_inst[(16+3)*16] = 
 {

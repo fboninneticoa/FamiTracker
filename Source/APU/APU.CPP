@@ -34,6 +34,7 @@
 #include "N163.h"
 #include "VRC7.h"
 #include "S5B.h"
+#include <algorithm>
 
 const int	 CAPU::SEQUENCER_PERIOD		= 7458;
 //const int	 CAPU::SEQUENCER_PERIOD_PAL	= 7458;			// ????
