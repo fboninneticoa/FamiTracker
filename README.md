@@ -1,5 +1,7 @@
 # FamiTracker
 
+![dab](https://i.imgur.com/QWRaAVB.png)
+
 FamiTracker is a Windows sound tracker style sequencer designed for creating NES/Famicom music. The music can be exported to NSF (Nintendo Sound Format) which is possible to play on the NES/Famicom hardware. A NSF player or NES emulator can be used to play these files on a PC/Mac.
 
 This repository contains every single public release of the official FamiTracker source code, verbatim. It is created for archival purposes in the event that the FamiTracker website ceases to function, as well as for making it easy to compile.
