@@ -36,17 +36,17 @@ CInstrument::~CInstrument()
 {
 }
 
-void CInstrument::SetName(const char *Name)
+void CInstrument::SetName(const char* Name)
 {
 	strncpy(m_cName, Name, INST_NAME_MAX);
 }
 
-void CInstrument::GetName(char *Name) const
+void CInstrument::GetName(char* Name) const
 {
 	strncpy(Name, m_cName, INST_NAME_MAX);
 }
 
-const char *CInstrument::GetName() const
+const char* CInstrument::GetName() const
 {
 	return m_cName;
 }
@@ -54,9 +54,10 @@ const char *CInstrument::GetName() const
 void CInstrument::InstrumentChanged() const
 {
 	// Set modified flag
-	CFrameWnd *pFrameWnd = dynamic_cast<CFrameWnd*>(AfxGetMainWnd());
-	if (pFrameWnd != NULL) {
-		CDocument *pDoc = pFrameWnd->GetActiveDocument();
+	CFrameWnd* pFrameWnd = dynamic_cast<CFrameWnd*>(AfxGetMainWnd());
+	if (pFrameWnd != NULL)
+	{
+		CDocument* pDoc = pFrameWnd->GetActiveDocument();
 		if (pDoc != NULL)
 			pDoc->SetModifiedFlag();
 	}

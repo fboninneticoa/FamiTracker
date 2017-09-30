@@ -25,13 +25,13 @@
 // This is also shared with MMC5
 
 const uint8 CSquare::DUTY_TABLE[4][16] = {
-	{0, 0, 1, 1,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0},
-	{0, 0, 1, 1,  1, 1, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0},
-	{0, 0, 1, 1,  1, 1, 1, 1,  1, 1, 0, 0,  0, 0, 0, 0},
-	{1, 1, 0, 0,  0, 0, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1}
+	{0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+	{1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-CSquare::CSquare(CMixer *pMixer, int ID, int Chip) : CChannel(pMixer, ID, Chip)
+CSquare::CSquare(CMixer* pMixer, int ID, int Chip) : CChannel(pMixer, ID, Chip)
 {
 	m_iDutyLength = 0;
 	m_iDutyCycle = 0;
@@ -78,20 +78,21 @@ void CSquare::Reset()
 
 void CSquare::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
+	switch (Address)
+	{
 	case 0x00:
-		m_iDutyLength	 = Value >> 6;
-		m_iFixedVolume	 = Value & 0x0F;
-		m_iLooping	 	 = Value & 0x20;
-		m_iEnvelopeFix	 = Value & 0x10;
+		m_iDutyLength = Value >> 6;
+		m_iFixedVolume = Value & 0x0F;
+		m_iLooping = Value & 0x20;
+		m_iEnvelopeFix = Value & 0x10;
 		m_iEnvelopeSpeed = (Value & 0x0F) + 1;
 		break;
 	case 0x01:
-		m_iSweepEnabled  = Value & 0x80;
-		m_iSweepPeriod	 = ((Value >> 4) & 0x07) + 1;
-		m_iSweepMode	 = Value & 0x08;		
-		m_iSweepShift	 = Value & 0x07;
-		m_bSweepWritten	 = true;
+		m_iSweepEnabled = Value & 0x80;
+		m_iSweepPeriod = ((Value >> 4) & 0x07) + 1;
+		m_iSweepMode = Value & 0x08;
+		m_iSweepShift = Value & 0x07;
+		m_bSweepWritten = true;
 		break;
 	case 0x02:
 		m_iPeriod = Value | (m_iPeriod & 0x0700);
@@ -122,17 +123,19 @@ uint8 CSquare::ReadControl()
 
 void CSquare::Process(uint32 Time)
 {
-	if (!m_iPeriod) {
+	if (!m_iPeriod)
+	{
 		m_iTime += Time;
 		return;
 	}
 
 	bool Valid = (m_iPeriod > 7) && (m_iEnabled != 0) && (m_iLengthCounter > 0) && (m_iSweepResult < 0x800);
 
-	while (Time >= m_iCounter) {
-		Time		-= m_iCounter;
-		m_iTime		+= m_iCounter;
-		m_iCounter	 = m_iPeriod + 1;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
+		m_iTime += m_iCounter;
+		m_iCounter = m_iPeriod + 1;
 		uint8 Volume = m_iEnvelopeFix ? m_iFixedVolume : m_iEnvelopeVolume;
 		Mix(Valid && DUTY_TABLE[m_iDutyLength][m_iDutyCycle] ? Volume : 0);
 		m_iDutyCycle = (m_iDutyCycle + 1) & 0x0F;
@@ -144,7 +147,7 @@ void CSquare::Process(uint32 Time)
 
 void CSquare::LengthCounterUpdate()
 {
-	if ((m_iLooping == 0) && (m_iLengthCounter > 0)) 
+	if ((m_iLooping == 0) && (m_iLengthCounter > 0))
 		--m_iLengthCounter;
 }
 
@@ -157,13 +160,15 @@ void CSquare::SweepUpdate(int Diff)
 	else
 		m_iSweepResult = m_iPeriod + m_iSweepResult;
 
-	if (--m_iSweepCounter == 0) {
+	if (--m_iSweepCounter == 0)
+	{
 		m_iSweepCounter = m_iSweepPeriod;
 		if (m_iSweepEnabled && (m_iPeriod > 0x07) && (m_iSweepResult < 0x800) && (m_iSweepShift > 0))
 			m_iPeriod = m_iSweepResult;
 	}
 
-	if (m_bSweepWritten) {
+	if (m_bSweepWritten)
+	{
 		m_bSweepWritten = false;
 		m_iSweepCounter = m_iSweepPeriod;
 	}
@@ -171,9 +176,11 @@ void CSquare::SweepUpdate(int Diff)
 
 void CSquare::EnvelopeUpdate()
 {
-	if (--m_iEnvelopeCounter == 0) {
+	if (--m_iEnvelopeCounter == 0)
+	{
 		m_iEnvelopeCounter = m_iEnvelopeSpeed;
-		if (!m_iEnvelopeFix) {
+		if (!m_iEnvelopeFix)
+		{
 			if (m_iLooping)
 				m_iEnvelopeVolume = (m_iEnvelopeVolume - 1) & 0x0F;
 			else if (m_iEnvelopeVolume > 0)

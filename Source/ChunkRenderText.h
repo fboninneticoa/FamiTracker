@@ -26,9 +26,10 @@
 
 class CChunkRenderText;
 
-typedef void (CChunkRenderText::*renderFunc_t)(CChunk *pChunk, CFile *pFile);
+typedef void (CChunkRenderText::*renderFunc_t)(CChunk* pChunk, CFile* pFile);
 
-struct stChunkRenderFunc {
+struct stChunkRenderFunc
+{
 	chunk_type_t type;
 	renderFunc_t function;
 };
@@ -36,33 +37,33 @@ struct stChunkRenderFunc {
 class CChunkRenderText
 {
 public:
-	CChunkRenderText(CFile *pFile);
-	void StoreChunks(const std::vector<CChunk*> &Chunks);
-	void StoreSamples(const std::vector<const CDSample*> &Samples);
+	CChunkRenderText(CFile* pFile);
+	void StoreChunks(const std::vector<CChunk*>& Chunks);
+	void StoreSamples(const std::vector<const CDSample*>& Samples);
 
 private:
 	static const stChunkRenderFunc RENDER_FUNCTIONS[];
 
 private:
-	void DumpStrings(const CStringA &preStr, const CStringA &postStr, CStringArray &stringArray, CFile *pFile) const;
-	void WriteFileString(const CStringA &str, CFile *pFile) const;
-	void StoreByteString(const char *pData, int Len, CStringA &str, int LineBreak) const;
-	void StoreByteString(const CChunk *pChunk, CStringA &str, int LineBreak) const;
+	void DumpStrings(const CStringA& preStr, const CStringA& postStr, CStringArray& stringArray, CFile* pFile) const;
+	void WriteFileString(const CStringA& str, CFile* pFile) const;
+	void StoreByteString(const char* pData, int Len, CStringA& str, int LineBreak) const;
+	void StoreByteString(const CChunk* pChunk, CStringA& str, int LineBreak) const;
 
 private:
-	void StoreHeaderChunk(CChunk *pChunk, CFile *pFile);
-	void StoreInstrumentListChunk(CChunk *pChunk, CFile *pFile);
-	void StoreInstrumentChunk(CChunk *pChunk, CFile *pFile);
-	void StoreSequenceChunk(CChunk *pChunk, CFile *pFile);
-	void StoreSampleListChunk(CChunk *pChunk, CFile *pFile);
-	void StoreSamplePointersChunk(CChunk *pChunk, CFile *pFile);
-	void StoreSongListChunk(CChunk *pChunk, CFile *pFile);
-	void StoreSongChunk(CChunk *pChunk, CFile *pFile);
-	void StoreFrameListChunk(CChunk *pChunk, CFile *pFile);
-	void StoreFrameChunk(CChunk *pChunk, CFile *pFile);
-	void StorePatternChunk(CChunk *pChunk, CFile *pFile);
-	void StoreWavetableChunk(CChunk *pChunk, CFile *pFile);
-	void StoreWavesChunk(CChunk *pChunk, CFile *pFile);
+	void StoreHeaderChunk(CChunk* pChunk, CFile* pFile);
+	void StoreInstrumentListChunk(CChunk* pChunk, CFile* pFile);
+	void StoreInstrumentChunk(CChunk* pChunk, CFile* pFile);
+	void StoreSequenceChunk(CChunk* pChunk, CFile* pFile);
+	void StoreSampleListChunk(CChunk* pChunk, CFile* pFile);
+	void StoreSamplePointersChunk(CChunk* pChunk, CFile* pFile);
+	void StoreSongListChunk(CChunk* pChunk, CFile* pFile);
+	void StoreSongChunk(CChunk* pChunk, CFile* pFile);
+	void StoreFrameListChunk(CChunk* pChunk, CFile* pFile);
+	void StoreFrameChunk(CChunk* pChunk, CFile* pFile);
+	void StorePatternChunk(CChunk* pChunk, CFile* pFile);
+	void StoreWavetableChunk(CChunk* pChunk, CFile* pFile);
+	void StoreWavesChunk(CChunk* pChunk, CFile* pFile);
 
 private:
 	CStringArray m_headerStrings;
@@ -77,5 +78,5 @@ private:
 	CStringArray m_wavetableStrings;
 	CStringArray m_wavesStrings;
 
-	CFile *m_pFile;
+	CFile* m_pFile;
 };

@@ -28,6 +28,7 @@
 // CPerformanceDlg dialog
 
 IMPLEMENT_DYNAMIC(CPerformanceDlg, CDialog)
+
 CPerformanceDlg::CPerformanceDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPerformanceDlg::IDD, pParent)
 {
@@ -44,8 +45,8 @@ void CPerformanceDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CPerformanceDlg, CDialog)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDOK, OnBnClickedOk)
+		ON_WM_TIMER()
+		ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -60,13 +61,13 @@ BOOL CPerformanceDlg::OnInitDialog()
 
 	SetTimer(1, 1000, NULL);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CPerformanceDlg::OnTimer(UINT nIDEvent)
 {
-	CProgressCtrl *pBar = static_cast<CProgressCtrl*>(GetDlgItem(IDC_CPU_BAR));
+	CProgressCtrl* pBar = static_cast<CProgressCtrl*>(GetDlgItem(IDC_CPU_BAR));
 	unsigned int Usage = theApp.GetCPUUsage();
 	unsigned int Rate = theApp.GetSoundGenerator()->GetFrameRate();
 	unsigned int Underruns = theApp.GetSoundGenerator()->GetUnderruns();

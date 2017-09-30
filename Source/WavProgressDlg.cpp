@@ -31,7 +31,8 @@
 IMPLEMENT_DYNAMIC(CWavProgressDlg, CDialog)
 
 CWavProgressDlg::CWavProgressDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CWavProgressDlg::IDD, pParent), m_dwStartTime(0), m_iSongEndType(SONG_TIME_LIMIT), m_iSongEndParam(0), m_iTrack(0)
+	: CDialog(CWavProgressDlg::IDD, pParent), m_dwStartTime(0), m_iSongEndType(SONG_TIME_LIMIT), m_iSongEndParam(0),
+	  m_iTrack(0)
 {
 }
 
@@ -46,17 +47,18 @@ void CWavProgressDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CWavProgressDlg, CDialog)
-	ON_BN_CLICKED(IDC_CANCEL, &CWavProgressDlg::OnBnClickedCancel)
-	ON_WM_TIMER()
+		ON_BN_CLICKED(IDC_CANCEL, &CWavProgressDlg::OnBnClickedCancel)
+		ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 // CWavProgressDlg message handlers
 
 void CWavProgressDlg::OnBnClickedCancel()
 {
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 
-	if (pSoundGen->IsRendering()) {
+	if (pSoundGen->IsRendering())
+	{
 		//pSoundGen->StopRendering();
 		pSoundGen->PostThreadMessage(WM_USER_STOP_RENDER, 0, 0);
 	}
@@ -64,7 +66,7 @@ void CWavProgressDlg::OnBnClickedCancel()
 	EndDialog(0);
 }
 
-void CWavProgressDlg::BeginRender(CString &File, render_end_t LengthType, int LengthParam, int Track)
+void CWavProgressDlg::BeginRender(CString& File, render_end_t LengthType, int LengthParam, int Track)
 {
 	m_iSongEndType = LengthType;
 	m_iSongEndParam = LengthParam;
@@ -80,8 +82,8 @@ BOOL CWavProgressDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	static_cast<CProgressCtrl*>(GetDlgItem(IDC_PROGRESS_BAR))->SetRange(0, 100);
-	CFamiTrackerView *pView = CFamiTrackerView::GetView();
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+	CFamiTrackerView* pView = CFamiTrackerView::GetView();
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 
 	pView->Invalidate();
 	pView->RedrawWindow();
@@ -97,7 +99,7 @@ BOOL CWavProgressDlg::OnInitDialog()
 	m_dwStartTime = GetTickCount();
 	SetTimer(0, 200, NULL);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -106,9 +108,9 @@ void CWavProgressDlg::OnTimer(UINT_PTR nIDEvent)
 	// Update progress status
 	CString Text;
 	DWORD Time = (GetTickCount() - m_dwStartTime) / 1000;
-	
-	CProgressCtrl *pProgressBar = static_cast<CProgressCtrl*>(GetDlgItem(IDC_PROGRESS_BAR));
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+
+	CProgressCtrl* pProgressBar = static_cast<CProgressCtrl*>(GetDlgItem(IDC_PROGRESS_BAR));
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 
 	bool Rendering = pSoundGen->IsRendering();
 
@@ -117,11 +119,12 @@ void CWavProgressDlg::OnTimer(UINT_PTR nIDEvent)
 	pSoundGen->GetRenderStat(Frame, RenderedTime, Done, FramesToRender, Row, RowCount);
 
 	if (!Rendering)
-		Row = RowCount;	// Force 100%
+		Row = RowCount; // Force 100%
 
 	CString str1, str2;
 	int PercentDone;
-	switch (m_iSongEndType) {
+	switch (m_iSongEndType)
+	{
 	case SONG_LOOP_LIMIT:
 		if (Frame > FramesToRender)
 			Frame = FramesToRender;
@@ -151,7 +154,8 @@ void CWavProgressDlg::OnTimer(UINT_PTR nIDEvent)
 
 	pProgressBar->SetPos(PercentDone);
 
-	if (!Rendering) {
+	if (!Rendering)
+	{
 		SetDlgItemText(IDC_CANCEL, CString(MAKEINTRESOURCE(IDS_WAVE_EXPORT_DONE)));
 		CString title;
 		GetWindowText(title);

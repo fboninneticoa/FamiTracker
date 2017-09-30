@@ -18,7 +18,7 @@
 ** must bear this legend.
 */
 
-#include <iterator> 
+#include <iterator>
 #include <string>
 #include <sstream>
 #include <cmath>
@@ -38,9 +38,9 @@
 IMPLEMENT_DYNAMIC(CInstrumentEditorFDS, CInstrumentEditPanel)
 
 CInstrumentEditorFDS::CInstrumentEditorFDS(CWnd* pParent) : CInstrumentEditPanel(CInstrumentEditorFDS::IDD, pParent),
-	m_pWaveEditor(NULL), 
-	m_pModSequenceEditor(NULL), 
-	m_pInstrument(NULL)
+                                                            m_pWaveEditor(NULL),
+                                                            m_pModSequenceEditor(NULL),
+                                                            m_pInstrument(NULL)
 {
 }
 
@@ -65,7 +65,7 @@ void CInstrumentEditorFDS::SelectInstrument(int Instrument)
 
 	m_pInstrument = static_cast<CInstrumentFDS*>(GetDocument()->GetInstrument(Instrument));
 	ASSERT(m_pInstrument->GetType() == INST_FDS);
-	
+
 	if (m_pWaveEditor)
 		m_pWaveEditor->SetInstrument(m_pInstrument);
 
@@ -76,30 +76,30 @@ void CInstrumentEditorFDS::SelectInstrument(int Instrument)
 	static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_MOD_DEPTH_SPIN))->SetPos(m_pInstrument->GetModulationDepth());
 	static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_MOD_DELAY_SPIN))->SetPos(m_pInstrument->GetModulationDelay());
 
-//	CheckDlgButton(IDC_ENABLE_FM, m_pInstrument->GetModulationEnable() ? 1 : 0);
+	//	CheckDlgButton(IDC_ENABLE_FM, m_pInstrument->GetModulationEnable() ? 1 : 0);
 
 	EnableModControls(m_pInstrument->GetModulationEnable());
 }
 
 
 BEGIN_MESSAGE_MAP(CInstrumentEditorFDS, CInstrumentEditPanel)
-	ON_COMMAND(IDC_PRESET_SINE, OnPresetSine)
-	ON_COMMAND(IDC_PRESET_TRIANGLE, OnPresetTriangle)
-	ON_COMMAND(IDC_PRESET_SAWTOOTH, OnPresetSawtooth)
-	ON_COMMAND(IDC_PRESET_PULSE_50, OnPresetPulse50)
-	ON_COMMAND(IDC_PRESET_PULSE_25, OnPresetPulse25)
-	ON_COMMAND(IDC_MOD_PRESET_FLAT, OnModPresetFlat)
-	ON_COMMAND(IDC_MOD_PRESET_SINE, OnModPresetSine)
-	ON_WM_VSCROLL()
-	ON_EN_CHANGE(IDC_MOD_RATE, OnModRateChange)
-	ON_EN_CHANGE(IDC_MOD_DEPTH, OnModDepthChange)
-	ON_EN_CHANGE(IDC_MOD_DELAY, OnModDelayChange)
-	ON_BN_CLICKED(IDC_COPY_WAVE, &CInstrumentEditorFDS::OnBnClickedCopyWave)
-	ON_BN_CLICKED(IDC_PASTE_WAVE, &CInstrumentEditorFDS::OnBnClickedPasteWave)
-	ON_BN_CLICKED(IDC_COPY_TABLE, &CInstrumentEditorFDS::OnBnClickedCopyTable)
-	ON_BN_CLICKED(IDC_PASTE_TABLE, &CInstrumentEditorFDS::OnBnClickedPasteTable)
-//	ON_BN_CLICKED(IDC_ENABLE_FM, &CInstrumentEditorFDS::OnBnClickedEnableFm)
-	ON_MESSAGE(WM_USER + 1, OnModChanged)
+		ON_COMMAND(IDC_PRESET_SINE, OnPresetSine)
+		ON_COMMAND(IDC_PRESET_TRIANGLE, OnPresetTriangle)
+		ON_COMMAND(IDC_PRESET_SAWTOOTH, OnPresetSawtooth)
+		ON_COMMAND(IDC_PRESET_PULSE_50, OnPresetPulse50)
+		ON_COMMAND(IDC_PRESET_PULSE_25, OnPresetPulse25)
+		ON_COMMAND(IDC_MOD_PRESET_FLAT, OnModPresetFlat)
+		ON_COMMAND(IDC_MOD_PRESET_SINE, OnModPresetSine)
+		ON_WM_VSCROLL()
+		ON_EN_CHANGE(IDC_MOD_RATE, OnModRateChange)
+		ON_EN_CHANGE(IDC_MOD_DEPTH, OnModDepthChange)
+		ON_EN_CHANGE(IDC_MOD_DELAY, OnModDelayChange)
+		ON_BN_CLICKED(IDC_COPY_WAVE, &CInstrumentEditorFDS::OnBnClickedCopyWave)
+		ON_BN_CLICKED(IDC_PASTE_WAVE, &CInstrumentEditorFDS::OnBnClickedPasteWave)
+		ON_BN_CLICKED(IDC_COPY_TABLE, &CInstrumentEditorFDS::OnBnClickedCopyTable)
+		ON_BN_CLICKED(IDC_PASTE_TABLE, &CInstrumentEditorFDS::OnBnClickedPasteTable)
+		//	ON_BN_CLICKED(IDC_ENABLE_FM, &CInstrumentEditorFDS::OnBnClickedEnableFm)
+		ON_MESSAGE(WM_USER + 1, OnModChanged)
 END_MESSAGE_MAP()
 
 // CInstrumentEditorFDS message handlers
@@ -125,18 +125,19 @@ BOOL CInstrumentEditorFDS::OnInitDialog()
 	static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_MOD_RATE_SPIN))->SetRange(0, 4095);
 	static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_MOD_DEPTH_SPIN))->SetRange(0, 63);
 	static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_MOD_DELAY_SPIN))->SetRange(0, 255);
-/*
-	CSliderCtrl *pModSlider;
-	pModSlider = (CSliderCtrl*)GetDlgItem(IDC_MOD_FREQ);
-	pModSlider->SetRange(0, 0xFFF);
-*/
-	return TRUE;  // return TRUE unless you set the focus to a control
+	/*
+		CSliderCtrl *pModSlider;
+		pModSlider = (CSliderCtrl*)GetDlgItem(IDC_MOD_FREQ);
+		pModSlider->SetRange(0, 0xFFF);
+	*/
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CInstrumentEditorFDS::OnPresetSine()
 {
-	for (int i = 0; i < 64; ++i) {
+	for (int i = 0; i < 64; ++i)
+	{
 		float angle = (float(i) * 3.141592f * 2.0f) / 64.0f + 0.049087375f;
 		int sample = int((sinf(angle) + 1.0f) * 31.5f + 0.5f);
 		m_pInstrument->SetSample(i, sample);
@@ -148,7 +149,8 @@ void CInstrumentEditorFDS::OnPresetSine()
 
 void CInstrumentEditorFDS::OnPresetTriangle()
 {
-	for (int i = 0; i < 64; ++i) {
+	for (int i = 0; i < 64; ++i)
+	{
 		int sample = (i < 32 ? i << 1 : (63 - i) << 1);
 		m_pInstrument->SetSample(i, sample);
 	}
@@ -159,7 +161,8 @@ void CInstrumentEditorFDS::OnPresetTriangle()
 
 void CInstrumentEditorFDS::OnPresetPulse50()
 {
-	for (int i = 0; i < 64; ++i) {
+	for (int i = 0; i < 64; ++i)
+	{
 		int sample = (i < 32 ? 0 : 63);
 		m_pInstrument->SetSample(i, sample);
 	}
@@ -170,7 +173,8 @@ void CInstrumentEditorFDS::OnPresetPulse50()
 
 void CInstrumentEditorFDS::OnPresetPulse25()
 {
-	for (int i = 0; i < 64; ++i) {
+	for (int i = 0; i < 64; ++i)
+	{
 		int sample = (i < 16 ? 0 : 63);
 		m_pInstrument->SetSample(i, sample);
 	}
@@ -181,7 +185,8 @@ void CInstrumentEditorFDS::OnPresetPulse25()
 
 void CInstrumentEditorFDS::OnPresetSawtooth()
 {
-	for (int i = 0; i < 64; ++i) {
+	for (int i = 0; i < 64; ++i)
+	{
 		int sample = i;
 		m_pInstrument->SetSample(i, sample);
 	}
@@ -192,7 +197,8 @@ void CInstrumentEditorFDS::OnPresetSawtooth()
 
 void CInstrumentEditorFDS::OnModPresetFlat()
 {
-	for (int i = 0; i < 32; ++i) {
+	for (int i = 0; i < 32; ++i)
+	{
 		m_pInstrument->SetModulation(i, 0);
 	}
 
@@ -202,7 +208,8 @@ void CInstrumentEditorFDS::OnModPresetFlat()
 
 void CInstrumentEditorFDS::OnModPresetSine()
 {
-	for (int i = 0; i < 8; ++i) {
+	for (int i = 0; i < 8; ++i)
+	{
 		m_pInstrument->SetModulation(i, 7);
 		m_pInstrument->SetModulation(i + 8, 1);
 		m_pInstrument->SetModulation(i + 16, 1);
@@ -224,15 +231,16 @@ void CInstrumentEditorFDS::OnModPresetSine()
 void CInstrumentEditorFDS::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	int ModSpeed = GetDlgItemInt(IDC_MOD_RATE);
-//	int ModDepth = GetDlgItemInt(IDC_MOD_DEPTH);
-//	int ModDelay = GetDlgItemInt(IDC_MOD_DELAY);
+	//	int ModDepth = GetDlgItemInt(IDC_MOD_DEPTH);
+	//	int ModDelay = GetDlgItemInt(IDC_MOD_DELAY);
 
 	m_pInstrument->SetModulationSpeed(ModSpeed);
 }
 
 void CInstrumentEditorFDS::OnModRateChange()
 {
-	if (m_pInstrument) {
+	if (m_pInstrument)
+	{
 		int ModSpeed = GetDlgItemInt(IDC_MOD_RATE);
 		ModSpeed = std::max(ModSpeed, 0);
 		ModSpeed = std::min(ModSpeed, 4095);
@@ -243,7 +251,8 @@ void CInstrumentEditorFDS::OnModRateChange()
 
 void CInstrumentEditorFDS::OnModDepthChange()
 {
-	if (m_pInstrument) {
+	if (m_pInstrument)
+	{
 		int ModDepth = GetDlgItemInt(IDC_MOD_DEPTH);
 		ModDepth = std::max(ModDepth, 0);
 		ModDepth = std::min(ModDepth, 63);
@@ -254,7 +263,8 @@ void CInstrumentEditorFDS::OnModDepthChange()
 
 void CInstrumentEditorFDS::OnModDelayChange()
 {
-	if (m_pInstrument) {
+	if (m_pInstrument)
+	{
 		int ModDelay = GetDlgItemInt(IDC_MOD_DELAY);
 		ModDelay = std::max(ModDelay, 0);
 		ModDelay = std::min(ModDelay, 255);
@@ -278,7 +288,8 @@ void CInstrumentEditorFDS::OnBnClickedCopyWave()
 
 	CClipboard Clipboard(this, CF_TEXT);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
@@ -291,12 +302,14 @@ void CInstrumentEditorFDS::OnBnClickedPasteWave()
 	// Paste from clipboard
 	CClipboard Clipboard(this, CF_TEXT);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
 
-	if (Clipboard.IsDataAvailable()) {
+	if (Clipboard.IsDataAvailable())
+	{
 		LPCTSTR text = (LPCTSTR)Clipboard.GetDataPointer();
 		if (text != NULL)
 			ParseWaveString(text);
@@ -312,7 +325,8 @@ void CInstrumentEditorFDS::ParseWaveString(LPCTSTR pString)
 	std::istream_iterator<std::string> begin(values);
 	std::istream_iterator<std::string> end;
 
-	for (int i = 0; (i < 64) && (begin != end); ++i) {
+	for (int i = 0; (i < 64) && (begin != end); ++i)
+	{
 		int value = CSequenceInstrumentEditPanel::ReadStringValue(*begin++);
 		value = std::min<int>(std::max<int>(value, 0), 63);
 		m_pInstrument->SetSample(i, value);
@@ -332,7 +346,8 @@ void CInstrumentEditorFDS::OnBnClickedCopyTable()
 
 	CClipboard Clipboard(this, CF_TEXT);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
@@ -345,12 +360,14 @@ void CInstrumentEditorFDS::OnBnClickedPasteTable()
 	// Paste from clipboard
 	CClipboard Clipboard(this, CF_TEXT);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
 
-	if (Clipboard.IsDataAvailable()) {
+	if (Clipboard.IsDataAvailable())
+	{
 		LPCTSTR text = (LPCTSTR)Clipboard.GetDataPointer();
 		if (text != NULL)
 			ParseTableString(text);
@@ -366,7 +383,8 @@ void CInstrumentEditorFDS::ParseTableString(LPCTSTR pString)
 	std::istream_iterator<std::string> begin(values);
 	std::istream_iterator<std::string> end;
 
-	for (int i = 0; (i < 32) && (begin != end); ++i) {
+	for (int i = 0; (i < 32) && (begin != end); ++i)
+	{
 		int value = CSequenceInstrumentEditPanel::ReadStringValue(*begin++);
 		value = std::min<int>(std::max<int>(value, 0), 7);
 		m_pInstrument->SetModulation(i, value);
@@ -387,17 +405,19 @@ void CInstrumentEditorFDS::OnBnClickedEnableFm()
 
 void CInstrumentEditorFDS::EnableModControls(bool enable)
 {
-	if (!enable) {
+	if (!enable)
+	{
 		GetDlgItem(IDC_MOD_RATE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_MOD_DEPTH)->EnableWindow(FALSE);
 		GetDlgItem(IDC_MOD_DELAY)->EnableWindow(FALSE);
-//		m_pInstrument->SetModulationEnable(false);
+		//		m_pInstrument->SetModulationEnable(false);
 	}
-	else {
+	else
+	{
 		GetDlgItem(IDC_MOD_RATE)->EnableWindow(TRUE);
 		GetDlgItem(IDC_MOD_DEPTH)->EnableWindow(TRUE);
 		GetDlgItem(IDC_MOD_DELAY)->EnableWindow(TRUE);
-//		m_pInstrument->SetModulationEnable(true);
+		//		m_pInstrument->SetModulationEnable(true);
 	}
 }
 

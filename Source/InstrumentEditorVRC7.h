@@ -22,21 +22,21 @@
 
 class CInstrumentEditorVRC7 : public CInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorVRC7)
+DECLARE_DYNAMIC(CInstrumentEditorVRC7)
 
 public:
-	CInstrumentEditorVRC7(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorVRC7(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorVRC7();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Konami VRC7"); };
+	virtual TCHAR* GetTitle() const { return _T("Konami VRC7"); };
 
 	virtual void SelectInstrument(int Instrument);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_VRC7 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void LoadCustomPatch();
 	void SaveCustomPatch();
@@ -50,9 +50,9 @@ protected:
 	void PasteSettings(LPCTSTR pString);
 
 protected:
-	CInstrumentVRC7 *m_pInstrument;
+	CInstrumentVRC7* m_pInstrument;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnCbnSelchangePatch();

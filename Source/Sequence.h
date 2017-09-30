@@ -28,22 +28,23 @@ class CDocumentFile;
 /*
 ** This class is used to store instrument sequences
 */
-class CSequence: public CSequenceInterface {
+class CSequence : public CSequenceInterface
+{
 public:
 	CSequence();
 
-	void		 Clear();
-	signed char	 GetItem(int Index) const;
+	void Clear();
+	signed char GetItem(int Index) const;
 	unsigned int GetItemCount() const;
 	unsigned int GetLoopPoint() const;
 	unsigned int GetReleasePoint() const;
 	unsigned int GetSetting() const;
-	void		 SetItem(int Index, signed char Value);
-	void		 SetItemCount(unsigned int Count);
-	void		 SetLoopPoint(unsigned int Point);
-	void		 SetReleasePoint(unsigned int Point);
-	void		 SetSetting(unsigned int Setting); 
-	void		 Copy(const CSequence *pSeq);
+	void SetItem(int Index, signed char Value);
+	void SetItemCount(unsigned int Count);
+	void SetLoopPoint(unsigned int Point);
+	void SetReleasePoint(unsigned int Point);
+	void SetSetting(unsigned int Setting);
+	void Copy(const CSequence* pSeq);
 
 private:
 	// Sequence data
@@ -51,13 +52,14 @@ private:
 	unsigned int m_iLoopPoint;
 	unsigned int m_iReleasePoint;
 	unsigned int m_iSetting;
-	signed char	 m_cValues[MAX_SEQUENCE_ITEMS];
-	int			 m_iPlaying;
+	signed char m_cValues[MAX_SEQUENCE_ITEMS];
+	int m_iPlaying;
 };
 
 
 // Settings
-enum arp_setting_t {
+enum arp_setting_t
+{
 	ARP_SETTING_ABSOLUTE = 0,
 	ARP_SETTING_FIXED = 1,
 	ARP_SETTING_RELATIVE = 2

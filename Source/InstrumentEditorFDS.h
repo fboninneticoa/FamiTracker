@@ -27,13 +27,13 @@
 
 class CInstrumentEditorFDS : public CInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorFDS)
+DECLARE_DYNAMIC(CInstrumentEditorFDS)
 
 public:
-	CInstrumentEditorFDS(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorFDS(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorFDS();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Nintendo FDS"); };
+	virtual TCHAR* GetTitle() const { return _T("Nintendo FDS"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
@@ -42,7 +42,7 @@ public:
 	enum { IDD = IDD_INSTRUMENT_FDS };
 
 protected:
-	virtual	void PreviewNote(unsigned char Key);
+	virtual void PreviewNote(unsigned char Key);
 
 	void EnableModControls(bool enable);
 
@@ -50,14 +50,14 @@ protected:
 	void ParseTableString(LPCTSTR pString);
 
 protected:
-	CInstrumentFDS		*m_pInstrument;
-	CWaveEditorFDS		*m_pWaveEditor;
-	CModSequenceEditor	*m_pModSequenceEditor;
+	CInstrumentFDS* m_pInstrument;
+	CWaveEditorFDS* m_pWaveEditor;
+	CModSequenceEditor* m_pModSequenceEditor;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPresetSine();

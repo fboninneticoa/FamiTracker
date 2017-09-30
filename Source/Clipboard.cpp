@@ -23,7 +23,8 @@
 
 // CClipboard //////////////////////////////////////////////////////////////////
 
-CClipboard::CClipboard(CWnd *pWnd, UINT Clipboard) : m_bOpened(pWnd->OpenClipboard() == TRUE), m_iClipboard(Clipboard), m_hMemory(NULL)
+CClipboard::CClipboard(CWnd* pWnd, UINT Clipboard) : m_bOpened(pWnd->OpenClipboard() == TRUE), m_iClipboard(Clipboard),
+                                                     m_hMemory(NULL)
 {
 }
 
@@ -83,7 +84,7 @@ HGLOBAL CClipboard::GetData() const
 LPVOID CClipboard::GetDataPointer()
 {
 	ASSERT(m_bOpened);
-	
+
 	m_hMemory = GetData();
 	if (m_hMemory == NULL)
 		return NULL;

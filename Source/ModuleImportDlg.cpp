@@ -27,7 +27,7 @@
 
 IMPLEMENT_DYNAMIC(CModuleImportDlg, CDialog)
 
-CModuleImportDlg::CModuleImportDlg(CFamiTrackerDoc *pDoc)
+CModuleImportDlg::CModuleImportDlg(CFamiTrackerDoc* pDoc)
 	: CDialog(CModuleImportDlg::IDD, NULL), m_pImportedDoc(NULL), m_pDocument(pDoc)
 {
 }
@@ -44,8 +44,8 @@ void CModuleImportDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CModuleImportDlg, CDialog)
-	ON_BN_CLICKED(IDOK, &CModuleImportDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CModuleImportDlg::OnBnClickedCancel)
+		ON_BN_CLICKED(IDOK, &CModuleImportDlg::OnBnClickedOk)
+		ON_BN_CLICKED(IDCANCEL, &CModuleImportDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -58,8 +58,9 @@ BOOL CModuleImportDlg::OnInitDialog()
 	m_ctlTrackList.SubclassDlgItem(IDC_TRACKS, this);
 
 	int TrackCount = m_pImportedDoc->GetTrackCount();
-	
-	for (int i = 0; i < TrackCount; ++i) {
+
+	for (int i = 0; i < TrackCount; ++i)
+	{
 		CString str;
 		str.Format(_T("#%02i %s"), i + 1, m_pImportedDoc->GetTrackTitle(i).GetString());
 		m_ctlTrackList.AddString(str);
@@ -68,7 +69,7 @@ BOOL CModuleImportDlg::OnInitDialog()
 
 	CheckDlgButton(IDC_INSTRUMENTS, BST_CHECKED);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -90,8 +91,8 @@ void CModuleImportDlg::OnBnClickedCancel()
 	OnCancel();
 }
 
-bool CModuleImportDlg::LoadFile(CString Path, CFamiTrackerDoc *pDoc)
-{	
+bool CModuleImportDlg::LoadFile(CString Path, CFamiTrackerDoc* pDoc)
+{
 	m_pImportedDoc = pDoc->LoadImportFile(Path);
 
 	// Check if load failed
@@ -99,7 +100,8 @@ bool CModuleImportDlg::LoadFile(CString Path, CFamiTrackerDoc *pDoc)
 		return false;
 
 	// Check expansion chip match
-	if (m_pImportedDoc->GetExpansionChip() != m_pDocument->GetExpansionChip()) {
+	if (m_pImportedDoc->GetExpansionChip() != m_pDocument->GetExpansionChip())
+	{
 		AfxMessageBox(IDS_IMPORT_CHIP_MISMATCH);
 		SAFE_RELEASE(m_pImportedDoc);
 		return false;
@@ -110,12 +112,14 @@ bool CModuleImportDlg::LoadFile(CString Path, CFamiTrackerDoc *pDoc)
 
 bool CModuleImportDlg::ImportInstruments()
 {
-	if (IsDlgButtonChecked(IDC_INSTRUMENTS) == BST_CHECKED) {
+	if (IsDlgButtonChecked(IDC_INSTRUMENTS) == BST_CHECKED)
+	{
 		// Import instruments
 		if (!m_pDocument->ImportInstruments(m_pImportedDoc, m_iInstrumentTable))
 			return false;
 	}
-	else {
+	else
+	{
 		// No instrument translation
 		for (int i = 0; i < MAX_INSTRUMENTS; ++i)
 			m_iInstrumentTable[i] = i;
@@ -126,8 +130,10 @@ bool CModuleImportDlg::ImportInstruments()
 
 bool CModuleImportDlg::ImportTracks()
 {
-	for (unsigned int i = 0; i < m_pImportedDoc->GetTrackCount(); ++i) {
-		if (m_ctlTrackList.GetCheck(i) == 1) {
+	for (unsigned int i = 0; i < m_pImportedDoc->GetTrackCount(); ++i)
+	{
+		if (m_ctlTrackList.GetCheck(i) == 1)
+		{
 			// Import track
 			if (!m_pDocument->ImportTrack(i, m_pImportedDoc, m_iInstrumentTable))
 				return false;

@@ -48,7 +48,7 @@ void CSequence::SetItem(int Index, signed char Value)
 void CSequence::SetItemCount(unsigned int Count)
 {
 	ASSERT(Count <= MAX_SEQUENCE_ITEMS);
-	
+
 	m_iItemCount = Count;
 
 	if (m_iLoopPoint > m_iItemCount)
@@ -104,7 +104,7 @@ unsigned int CSequence::GetSetting() const
 	return m_iSetting;
 }
 
-void CSequence::Copy(const CSequence *pSeq)
+void CSequence::Copy(const CSequence* pSeq)
 {
 	// Copy all values from pSeq
 	m_iItemCount = pSeq->m_iItemCount;

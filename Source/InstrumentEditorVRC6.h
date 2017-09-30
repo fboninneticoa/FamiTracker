@@ -22,23 +22,23 @@
 
 class CInstrumentEditorVRC6 : public CSequenceInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorVRC6)
+DECLARE_DYNAMIC(CInstrumentEditorVRC6)
 
 public:
-	CInstrumentEditorVRC6(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorVRC6(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorVRC6();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Konami VRC6"); };
+	virtual TCHAR* GetTitle() const { return _T("Konami VRC6"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 	void SetSequenceString(CString Sequence, bool Changed);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_INTERNAL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	virtual void OnKeyReturn();
 
@@ -52,12 +52,12 @@ protected:
 	static const int MAX_DUTY = 7;
 
 protected:
-	CInstrumentVRC6	*m_pInstrument;
+	CInstrumentVRC6* m_pInstrument;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedInstsettings(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeSeqIndex();
 	afx_msg void OnBnClickedFreeSeq();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -63,15 +63,15 @@ static unsigned char default_inst[OPLL_TONE_NUM][(16 + 3) * 16] = {
 #else
 #define OPLL_TONE_NUM 3
 static unsigned char default_inst[OPLL_TONE_NUM][(16 + 3) * 16] = {
-  { 
-#include "2413tone.h" 
-  },
-  {
+	{
+#include "2413tone.h"
+	},
+	{
 #include "vrc7tone.h"
-   },
-//  {
-//#include "281btone.h"
-//  }
+	},
+	//  {
+	//#include "281btone.h"
+	//  }
 };
 #endif
 
@@ -170,7 +170,7 @@ static uint32 rate = 3354932;
 static uint16 fullsintable[PG_WIDTH];
 static uint16 halfsintable[PG_WIDTH];
 
-static uint16 *waveform[2] = { fullsintable, halfsintable };
+static uint16* waveform[2] = {fullsintable, halfsintable};
 
 /* LFO Table */
 static int32 pmtable[PM_PG_WIDTH];
@@ -187,14 +187,23 @@ static int16 DB2LIN_TABLE[(DB_MUTE + DB_MUTE) * 2];
 static uint16 AR_ADJUST_TABLE[1 << EG_BITS];
 
 /* Empty voice data */
-static OPLL_PATCH null_patch = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static OPLL_PATCH null_patch = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 /* Basic voice Data */
 static OPLL_PATCH default_patch[OPLL_TONE_NUM][(16 + 3) * 2];
 
 /* Definition of envelope mode */
-enum OPLL_EG_STATE 
-{ READY, ATTACK, DECAY, SUSHOLD, SUSTINE, RELEASE, SETTLE, FINISH };
+enum OPLL_EG_STATE
+{
+	READY,
+	ATTACK,
+	DECAY,
+	SUSHOLD,
+	SUSTINE,
+	RELEASE,
+	SETTLE,
+	FINISH
+};
 
 /* Phase incr table for Attack */
 static uint32 dphaseARTable[16][16];
@@ -217,155 +226,155 @@ int32 opll_volumes[10];
  
 ****************************************************/
 INLINE static int32
-Min (int32 i, int32 j)
+Min(int32 i, int32 j)
 {
-  if (i < j)
-    return i;
-  else
-    return j;
+	if (i < j)
+		return i;
+	else
+		return j;
 }
 
 /* Table for AR to LogCurve. */
 static void
-makeAdjustTable (void)
+makeAdjustTable(void)
 {
-  int32 i;
+	int32 i;
 
-  AR_ADJUST_TABLE[0] = (1 << EG_BITS) - 1;
-  for (i = 1; i < (1<<EG_BITS); i++)
-    AR_ADJUST_TABLE[i] = (uint16) ((double) (1<<EG_BITS)-1 - ((1<<EG_BITS)-1)*log(i)/log(127));
+	AR_ADJUST_TABLE[0] = (1 << EG_BITS) - 1;
+	for (i = 1; i < (1 << EG_BITS); i++)
+		AR_ADJUST_TABLE[i] = (uint16)((double)(1 << EG_BITS) - 1 - ((1 << EG_BITS) - 1) * log(i) / log(127));
 }
 
 
 /* Table for dB(0 -- (1<<DB_BITS)-1) to Liner(0 -- DB2LIN_AMP_WIDTH) */
 static void
-makeDB2LinTable (void)
+makeDB2LinTable(void)
 {
-  int32 i;
+	int32 i;
 
-  for (i = 0; i < DB_MUTE + DB_MUTE; i++)
-  {
-    DB2LIN_TABLE[i] = (int16) ((double) ((1 << DB2LIN_AMP_BITS) - 1) * pow (10, -(double) i * DB_STEP / 20));
-    if (i >= DB_MUTE) DB2LIN_TABLE[i] = 0;
-    DB2LIN_TABLE[i + DB_MUTE + DB_MUTE] = (int16) (-DB2LIN_TABLE[i]);
-  }
+	for (i = 0; i < DB_MUTE + DB_MUTE; i++)
+	{
+		DB2LIN_TABLE[i] = (int16)((double)((1 << DB2LIN_AMP_BITS) - 1) * pow(10, -(double)i * DB_STEP / 20));
+		if (i >= DB_MUTE) DB2LIN_TABLE[i] = 0;
+		DB2LIN_TABLE[i + DB_MUTE + DB_MUTE] = (int16)(-DB2LIN_TABLE[i]);
+	}
 }
 
 /* Liner(+0.0 - +1.0) to dB((1<<DB_BITS) - 1 -- 0) */
 static int32
-lin2db (double d)
+lin2db(double d)
 {
-  if (d == 0)
-    return (DB_MUTE - 1);
-  else
-    return Min (-(int32) (20.0 * log10 (d) / DB_STEP), DB_MUTE-1);  /* 0 -- 127 */
+	if (d == 0)
+		return (DB_MUTE - 1);
+	else
+		return Min(-(int32)(20.0 * log10(d) / DB_STEP), DB_MUTE - 1); /* 0 -- 127 */
 }
 
 
 /* Sin Table */
 static void
-makeSinTable (void)
+makeSinTable(void)
 {
-  int32 i;
+	int32 i;
 
-  for (i = 0; i < PG_WIDTH / 4; i++)
-  {
-    fullsintable[i] = (uint32) lin2db (sin (2.0 * PI * i / PG_WIDTH) );
-  }
+	for (i = 0; i < PG_WIDTH / 4; i++)
+	{
+		fullsintable[i] = (uint32)lin2db(sin(2.0 * PI * i / PG_WIDTH));
+	}
 
-  for (i = 0; i < PG_WIDTH / 4; i++)
-  {
-    fullsintable[PG_WIDTH / 2 - 1 - i] = fullsintable[i];
-  }
+	for (i = 0; i < PG_WIDTH / 4; i++)
+	{
+		fullsintable[PG_WIDTH / 2 - 1 - i] = fullsintable[i];
+	}
 
-  for (i = 0; i < PG_WIDTH / 2; i++)
-  {
-    fullsintable[PG_WIDTH / 2 + i] = (uint32) (DB_MUTE + DB_MUTE + fullsintable[i]);
-  }
+	for (i = 0; i < PG_WIDTH / 2; i++)
+	{
+		fullsintable[PG_WIDTH / 2 + i] = (uint32)(DB_MUTE + DB_MUTE + fullsintable[i]);
+	}
 
-  for (i = 0; i < PG_WIDTH / 2; i++)
-    halfsintable[i] = fullsintable[i];
-  for (i = PG_WIDTH / 2; i < PG_WIDTH; i++)
-    halfsintable[i] = fullsintable[0];
+	for (i = 0; i < PG_WIDTH / 2; i++)
+		halfsintable[i] = fullsintable[i];
+	for (i = PG_WIDTH / 2; i < PG_WIDTH; i++)
+		halfsintable[i] = fullsintable[0];
 }
 
 static double saw(double phase)
 {
-  if(phase <= PI/2)
-    return phase * 2 / PI ;
-  else if(phase <= PI*3/2)
-    return 2.0 - ( phase * 2 / PI );
-  else
-    return -4.0 + phase * 2 / PI;
+	if (phase <= PI / 2)
+		return phase * 2 / PI;
+	else if (phase <= PI * 3 / 2)
+		return 2.0 - (phase * 2 / PI);
+	else
+		return -4.0 + phase * 2 / PI;
 }
 
 /* Table for Pitch Modulator */
 static void
-makePmTable (void)
+makePmTable(void)
 {
-  int32 i;
+	int32 i;
 
-  for (i = 0; i < PM_PG_WIDTH; i++)
-    /* pmtable[i] = (int32) ((double) PM_AMP * pow (2, (double) PM_DEPTH * sin (2.0 * PI * i / PM_PG_WIDTH) / 1200)); */
-    pmtable[i] = (int32) ((double) PM_AMP * pow (2, (double) PM_DEPTH * saw (2.0 * PI * i / PM_PG_WIDTH) / 1200));
+	for (i = 0; i < PM_PG_WIDTH; i++)
+		/* pmtable[i] = (int32) ((double) PM_AMP * pow (2, (double) PM_DEPTH * sin (2.0 * PI * i / PM_PG_WIDTH) / 1200)); */
+		pmtable[i] = (int32)((double)PM_AMP * pow(2, (double)PM_DEPTH * saw(2.0 * PI * i / PM_PG_WIDTH) / 1200));
 }
 
 /* Table for Amp Modulator */
 static void
-makeAmTable (void)
+makeAmTable(void)
 {
-  int32 i;
+	int32 i;
 
-  for (i = 0; i < AM_PG_WIDTH; i++)
-    /* amtable[i] = (int32) ((double) AM_DEPTH / 2 / DB_STEP * (1.0 + sin (2.0 * PI * i / PM_PG_WIDTH))); */
-    amtable[i] = (int32) ((double) AM_DEPTH / 2 / DB_STEP * (1.0 + saw (2.0 * PI * i / PM_PG_WIDTH)));
+	for (i = 0; i < AM_PG_WIDTH; i++)
+		/* amtable[i] = (int32) ((double) AM_DEPTH / 2 / DB_STEP * (1.0 + sin (2.0 * PI * i / PM_PG_WIDTH))); */
+		amtable[i] = (int32)((double)AM_DEPTH / 2 / DB_STEP * (1.0 + saw(2.0 * PI * i / PM_PG_WIDTH)));
 }
 
 /* Phase increment counter table */
 static void
-makeDphaseTable (void)
+makeDphaseTable(void)
 {
-  uint32 fnum, block, ML;
-  uint32 mltable[16] =
-    { 1, 1 * 2, 2 * 2, 3 * 2, 4 * 2, 5 * 2, 6 * 2, 7 * 2, 8 * 2, 9 * 2, 10 * 2, 10 * 2, 12 * 2, 12 * 2, 15 * 2, 15 * 2 };
+	uint32 fnum, block, ML;
+	uint32 mltable[16] =
+		{1, 1 * 2, 2 * 2, 3 * 2, 4 * 2, 5 * 2, 6 * 2, 7 * 2, 8 * 2, 9 * 2, 10 * 2, 10 * 2, 12 * 2, 12 * 2, 15 * 2, 15 * 2};
 
-  for (fnum = 0; fnum < 512; fnum++)
-    for (block = 0; block < 8; block++)
-      for (ML = 0; ML < 16; ML++)
-        dphaseTable[fnum][block][ML] = RATE_ADJUST (((fnum * mltable[ML]) << block) >> (20 - DP_BITS));
+	for (fnum = 0; fnum < 512; fnum++)
+		for (block = 0; block < 8; block++)
+			for (ML = 0; ML < 16; ML++)
+				dphaseTable[fnum][block][ML] = RATE_ADJUST (((fnum * mltable[ML]) << block) >> (20 - DP_BITS));
 }
 
 static void
-makeTllTable (void)
+makeTllTable(void)
 {
 #define dB2(x) ((x)*2)
 
-  static double kltable[16] = {
-    dB2 (0.000), dB2 (9.000), dB2 (12.000), dB2 (13.875), dB2 (15.000), dB2 (16.125), dB2 (16.875), dB2 (17.625),
-    dB2 (18.000), dB2 (18.750), dB2 (19.125), dB2 (19.500), dB2 (19.875), dB2 (20.250), dB2 (20.625), dB2 (21.000)
-  };
+	static double kltable[16] = {
+		dB2 (0.000), dB2 (9.000), dB2 (12.000), dB2 (13.875), dB2 (15.000), dB2 (16.125), dB2 (16.875), dB2 (17.625),
+		dB2 (18.000), dB2 (18.750), dB2 (19.125), dB2 (19.500), dB2 (19.875), dB2 (20.250), dB2 (20.625), dB2 (21.000)
+	};
 
-  int32 tmp;
-  int32 fnum, block, TL, KL;
+	int32 tmp;
+	int32 fnum, block, TL, KL;
 
-  for (fnum = 0; fnum < 16; fnum++)
-    for (block = 0; block < 8; block++)
-      for (TL = 0; TL < 64; TL++)
-        for (KL = 0; KL < 4; KL++)
-        {
-          if (KL == 0)
-          {
-            tllTable[fnum][block][TL][KL] = TL2EG (TL);
-          }
-          else
-          {
-            tmp = (int32) (kltable[fnum] - dB2 (3.000) * (7 - block));
-            if (tmp <= 0)
-              tllTable[fnum][block][TL][KL] = TL2EG (TL);
-            else
-              tllTable[fnum][block][TL][KL] = (uint32) ((tmp >> (3 - KL)) / EG_STEP) + TL2EG (TL);
-          }
-        }
+	for (fnum = 0; fnum < 16; fnum++)
+		for (block = 0; block < 8; block++)
+			for (TL = 0; TL < 64; TL++)
+				for (KL = 0; KL < 4; KL++)
+				{
+					if (KL == 0)
+					{
+						tllTable[fnum][block][TL][KL] = TL2EG (TL);
+					}
+					else
+					{
+						tmp = (int32)(kltable[fnum] - dB2 (3.000) * (7 - block));
+						if (tmp <= 0)
+							tllTable[fnum][block][TL][KL] = TL2EG (TL);
+						else
+							tllTable[fnum][block][TL][KL] = (uint32)((tmp >> (3 - KL)) / EG_STEP) + TL2EG (TL);
+					}
+				}
 }
 
 #ifdef USE_SPEC_ENV_SPEED
@@ -410,9 +419,9 @@ static double decaytime[16][4] = {
 
 /* Rate Table for Attack */
 static void
-makeDphaseARTable (void)
+makeDphaseARTable(void)
 {
-  int32 AR, Rks, RM, RL;
+	int32 AR, Rks, RM, RL;
 
 #ifdef USE_SPEC_ENV_SPEED
   uint32 attacktable[16][4];
@@ -430,37 +439,37 @@ makeDphaseARTable (void)
     }
 #endif
 
-  for (AR = 0; AR < 16; AR++)
-    for (Rks = 0; Rks < 16; Rks++)
-    {
-      RM = AR + (Rks >> 2);
-      RL = Rks & 3;
-      if (RM > 15)
-        RM = 15;
-      switch (AR)
-      {
-      case 0:
-        dphaseARTable[AR][Rks] = 0;
-        break;
-      case 15:
-        dphaseARTable[AR][Rks] = 0;/*EG_DP_WIDTH;*/ 
-        break;
-      default:
+	for (AR = 0; AR < 16; AR++)
+		for (Rks = 0; Rks < 16; Rks++)
+		{
+			RM = AR + (Rks >> 2);
+			RL = Rks & 3;
+			if (RM > 15)
+				RM = 15;
+			switch (AR)
+			{
+			case 0:
+				dphaseARTable[AR][Rks] = 0;
+				break;
+			case 15:
+				dphaseARTable[AR][Rks] = 0;/*EG_DP_WIDTH;*/
+				break;
+			default:
 #ifdef USE_SPEC_ENV_SPEED
         dphaseARTable[AR][Rks] = RATE_ADJUST (attacktable[RM][RL]);
 #else
-        dphaseARTable[AR][Rks] = RATE_ADJUST ((3 * (RL + 4) << (RM + 1)));
+				dphaseARTable[AR][Rks] = RATE_ADJUST ((3 * (RL + 4) << (RM + 1)));
 #endif
-        break;
-      }
-    }
+				break;
+			}
+		}
 }
 
 /* Rate Table for Decay and Release */
 static void
-makeDphaseDRTable (void)
+makeDphaseDRTable(void)
 {
-  int32 DR, Rks, RM, RL;
+	int32 DR, Rks, RM, RL;
 
 #ifdef USE_SPEC_ENV_SPEED
   uint32 decaytable[16][4];
@@ -473,125 +482,123 @@ makeDphaseDRTable (void)
         decaytable[RM][RL] = (uint32) ((double) (1 << EG_DP_BITS) / (decaytime[RM][RL] * 3579545 / 72000));
 #endif
 
-  for (DR = 0; DR < 16; DR++)
-    for (Rks = 0; Rks < 16; Rks++)
-    {
-      RM = DR + (Rks >> 2);
-      RL = Rks & 3;
-      if (RM > 15)
-        RM = 15;
-      switch (DR)
-      {
-      case 0:
-        dphaseDRTable[DR][Rks] = 0;
-        break;
-      default:
+	for (DR = 0; DR < 16; DR++)
+		for (Rks = 0; Rks < 16; Rks++)
+		{
+			RM = DR + (Rks >> 2);
+			RL = Rks & 3;
+			if (RM > 15)
+				RM = 15;
+			switch (DR)
+			{
+			case 0:
+				dphaseDRTable[DR][Rks] = 0;
+				break;
+			default:
 #ifdef USE_SPEC_ENV_SPEED
         dphaseDRTable[DR][Rks] = RATE_ADJUST (decaytable[RM][RL]);
 #else
-        dphaseDRTable[DR][Rks] = RATE_ADJUST ((RL + 4) << (RM - 1));
+				dphaseDRTable[DR][Rks] = RATE_ADJUST ((RL + 4) << (RM - 1));
 #endif
-        break;
-      }
-    }
+				break;
+			}
+		}
 }
 
 static void
-makeRksTable (void)
+makeRksTable(void)
 {
+	int32 fnum8, block, KR;
 
-  int32 fnum8, block, KR;
-
-  for (fnum8 = 0; fnum8 < 2; fnum8++)
-    for (block = 0; block < 8; block++)
-      for (KR = 0; KR < 2; KR++)
-      {
-        if (KR != 0)
-          rksTable[fnum8][block][KR] = (block << 1) + fnum8;
-        else
-          rksTable[fnum8][block][KR] = block >> 1;
-      }
+	for (fnum8 = 0; fnum8 < 2; fnum8++)
+		for (block = 0; block < 8; block++)
+			for (KR = 0; KR < 2; KR++)
+			{
+				if (KR != 0)
+					rksTable[fnum8][block][KR] = (block << 1) + fnum8;
+				else
+					rksTable[fnum8][block][KR] = block >> 1;
+			}
 }
 
 void
-OPLL_dump2patch (const uint8 * dump, OPLL_PATCH * patch)
+OPLL_dump2patch(const uint8* dump, OPLL_PATCH* patch)
 {
-  patch[0].AM = (dump[0] >> 7) & 1;
-  patch[1].AM = (dump[1] >> 7) & 1;
-  patch[0].PM = (dump[0] >> 6) & 1;
-  patch[1].PM = (dump[1] >> 6) & 1;
-  patch[0].EG = (dump[0] >> 5) & 1;
-  patch[1].EG = (dump[1] >> 5) & 1;
-  patch[0].KR = (dump[0] >> 4) & 1;
-  patch[1].KR = (dump[1] >> 4) & 1;
-  patch[0].ML = (dump[0]) & 15;
-  patch[1].ML = (dump[1]) & 15;
-  patch[0].KL = (dump[2] >> 6) & 3;
-  patch[1].KL = (dump[3] >> 6) & 3;
-  patch[0].TL = (dump[2]) & 63;
-  patch[0].FB = (dump[3]) & 7;
-  patch[0].WF = (dump[3] >> 3) & 1;
-  patch[1].WF = (dump[3] >> 4) & 1;
-  patch[0].AR = (dump[4] >> 4) & 15;
-  patch[1].AR = (dump[5] >> 4) & 15;
-  patch[0].DR = (dump[4]) & 15;
-  patch[1].DR = (dump[5]) & 15;
-  patch[0].SL = (dump[6] >> 4) & 15;
-  patch[1].SL = (dump[7] >> 4) & 15;
-  patch[0].RR = (dump[6]) & 15;
-  patch[1].RR = (dump[7]) & 15;
+	patch[0].AM = (dump[0] >> 7) & 1;
+	patch[1].AM = (dump[1] >> 7) & 1;
+	patch[0].PM = (dump[0] >> 6) & 1;
+	patch[1].PM = (dump[1] >> 6) & 1;
+	patch[0].EG = (dump[0] >> 5) & 1;
+	patch[1].EG = (dump[1] >> 5) & 1;
+	patch[0].KR = (dump[0] >> 4) & 1;
+	patch[1].KR = (dump[1] >> 4) & 1;
+	patch[0].ML = (dump[0]) & 15;
+	patch[1].ML = (dump[1]) & 15;
+	patch[0].KL = (dump[2] >> 6) & 3;
+	patch[1].KL = (dump[3] >> 6) & 3;
+	patch[0].TL = (dump[2]) & 63;
+	patch[0].FB = (dump[3]) & 7;
+	patch[0].WF = (dump[3] >> 3) & 1;
+	patch[1].WF = (dump[3] >> 4) & 1;
+	patch[0].AR = (dump[4] >> 4) & 15;
+	patch[1].AR = (dump[5] >> 4) & 15;
+	patch[0].DR = (dump[4]) & 15;
+	patch[1].DR = (dump[5]) & 15;
+	patch[0].SL = (dump[6] >> 4) & 15;
+	patch[1].SL = (dump[7] >> 4) & 15;
+	patch[0].RR = (dump[6]) & 15;
+	patch[1].RR = (dump[7]) & 15;
 }
 
 void
-OPLL_getDefaultPatch (int32 type, int32 num, OPLL_PATCH * patch)
+OPLL_getDefaultPatch(int32 type, int32 num, OPLL_PATCH* patch)
 {
-  OPLL_dump2patch (default_inst[type] + num * 16, patch);
+	OPLL_dump2patch(default_inst[type] + num * 16, patch);
 }
 
 static void
-makeDefaultPatch ()
+makeDefaultPatch()
 {
-  int32 i, j;
+	int32 i, j;
 
-  for (i = 0; i < OPLL_TONE_NUM; i++)
-    for (j = 0; j < 19; j++)
-      OPLL_getDefaultPatch (i, j, &default_patch[i][j * 2]);
-
+	for (i = 0; i < OPLL_TONE_NUM; i++)
+		for (j = 0; j < 19; j++)
+			OPLL_getDefaultPatch(i, j, &default_patch[i][j * 2]);
 }
 
 void
-OPLL_setPatch (OPLL * opll, const uint8 * dump)
+OPLL_setPatch(OPLL* opll, const uint8* dump)
 {
-  OPLL_PATCH patch[2];
-  int i;
+	OPLL_PATCH patch[2];
+	int i;
 
-  for (i = 0; i < 19; i++)
-  {
-    OPLL_dump2patch (dump + i * 16, patch);
-    memcpy (&opll->patch[i*2+0], &patch[0], sizeof (OPLL_PATCH));
-    memcpy (&opll->patch[i*2+1], &patch[1], sizeof (OPLL_PATCH));
-  }
+	for (i = 0; i < 19; i++)
+	{
+		OPLL_dump2patch(dump + i * 16, patch);
+		memcpy(&opll->patch[i * 2 + 0], &patch[0], sizeof (OPLL_PATCH));
+		memcpy(&opll->patch[i * 2 + 1], &patch[1], sizeof (OPLL_PATCH));
+	}
 }
 
 void
-OPLL_patch2dump (const OPLL_PATCH * patch, uint8 * dump)
+OPLL_patch2dump(const OPLL_PATCH* patch, uint8* dump)
 {
-  dump[0] = (uint8) ((patch[0].AM << 7) + (patch[0].PM << 6) + (patch[0].EG << 5) + (patch[0].KR << 4) + patch[0].ML);
-  dump[1] = (uint8) ((patch[1].AM << 7) + (patch[1].PM << 6) + (patch[1].EG << 5) + (patch[1].KR << 4) + patch[1].ML);
-  dump[2] = (uint8) ((patch[0].KL << 6) + patch[0].TL);
-  dump[3] = (uint8) ((patch[1].KL << 6) + (patch[1].WF << 4) + (patch[0].WF << 3) + patch[0].FB);
-  dump[4] = (uint8) ((patch[0].AR << 4) + patch[0].DR);
-  dump[5] = (uint8) ((patch[1].AR << 4) + patch[1].DR);
-  dump[6] = (uint8) ((patch[0].SL << 4) + patch[0].RR);
-  dump[7] = (uint8) ((patch[1].SL << 4) + patch[1].RR);
-  dump[8] = 0;
-  dump[9] = 0;
-  dump[10] = 0;
-  dump[11] = 0;
-  dump[12] = 0;
-  dump[13] = 0;
-  dump[14] = 0;
-  dump[15] = 0;
+	dump[0] = (uint8)((patch[0].AM << 7) + (patch[0].PM << 6) + (patch[0].EG << 5) + (patch[0].KR << 4) + patch[0].ML);
+	dump[1] = (uint8)((patch[1].AM << 7) + (patch[1].PM << 6) + (patch[1].EG << 5) + (patch[1].KR << 4) + patch[1].ML);
+	dump[2] = (uint8)((patch[0].KL << 6) + patch[0].TL);
+	dump[3] = (uint8)((patch[1].KL << 6) + (patch[1].WF << 4) + (patch[0].WF << 3) + patch[0].FB);
+	dump[4] = (uint8)((patch[0].AR << 4) + patch[0].DR);
+	dump[5] = (uint8)((patch[1].AR << 4) + patch[1].DR);
+	dump[6] = (uint8)((patch[0].SL << 4) + patch[0].RR);
+	dump[7] = (uint8)((patch[1].SL << 4) + patch[1].RR);
+	dump[8] = 0;
+	dump[9] = 0;
+	dump[10] = 0;
+	dump[11] = 0;
+	dump[12] = 0;
+	dump[13] = 0;
+	dump[14] = 0;
+	dump[15] = 0;
 }
 
 /************************************************************
@@ -601,40 +608,39 @@ OPLL_patch2dump (const OPLL_PATCH * patch, uint8 * dump)
 ************************************************************/
 
 INLINE static uint32
-calc_eg_dphase (OPLL_SLOT * slot)
+calc_eg_dphase(OPLL_SLOT* slot)
 {
+	switch (slot->eg_mode)
+	{
+	case ATTACK:
+		return dphaseARTable[slot->patch->AR][slot->rks];
 
-  switch (slot->eg_mode)
-  {
-  case ATTACK:
-    return dphaseARTable[slot->patch->AR][slot->rks];
+	case DECAY:
+		return dphaseDRTable[slot->patch->DR][slot->rks];
 
-  case DECAY:
-    return dphaseDRTable[slot->patch->DR][slot->rks];
+	case SUSHOLD:
+		return 0;
 
-  case SUSHOLD:
-    return 0;
+	case SUSTINE:
+		return dphaseDRTable[slot->patch->RR][slot->rks];
 
-  case SUSTINE:
-    return dphaseDRTable[slot->patch->RR][slot->rks];
+	case RELEASE:
+		if (slot->sustine)
+			return dphaseDRTable[5][slot->rks];
+		else if (slot->patch->EG)
+			return dphaseDRTable[slot->patch->RR][slot->rks];
+		else
+			return dphaseDRTable[7][slot->rks];
 
-  case RELEASE:
-    if (slot->sustine)
-      return dphaseDRTable[5][slot->rks];
-    else if (slot->patch->EG)
-      return dphaseDRTable[slot->patch->RR][slot->rks];
-    else
-      return dphaseDRTable[7][slot->rks];
+	case SETTLE:
+		return dphaseDRTable[15][0];
 
-  case SETTLE:
-    return dphaseDRTable[15][0];
+	case FINISH:
+		return 0;
 
-  case FINISH:
-    return 0;
-
-  default:
-    return 0;
-  }
+	default:
+		return 0;
+	}
 }
 
 /*************************************************************
@@ -667,254 +673,262 @@ calc_eg_dphase (OPLL_SLOT * slot)
 
 /* Slot key on  */
 INLINE static void
-slotOn (OPLL_SLOT * slot)
+slotOn(OPLL_SLOT* slot)
 {
-  slot->eg_mode = ATTACK;
-  slot->eg_phase = 0;
-  slot->phase = 0;
-  UPDATE_EG(slot);
+	slot->eg_mode = ATTACK;
+	slot->eg_phase = 0;
+	slot->phase = 0;
+	UPDATE_EG(slot);
 }
 
 /* Slot key on without reseting the phase */
 INLINE static void
-slotOn2 (OPLL_SLOT * slot)
+slotOn2(OPLL_SLOT* slot)
 {
-  slot->eg_mode = ATTACK;
-  slot->eg_phase = 0;
-  UPDATE_EG(slot);
+	slot->eg_mode = ATTACK;
+	slot->eg_phase = 0;
+	UPDATE_EG(slot);
 }
 
 /* Slot key off */
 INLINE static void
-slotOff (OPLL_SLOT * slot)
+slotOff(OPLL_SLOT* slot)
 {
-  if (slot->eg_mode == ATTACK)
-    slot->eg_phase = EXPAND_BITS (AR_ADJUST_TABLE[HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS)], EG_BITS, EG_DP_BITS);
-  slot->eg_mode = RELEASE;
-  UPDATE_EG(slot);
+	if (slot->eg_mode == ATTACK)
+		slot->eg_phase = EXPAND_BITS (AR_ADJUST_TABLE[HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS)], EG_BITS, EG_DP_BITS);
+	slot->eg_mode = RELEASE;
+	UPDATE_EG(slot);
 }
 
 /* Channel key on */
 INLINE static void
-keyOn (OPLL * opll, int32 i)
+keyOn(OPLL* opll, int32 i)
 {
-  if (!opll->slot_on_flag[i * 2])
-    slotOn (MOD(opll,i));
-  if (!opll->slot_on_flag[i * 2 + 1])
-    slotOn (CAR(opll,i));
-  opll->key_status[i] = 1;
+	if (!opll->slot_on_flag[i * 2])
+		slotOn(MOD(opll,i));
+	if (!opll->slot_on_flag[i * 2 + 1])
+		slotOn(CAR(opll,i));
+	opll->key_status[i] = 1;
 }
 
 /* Channel key off */
 INLINE static void
-keyOff (OPLL * opll, int32 i)
+keyOff(OPLL* opll, int32 i)
 {
-  if (opll->slot_on_flag[i * 2 + 1])
-    slotOff (CAR(opll,i));
-  opll->key_status[i] = 0;
+	if (opll->slot_on_flag[i * 2 + 1])
+		slotOff(CAR(opll,i));
+	opll->key_status[i] = 0;
 }
 
 INLINE static void
-keyOn_BD (OPLL * opll)
+keyOn_BD(OPLL* opll)
 {
-  keyOn (opll, 6);
+	keyOn(opll, 6);
 }
+
 INLINE static void
-keyOn_SD (OPLL * opll)
+keyOn_SD(OPLL* opll)
 {
-  if (!opll->slot_on_flag[SLOT_SD])
-    slotOn (CAR(opll,7));
+	if (!opll->slot_on_flag[SLOT_SD])
+		slotOn(CAR(opll,7));
 }
+
 INLINE static void
-keyOn_TOM (OPLL * opll)
+keyOn_TOM(OPLL* opll)
 {
-  if (!opll->slot_on_flag[SLOT_TOM])
-    slotOn (MOD(opll,8));
+	if (!opll->slot_on_flag[SLOT_TOM])
+		slotOn(MOD(opll,8));
 }
+
 INLINE static void
-keyOn_HH (OPLL * opll)
+keyOn_HH(OPLL* opll)
 {
-  if (!opll->slot_on_flag[SLOT_HH])
-    slotOn2 (MOD(opll,7));
+	if (!opll->slot_on_flag[SLOT_HH])
+		slotOn2(MOD(opll,7));
 }
+
 INLINE static void
-keyOn_CYM (OPLL * opll)
+keyOn_CYM(OPLL* opll)
 {
-  if (!opll->slot_on_flag[SLOT_CYM])
-    slotOn2 (CAR(opll,8));
+	if (!opll->slot_on_flag[SLOT_CYM])
+		slotOn2(CAR(opll,8));
 }
 
 /* Drum key off */
 INLINE static void
-keyOff_BD (OPLL * opll)
+keyOff_BD(OPLL* opll)
 {
-  keyOff (opll, 6);
+	keyOff(opll, 6);
 }
+
 INLINE static void
-keyOff_SD (OPLL * opll)
+keyOff_SD(OPLL* opll)
 {
-  if (opll->slot_on_flag[SLOT_SD])
-    slotOff (CAR(opll,7));
+	if (opll->slot_on_flag[SLOT_SD])
+		slotOff(CAR(opll,7));
 }
+
 INLINE static void
-keyOff_TOM (OPLL * opll)
+keyOff_TOM(OPLL* opll)
 {
-  if (opll->slot_on_flag[SLOT_TOM])
-    slotOff (MOD(opll,8));
+	if (opll->slot_on_flag[SLOT_TOM])
+		slotOff(MOD(opll,8));
 }
+
 INLINE static void
-keyOff_HH (OPLL * opll)
+keyOff_HH(OPLL* opll)
 {
-  if (opll->slot_on_flag[SLOT_HH])
-    slotOff (MOD(opll,7));
+	if (opll->slot_on_flag[SLOT_HH])
+		slotOff(MOD(opll,7));
 }
+
 INLINE static void
-keyOff_CYM (OPLL * opll)
+keyOff_CYM(OPLL* opll)
 {
-  if (opll->slot_on_flag[SLOT_CYM])
-    slotOff (CAR(opll,8));
+	if (opll->slot_on_flag[SLOT_CYM])
+		slotOff(CAR(opll,8));
 }
 
 /* Change a voice */
 INLINE static void
-setPatch (OPLL * opll, int32 i, int32 num)
+setPatch(OPLL* opll, int32 i, int32 num)
 {
-  opll->patch_number[i] = num;
-  MOD(opll,i)->patch = &opll->patch[num * 2 + 0];
-  CAR(opll,i)->patch = &opll->patch[num * 2 + 1];
+	opll->patch_number[i] = num;
+	MOD(opll,i)->patch = &opll->patch[num * 2 + 0];
+	CAR(opll,i)->patch = &opll->patch[num * 2 + 1];
 }
 
 /* Change a rhythm voice */
 INLINE static void
-setSlotPatch (OPLL_SLOT * slot, OPLL_PATCH * patch)
+setSlotPatch(OPLL_SLOT* slot, OPLL_PATCH* patch)
 {
-  slot->patch = patch;
+	slot->patch = patch;
 }
 
 /* Set sustine parameter */
 INLINE static void
-setSustine (OPLL * opll, int32 c, int32 sustine)
+setSustine(OPLL* opll, int32 c, int32 sustine)
 {
-  CAR(opll,c)->sustine = sustine;
-  if (MOD(opll,c)->type)
-    MOD(opll,c)->sustine = sustine;
+	CAR(opll,c)->sustine = sustine;
+	if (MOD(opll,c)->type)
+		MOD(opll,c)->sustine = sustine;
 }
 
 /* Volume : 6bit ( Volume register << 2 ) */
 INLINE static void
-setVolume (OPLL * opll, int32 c, int32 volume)
+setVolume(OPLL* opll, int32 c, int32 volume)
 {
-  CAR(opll,c)->volume = volume;
+	CAR(opll,c)->volume = volume;
 }
 
 INLINE static void
-setSlotVolume (OPLL_SLOT * slot, int32 volume)
+setSlotVolume(OPLL_SLOT* slot, int32 volume)
 {
-  slot->volume = volume;
+	slot->volume = volume;
 }
 
 /* Set F-Number ( fnum : 9bit ) */
 INLINE static void
-setFnumber (OPLL * opll, int32 c, int32 fnum)
+setFnumber(OPLL* opll, int32 c, int32 fnum)
 {
-  CAR(opll,c)->fnum = fnum;
-  MOD(opll,c)->fnum = fnum;
+	CAR(opll,c)->fnum = fnum;
+	MOD(opll,c)->fnum = fnum;
 }
 
 /* Set Block data (block : 3bit ) */
 INLINE static void
-setBlock (OPLL * opll, int32 c, int32 block)
+setBlock(OPLL* opll, int32 c, int32 block)
 {
-  CAR(opll,c)->block = block;
-  MOD(opll,c)->block = block;
+	CAR(opll,c)->block = block;
+	MOD(opll,c)->block = block;
 }
 
 /* Change Rhythm Mode */
 INLINE static void
-update_rhythm_mode (OPLL * opll)
+update_rhythm_mode(OPLL* opll)
 {
-  if (opll->patch_number[6] & 0x10)
-  {
-    if (!(opll->slot_on_flag[SLOT_BD2] | (opll->reg[0x0e] & 32)))
-    {
-      opll->slot[SLOT_BD1].eg_mode = FINISH;
-      opll->slot[SLOT_BD2].eg_mode = FINISH;
-      setPatch (opll, 6, opll->reg[0x36] >> 4);
-    }
-  }
-  else if (opll->reg[0x0e] & 32)
-  {
-    opll->patch_number[6] = 16;
-    opll->slot[SLOT_BD1].eg_mode = FINISH;
-    opll->slot[SLOT_BD2].eg_mode = FINISH;
-    setSlotPatch (&opll->slot[SLOT_BD1], &opll->patch[16 * 2 + 0]);
-    setSlotPatch (&opll->slot[SLOT_BD2], &opll->patch[16 * 2 + 1]);
-  }
+	if (opll->patch_number[6] & 0x10)
+	{
+		if (!(opll->slot_on_flag[SLOT_BD2] | (opll->reg[0x0e] & 32)))
+		{
+			opll->slot[SLOT_BD1].eg_mode = FINISH;
+			opll->slot[SLOT_BD2].eg_mode = FINISH;
+			setPatch(opll, 6, opll->reg[0x36] >> 4);
+		}
+	}
+	else if (opll->reg[0x0e] & 32)
+	{
+		opll->patch_number[6] = 16;
+		opll->slot[SLOT_BD1].eg_mode = FINISH;
+		opll->slot[SLOT_BD2].eg_mode = FINISH;
+		setSlotPatch(&opll->slot[SLOT_BD1], &opll->patch[16 * 2 + 0]);
+		setSlotPatch(&opll->slot[SLOT_BD2], &opll->patch[16 * 2 + 1]);
+	}
 
-  if (opll->patch_number[7] & 0x10)
-  {
-    if (!((opll->slot_on_flag[SLOT_HH] && opll->slot_on_flag[SLOT_SD]) | (opll->reg[0x0e] & 32)))
-    {
-      opll->slot[SLOT_HH].type = 0;
-      opll->slot[SLOT_HH].eg_mode = FINISH;
-      opll->slot[SLOT_SD].eg_mode = FINISH;
-      setPatch (opll, 7, opll->reg[0x37] >> 4);
-    }
-  }
-  else if (opll->reg[0x0e] & 32)
-  {
-    opll->patch_number[7] = 17;
-    opll->slot[SLOT_HH].type = 1;
-    opll->slot[SLOT_HH].eg_mode = FINISH;
-    opll->slot[SLOT_SD].eg_mode = FINISH;
-    setSlotPatch (&opll->slot[SLOT_HH], &opll->patch[17 * 2 + 0]);
-    setSlotPatch (&opll->slot[SLOT_SD], &opll->patch[17 * 2 + 1]);
-  }
+	if (opll->patch_number[7] & 0x10)
+	{
+		if (!((opll->slot_on_flag[SLOT_HH] && opll->slot_on_flag[SLOT_SD]) | (opll->reg[0x0e] & 32)))
+		{
+			opll->slot[SLOT_HH].type = 0;
+			opll->slot[SLOT_HH].eg_mode = FINISH;
+			opll->slot[SLOT_SD].eg_mode = FINISH;
+			setPatch(opll, 7, opll->reg[0x37] >> 4);
+		}
+	}
+	else if (opll->reg[0x0e] & 32)
+	{
+		opll->patch_number[7] = 17;
+		opll->slot[SLOT_HH].type = 1;
+		opll->slot[SLOT_HH].eg_mode = FINISH;
+		opll->slot[SLOT_SD].eg_mode = FINISH;
+		setSlotPatch(&opll->slot[SLOT_HH], &opll->patch[17 * 2 + 0]);
+		setSlotPatch(&opll->slot[SLOT_SD], &opll->patch[17 * 2 + 1]);
+	}
 
-  if (opll->patch_number[8] & 0x10)
-  {
-    if (!((opll->slot_on_flag[SLOT_CYM] && opll->slot_on_flag[SLOT_TOM]) | (opll->reg[0x0e] & 32)))
-    {
-      opll->slot[SLOT_TOM].type = 0;
-      opll->slot[SLOT_TOM].eg_mode = FINISH;
-      opll->slot[SLOT_CYM].eg_mode = FINISH;
-      setPatch (opll, 8, opll->reg[0x38] >> 4);
-    }
-  }
-  else if (opll->reg[0x0e] & 32)
-  {
-    opll->patch_number[8] = 18;
-    opll->slot[SLOT_TOM].type = 1;
-    opll->slot[SLOT_TOM].eg_mode = FINISH;
-    opll->slot[SLOT_CYM].eg_mode = FINISH;
-    setSlotPatch (&opll->slot[SLOT_TOM], &opll->patch[18 * 2 + 0]);
-    setSlotPatch (&opll->slot[SLOT_CYM], &opll->patch[18 * 2 + 1]);
-  }
+	if (opll->patch_number[8] & 0x10)
+	{
+		if (!((opll->slot_on_flag[SLOT_CYM] && opll->slot_on_flag[SLOT_TOM]) | (opll->reg[0x0e] & 32)))
+		{
+			opll->slot[SLOT_TOM].type = 0;
+			opll->slot[SLOT_TOM].eg_mode = FINISH;
+			opll->slot[SLOT_CYM].eg_mode = FINISH;
+			setPatch(opll, 8, opll->reg[0x38] >> 4);
+		}
+	}
+	else if (opll->reg[0x0e] & 32)
+	{
+		opll->patch_number[8] = 18;
+		opll->slot[SLOT_TOM].type = 1;
+		opll->slot[SLOT_TOM].eg_mode = FINISH;
+		opll->slot[SLOT_CYM].eg_mode = FINISH;
+		setSlotPatch(&opll->slot[SLOT_TOM], &opll->patch[18 * 2 + 0]);
+		setSlotPatch(&opll->slot[SLOT_CYM], &opll->patch[18 * 2 + 1]);
+	}
 }
 
 INLINE static void
-update_key_status (OPLL * opll)
+update_key_status(OPLL* opll)
 {
-  int ch;
+	int ch;
 
-  for (ch = 0; ch < 9; ch++)
-    opll->slot_on_flag[ch * 2] = opll->slot_on_flag[ch * 2 + 1] = (opll->reg[0x20 + ch]) & 0x10;
+	for (ch = 0; ch < 9; ch++)
+		opll->slot_on_flag[ch * 2] = opll->slot_on_flag[ch * 2 + 1] = (opll->reg[0x20 + ch]) & 0x10;
 
-  if (opll->reg[0x0e] & 32)
-  {
-    opll->slot_on_flag[SLOT_BD1] |= (opll->reg[0x0e] & 0x10);
-    opll->slot_on_flag[SLOT_BD2] |= (opll->reg[0x0e] & 0x10);
-    opll->slot_on_flag[SLOT_SD] |= (opll->reg[0x0e] & 0x08);
-    opll->slot_on_flag[SLOT_HH] |= (opll->reg[0x0e] & 0x01);
-    opll->slot_on_flag[SLOT_TOM] |= (opll->reg[0x0e] & 0x04);
-    opll->slot_on_flag[SLOT_CYM] |= (opll->reg[0x0e] & 0x02);
-  }
+	if (opll->reg[0x0e] & 32)
+	{
+		opll->slot_on_flag[SLOT_BD1] |= (opll->reg[0x0e] & 0x10);
+		opll->slot_on_flag[SLOT_BD2] |= (opll->reg[0x0e] & 0x10);
+		opll->slot_on_flag[SLOT_SD] |= (opll->reg[0x0e] & 0x08);
+		opll->slot_on_flag[SLOT_HH] |= (opll->reg[0x0e] & 0x01);
+		opll->slot_on_flag[SLOT_TOM] |= (opll->reg[0x0e] & 0x04);
+		opll->slot_on_flag[SLOT_CYM] |= (opll->reg[0x0e] & 0x02);
+	}
 }
 
 void
-OPLL_copyPatch (OPLL * opll, int32 num, OPLL_PATCH * patch)
+OPLL_copyPatch(OPLL* opll, int32 num, OPLL_PATCH* patch)
 {
-  memcpy (&opll->patch[num], patch, sizeof (OPLL_PATCH));
+	memcpy(&opll->patch[num], patch, sizeof (OPLL_PATCH));
 }
 
 /***********************************************************
@@ -924,182 +938,182 @@ OPLL_copyPatch (OPLL * opll, int32 num, OPLL_PATCH * patch)
 ***********************************************************/
 
 static void
-OPLL_SLOT_reset (OPLL_SLOT * slot, int type)
+OPLL_SLOT_reset(OPLL_SLOT* slot, int type)
 {
-  slot->type = type;
-  slot->sintbl = waveform[0];
-  slot->phase = 0;
-  slot->dphase = 0;
-  slot->output[0] = 0;
-  slot->output[1] = 0;
-  slot->feedback = 0;
-  slot->eg_mode = FINISH;
-  slot->eg_phase = EG_DP_WIDTH;
-  slot->eg_dphase = 0;
-  slot->rks = 0;
-  slot->tll = 0;
-  slot->sustine = 0;
-  slot->fnum = 0;
-  slot->block = 0;
-  slot->volume = 0;
-  slot->pgout = 0;
-  slot->egout = 0;
-  slot->patch = &null_patch;
+	slot->type = type;
+	slot->sintbl = waveform[0];
+	slot->phase = 0;
+	slot->dphase = 0;
+	slot->output[0] = 0;
+	slot->output[1] = 0;
+	slot->feedback = 0;
+	slot->eg_mode = FINISH;
+	slot->eg_phase = EG_DP_WIDTH;
+	slot->eg_dphase = 0;
+	slot->rks = 0;
+	slot->tll = 0;
+	slot->sustine = 0;
+	slot->fnum = 0;
+	slot->block = 0;
+	slot->volume = 0;
+	slot->pgout = 0;
+	slot->egout = 0;
+	slot->patch = &null_patch;
 }
 
 static void
-internal_refresh (void)
+internal_refresh(void)
 {
-  makeDphaseTable ();
-  makeDphaseARTable ();
-  makeDphaseDRTable ();
-  pm_dphase = (uint32) RATE_ADJUST (PM_SPEED * PM_DP_WIDTH / (clk / 72));
-  am_dphase = (uint32) RATE_ADJUST (AM_SPEED * AM_DP_WIDTH / (clk / 72));
+	makeDphaseTable();
+	makeDphaseARTable();
+	makeDphaseDRTable();
+	pm_dphase = (uint32)RATE_ADJUST (PM_SPEED * PM_DP_WIDTH / (clk / 72));
+	am_dphase = (uint32)RATE_ADJUST (AM_SPEED * AM_DP_WIDTH / (clk / 72));
 }
 
 static void
-maketables (uint32 c, uint32 r)
+maketables(uint32 c, uint32 r)
 {
-  if (c != clk)
-  {
-    clk = c;
-    makePmTable ();
-    makeAmTable ();
-    makeDB2LinTable ();
-    makeAdjustTable ();
-    makeTllTable ();
-    makeRksTable ();
-    makeSinTable ();
-    makeDefaultPatch ();
-  }
+	if (c != clk)
+	{
+		clk = c;
+		makePmTable();
+		makeAmTable();
+		makeDB2LinTable();
+		makeAdjustTable();
+		makeTllTable();
+		makeRksTable();
+		makeSinTable();
+		makeDefaultPatch();
+	}
 
-  if (r != rate)
-  {
-    rate = r;
-    internal_refresh ();
-  }
+	if (r != rate)
+	{
+		rate = r;
+		internal_refresh();
+	}
 }
 
-OPLL *
-OPLL_new (uint32 clk, uint32 rate)
+OPLL*
+OPLL_new(uint32 clk, uint32 rate)
 {
-  OPLL *opll;
-  int32 i;
+	OPLL* opll;
+	int32 i;
 
-  maketables (clk, rate);
+	maketables(clk, rate);
 
-  opll = (OPLL *) calloc (sizeof (OPLL), 1);
-  if (opll == NULL)
-    return NULL;
+	opll = (OPLL *)calloc(sizeof (OPLL), 1);
+	if (opll == NULL)
+		return NULL;
 
-  for (i = 0; i < 19 * 2; i++)
-    memcpy(&opll->patch[i],&null_patch,sizeof(OPLL_PATCH));
+	for (i = 0; i < 19 * 2; i++)
+		memcpy(&opll->patch[i], &null_patch, sizeof(OPLL_PATCH));
 
-  opll->mask = 0;
+	opll->mask = 0;
 
-  OPLL_reset (opll);
-  OPLL_reset_patch (opll, 0);
+	OPLL_reset(opll);
+	OPLL_reset_patch(opll, 0);
 
-  return opll;
+	return opll;
 }
 
 
 void
-OPLL_delete (OPLL * opll)
+OPLL_delete(OPLL* opll)
 {
-  free (opll);
+	free(opll);
 }
 
 
 /* Reset patch datas by system default. */
 void
-OPLL_reset_patch (OPLL * opll, int32 type)
+OPLL_reset_patch(OPLL* opll, int32 type)
 {
-  int32 i;
+	int32 i;
 
-  for (i = 0; i < 19 * 2; i++)
-    OPLL_copyPatch (opll, i, &default_patch[type % OPLL_TONE_NUM][i]);
+	for (i = 0; i < 19 * 2; i++)
+		OPLL_copyPatch(opll, i, &default_patch[type % OPLL_TONE_NUM][i]);
 }
 
 /* Reset whole of OPLL except patch datas. */
 void
-OPLL_reset (OPLL * opll)
+OPLL_reset(OPLL* opll)
 {
-  int32 i;
+	int32 i;
 
-  if (!opll)
-    return;
+	if (!opll)
+		return;
 
-  opll->adr = 0;
-  opll->out = 0;
+	opll->adr = 0;
+	opll->out = 0;
 
-  opll->pm_phase = 0;
-  opll->am_phase = 0;
+	opll->pm_phase = 0;
+	opll->am_phase = 0;
 
-  opll->noise_seed = 0xffff;
-  opll->mask = 0;
+	opll->noise_seed = 0xffff;
+	opll->mask = 0;
 
-  for (i = 0; i <18; i++)
-    OPLL_SLOT_reset(&opll->slot[i], i%2);
+	for (i = 0; i < 18; i++)
+		OPLL_SLOT_reset(&opll->slot[i], i % 2);
 
-  for (i = 0; i < 9; i++)
-  {
-    opll->key_status[i] = 0;
-    setPatch (opll, i, 0);
-  }
+	for (i = 0; i < 9; i++)
+	{
+		opll->key_status[i] = 0;
+		setPatch(opll, i, 0);
+	}
 
-  for (i = 0; i < 0x40; i++)
-    OPLL_writeReg (opll, i, 0);
+	for (i = 0; i < 0x40; i++)
+		OPLL_writeReg(opll, i, 0);
 
 #ifndef EMU2413_COMPACTION
-  opll->realstep = (uint32) ((1 << 31) / rate);
-  opll->opllstep = (uint32) ((1 << 31) / (clk / 72));
-  opll->oplltime = 0;
-  for (i = 0; i < 14; i++)
-    opll->pan[i] = 2;
-  opll->sprev[0] = opll->sprev[1] = 0;
-  opll->snext[0] = opll->snext[1] = 0;
+	opll->realstep = (uint32)((1 << 31) / rate);
+	opll->opllstep = (uint32)((1 << 31) / (clk / 72));
+	opll->oplltime = 0;
+	for (i = 0; i < 14; i++)
+		opll->pan[i] = 2;
+	opll->sprev[0] = opll->sprev[1] = 0;
+	opll->snext[0] = opll->snext[1] = 0;
 #endif
 }
 
 /* Force Refresh (When external program changes some parameters). */
 void
-OPLL_forceRefresh (OPLL * opll)
+OPLL_forceRefresh(OPLL* opll)
 {
-  int32 i;
+	int32 i;
 
-  if (opll == NULL)
-    return;
+	if (opll == NULL)
+		return;
 
-  for (i = 0; i < 9; i++)
-    setPatch(opll,i,opll->patch_number[i]);
+	for (i = 0; i < 9; i++)
+		setPatch(opll, i, opll->patch_number[i]);
 
-  for (i = 0; i < 18; i++)
-  {
-    UPDATE_PG (&opll->slot[i]);
-    UPDATE_RKS (&opll->slot[i]);
-    UPDATE_TLL (&opll->slot[i]);
-    UPDATE_WF (&opll->slot[i]);
-    UPDATE_EG (&opll->slot[i]);
-  }
+	for (i = 0; i < 18; i++)
+	{
+		UPDATE_PG (&opll->slot[i]);
+		UPDATE_RKS (&opll->slot[i]);
+		UPDATE_TLL (&opll->slot[i]);
+		UPDATE_WF (&opll->slot[i]);
+		UPDATE_EG (&opll->slot[i]);
+	}
 }
 
 void
-OPLL_set_rate (OPLL * opll, uint32 r)
+OPLL_set_rate(OPLL* opll, uint32 r)
 {
-  if (opll->quality)
-    rate = 49716;
-  else
-    rate = r;
-  internal_refresh ();
-  rate = r;
+	if (opll->quality)
+		rate = 49716;
+	else
+		rate = r;
+	internal_refresh();
+	rate = r;
 }
 
 void
-OPLL_set_quality (OPLL * opll, uint32 q)
+OPLL_set_quality(OPLL* opll, uint32 q)
 {
-  opll->quality = q;
-  OPLL_set_rate (opll, rate);
+	opll->quality = q;
+	OPLL_set_rate(opll, rate);
 }
 
 /*********************************************************
@@ -1134,325 +1148,324 @@ OPLL_set_quality (OPLL * opll, uint32 q)
 
 /* Update AM, PM unit */
 static void
-update_ampm (OPLL * opll)
+update_ampm(OPLL* opll)
 {
-  opll->pm_phase = (opll->pm_phase + pm_dphase) & (PM_DP_WIDTH - 1);
-  opll->am_phase = (opll->am_phase + am_dphase) & (AM_DP_WIDTH - 1);
-  opll->lfo_am = amtable[HIGHBITS (opll->am_phase, AM_DP_BITS - AM_PG_BITS)];
-  opll->lfo_pm = pmtable[HIGHBITS (opll->pm_phase, PM_DP_BITS - PM_PG_BITS)];
+	opll->pm_phase = (opll->pm_phase + pm_dphase) & (PM_DP_WIDTH - 1);
+	opll->am_phase = (opll->am_phase + am_dphase) & (AM_DP_WIDTH - 1);
+	opll->lfo_am = amtable[HIGHBITS (opll->am_phase, AM_DP_BITS - AM_PG_BITS)];
+	opll->lfo_pm = pmtable[HIGHBITS (opll->pm_phase, PM_DP_BITS - PM_PG_BITS)];
 }
 
 /* PG */
 INLINE static void
-calc_phase (OPLL_SLOT * slot, int32 lfo)
+calc_phase(OPLL_SLOT* slot, int32 lfo)
 {
-  if (slot->patch->PM)
-    slot->phase += (slot->dphase * lfo) >> PM_AMP_BITS;
-  else
-    slot->phase += slot->dphase;
+	if (slot->patch->PM)
+		slot->phase += (slot->dphase * lfo) >> PM_AMP_BITS;
+	else
+		slot->phase += slot->dphase;
 
-  slot->phase &= (DP_WIDTH - 1);
+	slot->phase &= (DP_WIDTH - 1);
 
-  slot->pgout = HIGHBITS (slot->phase, DP_BASE_BITS);
+	slot->pgout = HIGHBITS (slot->phase, DP_BASE_BITS);
 }
 
 /* Update Noise unit */
 static void
-update_noise (OPLL * opll)
+update_noise(OPLL* opll)
 {
-   if(opll->noise_seed&1) opll->noise_seed ^= 0x8003020;
-   opll->noise_seed >>= 1;
+	if (opll->noise_seed & 1) opll->noise_seed ^= 0x8003020;
+	opll->noise_seed >>= 1;
 }
 
 /* EG */
 static void
-calc_envelope (OPLL_SLOT * slot, int32 lfo)
+calc_envelope(OPLL_SLOT* slot, int32 lfo)
 {
 #define S2E(x) (SL2EG((int32)(x/SL_STEP))<<(EG_DP_BITS-EG_BITS))
 
-  static uint32 SL[16] = {
-    S2E (0.0), S2E (3.0), S2E (6.0), S2E (9.0), S2E (12.0), S2E (15.0), S2E (18.0), S2E (21.0),
-    S2E (24.0), S2E (27.0), S2E (30.0), S2E (33.0), S2E (36.0), S2E (39.0), S2E (42.0), S2E (48.0)
-  };
+	static uint32 SL[16] = {
+		S2E (0.0), S2E (3.0), S2E (6.0), S2E (9.0), S2E (12.0), S2E (15.0), S2E (18.0), S2E (21.0),
+		S2E (24.0), S2E (27.0), S2E (30.0), S2E (33.0), S2E (36.0), S2E (39.0), S2E (42.0), S2E (48.0)
+	};
 
-  uint32 egout;
+	uint32 egout;
 
-  switch (slot->eg_mode)
-  {
-  case ATTACK:
-    egout = AR_ADJUST_TABLE[HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS)];
-    slot->eg_phase += slot->eg_dphase;
-    if((EG_DP_WIDTH & slot->eg_phase)||(slot->patch->AR==15))
-    {
-      egout = 0;
-      slot->eg_phase = 0;
-      slot->eg_mode = DECAY;
-      UPDATE_EG (slot);
-    }
-    break;
+	switch (slot->eg_mode)
+	{
+	case ATTACK:
+		egout = AR_ADJUST_TABLE[HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS)];
+		slot->eg_phase += slot->eg_dphase;
+		if ((EG_DP_WIDTH & slot->eg_phase) || (slot->patch->AR == 15))
+		{
+			egout = 0;
+			slot->eg_phase = 0;
+			slot->eg_mode = DECAY;
+			UPDATE_EG (slot);
+		}
+		break;
 
-  case DECAY:
-    egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
-    slot->eg_phase += slot->eg_dphase;
-    if (slot->eg_phase >= SL[slot->patch->SL])
-    {
-      if (slot->patch->EG)
-      {
-        slot->eg_phase = SL[slot->patch->SL];
-        slot->eg_mode = SUSHOLD;
-        UPDATE_EG (slot);
-      }
-      else
-      {
-        slot->eg_phase = SL[slot->patch->SL];
-        slot->eg_mode = SUSTINE;
-        UPDATE_EG (slot);
-      }
-    }
-    break;
+	case DECAY:
+		egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
+		slot->eg_phase += slot->eg_dphase;
+		if (slot->eg_phase >= SL[slot->patch->SL])
+		{
+			if (slot->patch->EG)
+			{
+				slot->eg_phase = SL[slot->patch->SL];
+				slot->eg_mode = SUSHOLD;
+				UPDATE_EG (slot);
+			}
+			else
+			{
+				slot->eg_phase = SL[slot->patch->SL];
+				slot->eg_mode = SUSTINE;
+				UPDATE_EG (slot);
+			}
+		}
+		break;
 
-  case SUSHOLD:
-    egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
-    if (slot->patch->EG == 0)
-    {
-      slot->eg_mode = SUSTINE;
-      UPDATE_EG (slot);
-    }
-    break;
+	case SUSHOLD:
+		egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
+		if (slot->patch->EG == 0)
+		{
+			slot->eg_mode = SUSTINE;
+			UPDATE_EG (slot);
+		}
+		break;
 
-  case SUSTINE:
-  case RELEASE:
-    egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
-    slot->eg_phase += slot->eg_dphase;
-    if (egout >= (1 << EG_BITS))
-    {
-      slot->eg_mode = FINISH;
-      egout = (1 << EG_BITS) - 1;
-    }
-    break;
+	case SUSTINE:
+	case RELEASE:
+		egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
+		slot->eg_phase += slot->eg_dphase;
+		if (egout >= (1 << EG_BITS))
+		{
+			slot->eg_mode = FINISH;
+			egout = (1 << EG_BITS) - 1;
+		}
+		break;
 
-  case SETTLE:
-    egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
-    slot->eg_phase += slot->eg_dphase;
-    if (egout >= (1 << EG_BITS))
-    {
-      slot->eg_mode = ATTACK;
-      egout = (1 << EG_BITS) - 1;
-      UPDATE_EG(slot);
-    }
-    break;
+	case SETTLE:
+		egout = HIGHBITS (slot->eg_phase, EG_DP_BITS - EG_BITS);
+		slot->eg_phase += slot->eg_dphase;
+		if (egout >= (1 << EG_BITS))
+		{
+			slot->eg_mode = ATTACK;
+			egout = (1 << EG_BITS) - 1;
+			UPDATE_EG(slot);
+		}
+		break;
 
-  case FINISH:
-    egout = (1 << EG_BITS) - 1;
-    break;
+	case FINISH:
+		egout = (1 << EG_BITS) - 1;
+		break;
 
-  default:
-    egout = (1 << EG_BITS) - 1;
-    break;
-  }
+	default:
+		egout = (1 << EG_BITS) - 1;
+		break;
+	}
 
-  if (slot->patch->AM)
-    egout = EG2DB (egout + slot->tll) + lfo;
-  else
-    egout = EG2DB (egout + slot->tll);
+	if (slot->patch->AM)
+		egout = EG2DB (egout + slot->tll) + lfo;
+	else
+		egout = EG2DB (egout + slot->tll);
 
-  if (egout >= DB_MUTE)
-    egout = DB_MUTE - 1;
-  
-  slot->egout = egout | 3;
+	if (egout >= DB_MUTE)
+		egout = DB_MUTE - 1;
+
+	slot->egout = egout | 3;
 }
 
 /* CARRIOR */
 INLINE static int32
-calc_slot_car (OPLL_SLOT * slot, int32 fm)
+calc_slot_car(OPLL_SLOT* slot, int32 fm)
 {
-  if (slot->egout >= (DB_MUTE - 1))
-  {
-    slot->output[0] = 0;
-  }
-  else
-  {
-    slot->output[0] = DB2LIN_TABLE[slot->sintbl[(slot->pgout+wave2_8pi(fm))&(PG_WIDTH-1)] + slot->egout];
-  }
+	if (slot->egout >= (DB_MUTE - 1))
+	{
+		slot->output[0] = 0;
+	}
+	else
+	{
+		slot->output[0] = DB2LIN_TABLE[slot->sintbl[(slot->pgout + wave2_8pi(fm)) & (PG_WIDTH - 1)] + slot->egout];
+	}
 
-  slot->output[1] = (slot->output[1] + slot->output[0]) >> 1;
-  return slot->output[1];
+	slot->output[1] = (slot->output[1] + slot->output[0]) >> 1;
+	return slot->output[1];
 }
 
 /* MODULATOR */
 INLINE static int32
-calc_slot_mod (OPLL_SLOT * slot)
+calc_slot_mod(OPLL_SLOT* slot)
 {
-  int32 fm;
+	int32 fm;
 
-  slot->output[1] = slot->output[0];
+	slot->output[1] = slot->output[0];
 
-  if (slot->egout >= (DB_MUTE - 1))
-  {
-    slot->output[0] = 0;
-  }
-  else if (slot->patch->FB != 0)
-  {
-    fm = wave2_4pi (slot->feedback) >> (7 - slot->patch->FB);
-    slot->output[0] = DB2LIN_TABLE[slot->sintbl[(slot->pgout+fm)&(PG_WIDTH-1)] + slot->egout];
-  }
-  else
-  {
-    slot->output[0] = DB2LIN_TABLE[slot->sintbl[slot->pgout] + slot->egout];
-  }
+	if (slot->egout >= (DB_MUTE - 1))
+	{
+		slot->output[0] = 0;
+	}
+	else if (slot->patch->FB != 0)
+	{
+		fm = wave2_4pi (slot->feedback) >> (7 - slot->patch->FB);
+		slot->output[0] = DB2LIN_TABLE[slot->sintbl[(slot->pgout + fm) & (PG_WIDTH - 1)] + slot->egout];
+	}
+	else
+	{
+		slot->output[0] = DB2LIN_TABLE[slot->sintbl[slot->pgout] + slot->egout];
+	}
 
-  slot->feedback = (slot->output[1] + slot->output[0]) >> 1;
+	slot->feedback = (slot->output[1] + slot->output[0]) >> 1;
 
-  return slot->feedback;
-
+	return slot->feedback;
 }
 
 /* TOM */
 INLINE static int32
-calc_slot_tom (OPLL_SLOT * slot)
+calc_slot_tom(OPLL_SLOT* slot)
 {
-  if (slot->egout >= (DB_MUTE - 1))
-    return 0;
+	if (slot->egout >= (DB_MUTE - 1))
+		return 0;
 
-  return DB2LIN_TABLE[slot->sintbl[slot->pgout] + slot->egout];
-
+	return DB2LIN_TABLE[slot->sintbl[slot->pgout] + slot->egout];
 }
 
 /* SNARE */
 INLINE static int32
-calc_slot_snare (OPLL_SLOT * slot, uint32 noise)
+calc_slot_snare(OPLL_SLOT* slot, uint32 noise)
 {
-  if(slot->egout>=(DB_MUTE-1))
-    return 0;
-  
-  if(BIT(slot->pgout,7))
-    return DB2LIN_TABLE[(noise?DB_POS(0.0):DB_POS(15.0))+slot->egout];
-  else
-    return DB2LIN_TABLE[(noise?DB_NEG(0.0):DB_NEG(15.0))+slot->egout];
+	if (slot->egout >= (DB_MUTE - 1))
+		return 0;
+
+	if (BIT(slot->pgout,7))
+		return DB2LIN_TABLE[(noise ? DB_POS(0.0) : DB_POS(15.0)) + slot->egout];
+	else
+		return DB2LIN_TABLE[(noise ? DB_NEG(0.0) : DB_NEG(15.0)) + slot->egout];
 }
 
 /* 
   TOP-CYM 
  */
 INLINE static int32
-calc_slot_cym (OPLL_SLOT * slot, uint32 pgout_hh)
+calc_slot_cym(OPLL_SLOT* slot, uint32 pgout_hh)
 {
-  uint32 dbout;
+	uint32 dbout;
 
-  if (slot->egout >= (DB_MUTE - 1)) 
-    return 0;
-  else if( 
-      /* the same as fmopl.c */
-      ((BIT(pgout_hh,PG_BITS-8)^BIT(pgout_hh,PG_BITS-1))|BIT(pgout_hh,PG_BITS-7)) ^
-      /* different from fmopl.c */
-     (BIT(slot->pgout,PG_BITS-7)&!BIT(slot->pgout,PG_BITS-5))
-    )
-    dbout = DB_NEG(3.0);
-  else
-    dbout = DB_POS(3.0);
+	if (slot->egout >= (DB_MUTE - 1))
+		return 0;
+	else if (
+			/* the same as fmopl.c */
+		((BIT(pgout_hh,PG_BITS-8) ^ BIT(pgout_hh,PG_BITS-1)) | BIT(pgout_hh,PG_BITS-7)) ^
+		/* different from fmopl.c */
+		(BIT(slot->pgout,PG_BITS-7) & !BIT(slot->pgout,PG_BITS-5))
+	)
+		dbout = DB_NEG(3.0);
+	else
+		dbout = DB_POS(3.0);
 
-  return DB2LIN_TABLE[dbout + slot->egout];
+	return DB2LIN_TABLE[dbout + slot->egout];
 }
 
 /* 
   HI-HAT 
 */
 INLINE static int32
-calc_slot_hat (OPLL_SLOT *slot, int32 pgout_cym, uint32 noise)
+calc_slot_hat(OPLL_SLOT* slot, int32 pgout_cym, uint32 noise)
 {
-  uint32 dbout;
+	uint32 dbout;
 
-  if (slot->egout >= (DB_MUTE - 1)) 
-    return 0;
-  else if( 
-      /* the same as fmopl.c */
-      ((BIT(slot->pgout,PG_BITS-8)^BIT(slot->pgout,PG_BITS-1))|BIT(slot->pgout,PG_BITS-7)) ^
-      /* different from fmopl.c */
-      (BIT(pgout_cym,PG_BITS-7)&!BIT(pgout_cym,PG_BITS-5))
-    )
-  {
-    if(noise)
-      dbout = DB_NEG(12.0);
-    else
-      dbout = DB_NEG(24.0);
-  }
-  else
-  {
-    if(noise)
-      dbout = DB_POS(12.0);
-    else
-      dbout = DB_POS(24.0);
-  }
+	if (slot->egout >= (DB_MUTE - 1))
+		return 0;
+	else if (
+			/* the same as fmopl.c */
+		((BIT(slot->pgout,PG_BITS-8) ^ BIT(slot->pgout,PG_BITS-1)) | BIT(slot->pgout,PG_BITS-7)) ^
+		/* different from fmopl.c */
+		(BIT(pgout_cym,PG_BITS-7) & !BIT(pgout_cym,PG_BITS-5))
+	)
+	{
+		if (noise)
+			dbout = DB_NEG(12.0);
+		else
+			dbout = DB_NEG(24.0);
+	}
+	else
+	{
+		if (noise)
+			dbout = DB_POS(12.0);
+		else
+			dbout = DB_POS(24.0);
+	}
 
-  return DB2LIN_TABLE[dbout + slot->egout];
+	return DB2LIN_TABLE[dbout + slot->egout];
 }
 
 static int16
-calc (OPLL * opll)
+calc(OPLL* opll)
 {
-  int32 inst = 0, perc = 0, out = 0;
-  int32 i;
+	int32 inst = 0, perc = 0, out = 0;
+	int32 i;
 
-  update_ampm (opll);
-  update_noise (opll);
+	update_ampm(opll);
+	update_noise(opll);
 
-  for (i = 0; i < 18; i++)
-  {
-    calc_phase(&opll->slot[i],opll->lfo_pm);
-    calc_envelope(&opll->slot[i],opll->lfo_am);
-  }
+	for (i = 0; i < 18; i++)
+	{
+		calc_phase(&opll->slot[i], opll->lfo_pm);
+		calc_envelope(&opll->slot[i], opll->lfo_am);
+	}
 
-  for (i = 0; i < 6; i++)
-	  if (!(opll->mask & OPLL_MASK_CH (i)) && (CAR(opll,i)->eg_mode != FINISH)) {
-		int32 absval, val = calc_slot_car (CAR(opll,i), calc_slot_mod(MOD(opll,i)));
-		inst += val;
-		absval = abs(val);
-		if (absval > opll_volumes[i])
-			opll_volumes[i] = val;
-	  }
+	for (i = 0; i < 6; i++)
+		if (!(opll->mask & OPLL_MASK_CH (i)) && (CAR(opll,i)->eg_mode != FINISH))
+		{
+			int32 absval, val = calc_slot_car(CAR(opll,i), calc_slot_mod(MOD(opll,i)));
+			inst += val;
+			absval = abs(val);
+			if (absval > opll_volumes[i])
+				opll_volumes[i] = val;
+		}
 
-  /* CH6 */
-  if (opll->patch_number[6] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH (6)) && (CAR(opll,6)->eg_mode != FINISH))
-      inst += calc_slot_car (CAR(opll,6), calc_slot_mod(MOD(opll,6)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_BD) && (CAR(opll,6)->eg_mode != FINISH))
-      perc += calc_slot_car (CAR(opll,6), calc_slot_mod(MOD(opll,6)));
-  }
+	/* CH6 */
+	if (opll->patch_number[6] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH (6)) && (CAR(opll,6)->eg_mode != FINISH))
+			inst += calc_slot_car(CAR(opll,6), calc_slot_mod(MOD(opll,6)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_BD) && (CAR(opll,6)->eg_mode != FINISH))
+			perc += calc_slot_car(CAR(opll,6), calc_slot_mod(MOD(opll,6)));
+	}
 
-  /* CH7 */
-  if (opll->patch_number[7] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH (7)) && (CAR(opll,7)->eg_mode != FINISH))
-      inst += calc_slot_car (CAR(opll,7), calc_slot_mod(MOD(opll,7)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_HH) && (MOD(opll,7)->eg_mode != FINISH))
-      perc += calc_slot_hat (MOD(opll,7), CAR(opll,8)->pgout, opll->noise_seed&1);
-    if (!(opll->mask & OPLL_MASK_SD) && (CAR(opll,7)->eg_mode != FINISH))
-      perc -= calc_slot_snare (CAR(opll,7), opll->noise_seed&1);
-  }
+	/* CH7 */
+	if (opll->patch_number[7] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH (7)) && (CAR(opll,7)->eg_mode != FINISH))
+			inst += calc_slot_car(CAR(opll,7), calc_slot_mod(MOD(opll,7)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_HH) && (MOD(opll,7)->eg_mode != FINISH))
+			perc += calc_slot_hat(MOD(opll,7), CAR(opll,8)->pgout, opll->noise_seed & 1);
+		if (!(opll->mask & OPLL_MASK_SD) && (CAR(opll,7)->eg_mode != FINISH))
+			perc -= calc_slot_snare(CAR(opll,7), opll->noise_seed & 1);
+	}
 
-  /* CH8 */
-  if (opll->patch_number[8] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH(8)) && (CAR(opll,8)->eg_mode != FINISH))
-      inst += calc_slot_car (CAR(opll,8), calc_slot_mod (MOD(opll,8)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_TOM) && (MOD(opll,8)->eg_mode != FINISH))
-      perc += calc_slot_tom (MOD(opll,8));
-    if (!(opll->mask & OPLL_MASK_CYM) && (CAR(opll,8)->eg_mode != FINISH))
-      perc -= calc_slot_cym (CAR(opll,8), MOD(opll,7)->pgout);
-  }
+	/* CH8 */
+	if (opll->patch_number[8] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH(8)) && (CAR(opll,8)->eg_mode != FINISH))
+			inst += calc_slot_car(CAR(opll,8), calc_slot_mod(MOD(opll,8)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_TOM) && (MOD(opll,8)->eg_mode != FINISH))
+			perc += calc_slot_tom(MOD(opll,8));
+		if (!(opll->mask & OPLL_MASK_CYM) && (CAR(opll,8)->eg_mode != FINISH))
+			perc -= calc_slot_cym(CAR(opll,8), MOD(opll,7)->pgout);
+	}
 
-  out = inst + (perc << 1);
-  return (int16) out << 3;
+	out = inst + (perc << 1);
+	return (int16)out << 3;
 }
 
 #ifdef EMU2413_COMPACTION
@@ -1463,54 +1476,54 @@ OPLL_calc (OPLL * opll)
 }
 #else
 int16
-OPLL_calc (OPLL * opll)
+OPLL_calc(OPLL* opll)
 {
-  if (!opll->quality)
-    return calc (opll);
+	if (!opll->quality)
+		return calc(opll);
 
-  while (opll->realstep > opll->oplltime)
-  {
-    opll->oplltime += opll->opllstep;
-    opll->prev = opll->next;
-    opll->next = calc (opll);
-  }
+	while (opll->realstep > opll->oplltime)
+	{
+		opll->oplltime += opll->opllstep;
+		opll->prev = opll->next;
+		opll->next = calc(opll);
+	}
 
-  opll->oplltime -= opll->realstep;
-  opll->out = (int16) (((double) opll->next * (opll->opllstep - opll->oplltime)
-                          + (double) opll->prev * opll->oplltime) / opll->opllstep);
+	opll->oplltime -= opll->realstep;
+	opll->out = (int16)(((double)opll->next * (opll->opllstep - opll->oplltime)
+		+ (double)opll->prev * opll->oplltime) / opll->opllstep);
 
-  return (int16) opll->out;
+	return (int16)opll->out;
 }
 #endif
 
 uint32
-OPLL_setMask (OPLL * opll, uint32 mask)
+OPLL_setMask(OPLL* opll, uint32 mask)
 {
-  uint32 ret;
+	uint32 ret;
 
-  if (opll)
-  {
-    ret = opll->mask;
-    opll->mask = mask;
-    return ret;
-  }
-  else
-    return 0;
+	if (opll)
+	{
+		ret = opll->mask;
+		opll->mask = mask;
+		return ret;
+	}
+	else
+		return 0;
 }
 
 uint32
-OPLL_toggleMask (OPLL * opll, uint32 mask)
+OPLL_toggleMask(OPLL* opll, uint32 mask)
 {
-  uint32 ret;
+	uint32 ret;
 
-  if (opll)
-  {
-    ret = opll->mask;
-    opll->mask ^= mask;
-    return ret;
-  }
-  else
-    return 0;
+	if (opll)
+	{
+		ret = opll->mask;
+		opll->mask ^= mask;
+		return ret;
+	}
+	else
+		return 0;
 }
 
 /****************************************************
@@ -1520,343 +1533,342 @@ OPLL_toggleMask (OPLL * opll, uint32 mask)
 *****************************************************/
 
 void
-OPLL_writeReg (OPLL * opll, uint32 reg, uint32 data)
+OPLL_writeReg(OPLL* opll, uint32 reg, uint32 data)
 {
-  int32 i, v, ch;
+	int32 i, v, ch;
 
-  data = data & 0xff;
-  reg = reg & 0x3f;
-  opll->reg[reg] = (uint8) data;
+	data = data & 0xff;
+	reg = reg & 0x3f;
+	opll->reg[reg] = (uint8)data;
 
-  switch (reg)
-  {
-  case 0x00:
-    opll->patch[0].AM = (data >> 7) & 1;
-    opll->patch[0].PM = (data >> 6) & 1;
-    opll->patch[0].EG = (data >> 5) & 1;
-    opll->patch[0].KR = (data >> 4) & 1;
-    opll->patch[0].ML = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_PG (MOD(opll,i));
-        UPDATE_RKS (MOD(opll,i));
-        UPDATE_EG (MOD(opll,i));
-      }
-    }
-    break;
+	switch (reg)
+	{
+	case 0x00:
+		opll->patch[0].AM = (data >> 7) & 1;
+		opll->patch[0].PM = (data >> 6) & 1;
+		opll->patch[0].EG = (data >> 5) & 1;
+		opll->patch[0].KR = (data >> 4) & 1;
+		opll->patch[0].ML = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_PG (MOD(opll,i));
+				UPDATE_RKS (MOD(opll,i));
+				UPDATE_EG (MOD(opll,i));
+			}
+		}
+		break;
 
-  case 0x01:
-    opll->patch[1].AM = (data >> 7) & 1;
-    opll->patch[1].PM = (data >> 6) & 1;
-    opll->patch[1].EG = (data >> 5) & 1;
-    opll->patch[1].KR = (data >> 4) & 1;
-    opll->patch[1].ML = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_PG (CAR(opll,i));
-        UPDATE_RKS (CAR(opll,i));
-        UPDATE_EG (CAR(opll,i));
-      }
-    }
-    break;
+	case 0x01:
+		opll->patch[1].AM = (data >> 7) & 1;
+		opll->patch[1].PM = (data >> 6) & 1;
+		opll->patch[1].EG = (data >> 5) & 1;
+		opll->patch[1].KR = (data >> 4) & 1;
+		opll->patch[1].ML = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_PG (CAR(opll,i));
+				UPDATE_RKS (CAR(opll,i));
+				UPDATE_EG (CAR(opll,i));
+			}
+		}
+		break;
 
-  case 0x02:
-    opll->patch[0].KL = (data >> 6) & 3;
-    opll->patch[0].TL = (data) & 63;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_TLL(MOD(opll,i));
-      }
-    }
-    break;
+	case 0x02:
+		opll->patch[0].KL = (data >> 6) & 3;
+		opll->patch[0].TL = (data) & 63;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_TLL(MOD(opll,i));
+			}
+		}
+		break;
 
-  case 0x03:
-    opll->patch[1].KL = (data >> 6) & 3;
-    opll->patch[1].WF = (data >> 4) & 1;
-    opll->patch[0].WF = (data >> 3) & 1;
-    opll->patch[0].FB = (data) & 7;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_WF(MOD(opll,i));
-        UPDATE_WF(CAR(opll,i));
-      }
-    }
-    break;
+	case 0x03:
+		opll->patch[1].KL = (data >> 6) & 3;
+		opll->patch[1].WF = (data >> 4) & 1;
+		opll->patch[0].WF = (data >> 3) & 1;
+		opll->patch[0].FB = (data) & 7;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_WF(MOD(opll,i));
+				UPDATE_WF(CAR(opll,i));
+			}
+		}
+		break;
 
-  case 0x04:
-    opll->patch[0].AR = (data >> 4) & 15;
-    opll->patch[0].DR = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_EG (MOD(opll,i));
-      }
-    }
-    break;
+	case 0x04:
+		opll->patch[0].AR = (data >> 4) & 15;
+		opll->patch[0].DR = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_EG (MOD(opll,i));
+			}
+		}
+		break;
 
-  case 0x05:
-    opll->patch[1].AR = (data >> 4) & 15;
-    opll->patch[1].DR = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_EG(CAR(opll,i));
-      }
-    }
-    break;
+	case 0x05:
+		opll->patch[1].AR = (data >> 4) & 15;
+		opll->patch[1].DR = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_EG(CAR(opll,i));
+			}
+		}
+		break;
 
-  case 0x06:
-    opll->patch[0].SL = (data >> 4) & 15;
-    opll->patch[0].RR = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_EG (MOD(opll,i));
-      }
-    }
-    break;
+	case 0x06:
+		opll->patch[0].SL = (data >> 4) & 15;
+		opll->patch[0].RR = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_EG (MOD(opll,i));
+			}
+		}
+		break;
 
-  case 0x07:
-    opll->patch[1].SL = (data >> 4) & 15;
-    opll->patch[1].RR = (data) & 15;
-    for (i = 0; i < 9; i++)
-    {
-      if (opll->patch_number[i] == 0)
-      {
-        UPDATE_EG (CAR(opll,i));
-      }
-    }
-    break;
+	case 0x07:
+		opll->patch[1].SL = (data >> 4) & 15;
+		opll->patch[1].RR = (data) & 15;
+		for (i = 0; i < 9; i++)
+		{
+			if (opll->patch_number[i] == 0)
+			{
+				UPDATE_EG (CAR(opll,i));
+			}
+		}
+		break;
 
-  case 0x0e:
-    update_rhythm_mode (opll);
-    if (data & 32)
-    {
-      if (data & 0x10)
-        keyOn_BD (opll);
-      else
-        keyOff_BD (opll);
-      if (data & 0x8)
-        keyOn_SD (opll);
-      else
-        keyOff_SD (opll);
-      if (data & 0x4)
-        keyOn_TOM (opll);
-      else
-        keyOff_TOM (opll);
-      if (data & 0x2)
-        keyOn_CYM (opll);
-      else
-        keyOff_CYM (opll);
-      if (data & 0x1)
-        keyOn_HH (opll);
-      else
-        keyOff_HH (opll);
-    }
-    update_key_status (opll);
+	case 0x0e:
+		update_rhythm_mode(opll);
+		if (data & 32)
+		{
+			if (data & 0x10)
+				keyOn_BD(opll);
+			else
+				keyOff_BD(opll);
+			if (data & 0x8)
+				keyOn_SD(opll);
+			else
+				keyOff_SD(opll);
+			if (data & 0x4)
+				keyOn_TOM(opll);
+			else
+				keyOff_TOM(opll);
+			if (data & 0x2)
+				keyOn_CYM(opll);
+			else
+				keyOff_CYM(opll);
+			if (data & 0x1)
+				keyOn_HH(opll);
+			else
+				keyOff_HH(opll);
+		}
+		update_key_status(opll);
 
-    UPDATE_ALL (MOD(opll,6));
-    UPDATE_ALL (CAR(opll,6));
-    UPDATE_ALL (MOD(opll,7));
-    UPDATE_ALL (CAR(opll,7));
-    UPDATE_ALL (MOD(opll,8));
-    UPDATE_ALL (CAR(opll,8));
+		UPDATE_ALL (MOD(opll,6));
+		UPDATE_ALL (CAR(opll,6));
+		UPDATE_ALL (MOD(opll,7));
+		UPDATE_ALL (CAR(opll,7));
+		UPDATE_ALL (MOD(opll,8));
+		UPDATE_ALL (CAR(opll,8));
 
-    break;
+		break;
 
-  case 0x0f:
-    break;
+	case 0x0f:
+		break;
 
-  case 0x10:
-  case 0x11:
-  case 0x12:
-  case 0x13:
-  case 0x14:
-  case 0x15:
-  case 0x16:
-  case 0x17:
-  case 0x18:
-    ch = reg - 0x10;
-    setFnumber (opll, ch, data + ((opll->reg[0x20 + ch] & 1) << 8));
-    UPDATE_ALL (MOD(opll,ch));
-    UPDATE_ALL (CAR(opll,ch));
-    break;
+	case 0x10:
+	case 0x11:
+	case 0x12:
+	case 0x13:
+	case 0x14:
+	case 0x15:
+	case 0x16:
+	case 0x17:
+	case 0x18:
+		ch = reg - 0x10;
+		setFnumber(opll, ch, data + ((opll->reg[0x20 + ch] & 1) << 8));
+		UPDATE_ALL (MOD(opll,ch));
+		UPDATE_ALL (CAR(opll,ch));
+		break;
 
-  case 0x20:
-  case 0x21:
-  case 0x22:
-  case 0x23:
-  case 0x24:
-  case 0x25:
-  case 0x26:
-  case 0x27:
-  case 0x28:
-    ch = reg - 0x20;
-    setFnumber (opll, ch, ((data & 1) << 8) + opll->reg[0x10 + ch]);
-    setBlock (opll, ch, (data >> 1) & 7);
-    setSustine (opll, ch, (data >> 5) & 1);
-    if (data & 0x10)
-      keyOn (opll, ch);
-    else
-      keyOff (opll, ch);
-    UPDATE_ALL (MOD(opll,ch));
-    UPDATE_ALL (CAR(opll,ch));
-    update_key_status (opll);
-    update_rhythm_mode (opll);
-    break;
+	case 0x20:
+	case 0x21:
+	case 0x22:
+	case 0x23:
+	case 0x24:
+	case 0x25:
+	case 0x26:
+	case 0x27:
+	case 0x28:
+		ch = reg - 0x20;
+		setFnumber(opll, ch, ((data & 1) << 8) + opll->reg[0x10 + ch]);
+		setBlock(opll, ch, (data >> 1) & 7);
+		setSustine(opll, ch, (data >> 5) & 1);
+		if (data & 0x10)
+			keyOn(opll, ch);
+		else
+			keyOff(opll, ch);
+		UPDATE_ALL (MOD(opll,ch));
+		UPDATE_ALL (CAR(opll,ch));
+		update_key_status(opll);
+		update_rhythm_mode(opll);
+		break;
 
-  case 0x30:
-  case 0x31:
-  case 0x32:
-  case 0x33:
-  case 0x34:
-  case 0x35:
-  case 0x36:
-  case 0x37:
-  case 0x38:
-    i = (data >> 4) & 15;
-    v = data & 15;
-    if ((opll->reg[0x0e] & 32) && (reg >= 0x36))
-    {
-      switch (reg)
-      {
-      case 0x37:
-        setSlotVolume (MOD(opll,7), i << 2);
-        break;
-      case 0x38:
-        setSlotVolume (MOD(opll,8), i << 2);
-        break;
-      default:
-        break;
-      }
-    }
-    else
-    {
-      setPatch (opll, reg - 0x30, i);
-    }
-    setVolume (opll, reg - 0x30, v << 2);
-    UPDATE_ALL (MOD(opll,reg - 0x30));
-    UPDATE_ALL (CAR(opll,reg - 0x30));
-    break;
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 0x37:
+	case 0x38:
+		i = (data >> 4) & 15;
+		v = data & 15;
+		if ((opll->reg[0x0e] & 32) && (reg >= 0x36))
+		{
+			switch (reg)
+			{
+			case 0x37:
+				setSlotVolume(MOD(opll,7), i << 2);
+				break;
+			case 0x38:
+				setSlotVolume(MOD(opll,8), i << 2);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			setPatch(opll, reg - 0x30, i);
+		}
+		setVolume(opll, reg - 0x30, v << 2);
+		UPDATE_ALL (MOD(opll,reg - 0x30));
+		UPDATE_ALL (CAR(opll,reg - 0x30));
+		break;
 
-  default:
-    break;
-
-  }
+	default:
+		break;
+	}
 }
 
 void
-OPLL_writeIO (OPLL * opll, uint32 adr, uint32 val)
+OPLL_writeIO(OPLL* opll, uint32 adr, uint32 val)
 {
-  if (adr & 1)
-    OPLL_writeReg (opll, opll->adr, val);
-  else
-    opll->adr = val;
+	if (adr & 1)
+		OPLL_writeReg(opll, opll->adr, val);
+	else
+		opll->adr = val;
 }
 
 #ifndef EMU2413_COMPACTION
 /* STEREO MODE (OPT) */
 void
-OPLL_set_pan (OPLL * opll, uint32 ch, uint32 pan)
+OPLL_set_pan(OPLL* opll, uint32 ch, uint32 pan)
 {
-  opll->pan[ch & 15] = pan & 3;
+	opll->pan[ch & 15] = pan & 3;
 }
 
 static void
-calc_stereo (OPLL * opll, int32 out[2])
+calc_stereo(OPLL* opll, int32 out[2])
 {
-  int32 b[4] = { 0, 0, 0, 0 };        /* Ignore, Right, Left, Center */
-  int32 r[4] = { 0, 0, 0, 0 };        /* Ignore, Right, Left, Center */
-  int32 i;
+	int32 b[4] = {0, 0, 0, 0}; /* Ignore, Right, Left, Center */
+	int32 r[4] = {0, 0, 0, 0}; /* Ignore, Right, Left, Center */
+	int32 i;
 
-  update_ampm (opll);
-  update_noise (opll);
+	update_ampm(opll);
+	update_noise(opll);
 
-  for(i=0;i<18;i++)
-  {
-    calc_phase(&opll->slot[i],opll->lfo_pm);
-    calc_envelope(&opll->slot[i],opll->lfo_am);
-  }
+	for (i = 0; i < 18; i++)
+	{
+		calc_phase(&opll->slot[i], opll->lfo_pm);
+		calc_envelope(&opll->slot[i], opll->lfo_am);
+	}
 
-  for (i = 0; i < 6; i++)
-    if (!(opll->mask & OPLL_MASK_CH (i)) && (CAR(opll,i)->eg_mode != FINISH))
-      b[opll->pan[i]] += calc_slot_car (CAR(opll,i), calc_slot_mod (MOD(opll,i)));
+	for (i = 0; i < 6; i++)
+		if (!(opll->mask & OPLL_MASK_CH (i)) && (CAR(opll,i)->eg_mode != FINISH))
+			b[opll->pan[i]] += calc_slot_car(CAR(opll,i), calc_slot_mod(MOD(opll,i)));
 
 
-  if (opll->patch_number[6] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH (6)) && (CAR(opll,6)->eg_mode != FINISH))
-      b[opll->pan[6]] += calc_slot_car (CAR(opll,6), calc_slot_mod (MOD(opll,6)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_BD) && (CAR(opll,6)->eg_mode != FINISH))
-      r[opll->pan[9]] += calc_slot_car (CAR(opll,6), calc_slot_mod (MOD(opll,6)));
-  }
+	if (opll->patch_number[6] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH (6)) && (CAR(opll,6)->eg_mode != FINISH))
+			b[opll->pan[6]] += calc_slot_car(CAR(opll,6), calc_slot_mod(MOD(opll,6)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_BD) && (CAR(opll,6)->eg_mode != FINISH))
+			r[opll->pan[9]] += calc_slot_car(CAR(opll,6), calc_slot_mod(MOD(opll,6)));
+	}
 
-  if (opll->patch_number[7] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH (7)) && (CAR (opll,7)->eg_mode != FINISH))
-      b[opll->pan[7]] += calc_slot_car (CAR (opll,7), calc_slot_mod (MOD (opll,7)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_HH) && (MOD (opll,7)->eg_mode != FINISH))
-      r[opll->pan[10]] += calc_slot_hat (MOD (opll,7), CAR(opll,8)->pgout, opll->noise_seed&1);
-    if (!(opll->mask & OPLL_MASK_SD) && (CAR (opll,7)->eg_mode != FINISH))
-      r[opll->pan[11]] -= calc_slot_snare (CAR (opll,7), opll->noise_seed&1);
-  }
+	if (opll->patch_number[7] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH (7)) && (CAR (opll,7)->eg_mode != FINISH))
+			b[opll->pan[7]] += calc_slot_car(CAR (opll,7), calc_slot_mod(MOD (opll,7)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_HH) && (MOD (opll,7)->eg_mode != FINISH))
+			r[opll->pan[10]] += calc_slot_hat(MOD (opll,7), CAR(opll,8)->pgout, opll->noise_seed & 1);
+		if (!(opll->mask & OPLL_MASK_SD) && (CAR (opll,7)->eg_mode != FINISH))
+			r[opll->pan[11]] -= calc_slot_snare(CAR (opll,7), opll->noise_seed & 1);
+	}
 
-  if (opll->patch_number[8] <= 15)
-  {
-    if (!(opll->mask & OPLL_MASK_CH (8)) && (CAR (opll,8)->eg_mode != FINISH))
-      b[opll->pan[8]] += calc_slot_car (CAR (opll,8), calc_slot_mod (MOD (opll,8)));
-  }
-  else
-  {
-    if (!(opll->mask & OPLL_MASK_TOM) && (MOD (opll,8)->eg_mode != FINISH))
-      r[opll->pan[12]] += calc_slot_tom (MOD (opll,8));
-    if (!(opll->mask & OPLL_MASK_CYM) && (CAR (opll,8)->eg_mode != FINISH))
-      r[opll->pan[13]] -= calc_slot_cym (CAR (opll,8), MOD(opll,7)->pgout);
-  }
+	if (opll->patch_number[8] <= 15)
+	{
+		if (!(opll->mask & OPLL_MASK_CH (8)) && (CAR (opll,8)->eg_mode != FINISH))
+			b[opll->pan[8]] += calc_slot_car(CAR (opll,8), calc_slot_mod(MOD (opll,8)));
+	}
+	else
+	{
+		if (!(opll->mask & OPLL_MASK_TOM) && (MOD (opll,8)->eg_mode != FINISH))
+			r[opll->pan[12]] += calc_slot_tom(MOD (opll,8));
+		if (!(opll->mask & OPLL_MASK_CYM) && (CAR (opll,8)->eg_mode != FINISH))
+			r[opll->pan[13]] -= calc_slot_cym(CAR (opll,8), MOD(opll,7)->pgout);
+	}
 
-  out[1] = (b[1] + b[3] + ((r[1] + r[3]) << 1)) <<3;
-  out[0] = (b[2] + b[3] + ((r[2] + r[3]) << 1)) <<3;
+	out[1] = (b[1] + b[3] + ((r[1] + r[3]) << 1)) << 3;
+	out[0] = (b[2] + b[3] + ((r[2] + r[3]) << 1)) << 3;
 }
 
 void
-OPLL_calc_stereo (OPLL * opll, int32 out[2])
+OPLL_calc_stereo(OPLL* opll, int32 out[2])
 {
-  if (!opll->quality)
-  {
-    calc_stereo (opll, out);
-    return;
-  }
+	if (!opll->quality)
+	{
+		calc_stereo(opll, out);
+		return;
+	}
 
-  while (opll->realstep > opll->oplltime)
-  {
-    opll->oplltime += opll->opllstep;
-    opll->sprev[0] = opll->snext[0];
-    opll->sprev[1] = opll->snext[1];
-    calc_stereo (opll, opll->snext);
-  }
+	while (opll->realstep > opll->oplltime)
+	{
+		opll->oplltime += opll->opllstep;
+		opll->sprev[0] = opll->snext[0];
+		opll->sprev[1] = opll->snext[1];
+		calc_stereo(opll, opll->snext);
+	}
 
-  opll->oplltime -= opll->realstep;
-  out[0] = (int16) (((double) opll->snext[0] * (opll->opllstep - opll->oplltime)
-                       + (double) opll->sprev[0] * opll->oplltime) / opll->opllstep);
-  out[1] = (int16) (((double) opll->snext[1] * (opll->opllstep - opll->oplltime)
-                       + (double) opll->sprev[1] * opll->oplltime) / opll->opllstep);
+	opll->oplltime -= opll->realstep;
+	out[0] = (int16)(((double)opll->snext[0] * (opll->opllstep - opll->oplltime)
+		+ (double)opll->sprev[0] * opll->oplltime) / opll->opllstep);
+	out[1] = (int16)(((double)opll->snext[1] * (opll->opllstep - opll->oplltime)
+		+ (double)opll->sprev[1] * opll->oplltime) / opll->opllstep);
 }
 #endif /* EMU2413_COMPACTION */
 

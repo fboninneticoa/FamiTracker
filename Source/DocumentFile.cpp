@@ -28,18 +28,18 @@
 // No unicode allowed here
 
 // Class constants
-const unsigned int CDocumentFile::FILE_VER		 = 0x0440;			// Current file version (4.40)
-const unsigned int CDocumentFile::COMPATIBLE_VER = 0x0100;			// Compatible file version (1.0)
+const unsigned int CDocumentFile::FILE_VER = 0x0440; // Current file version (4.40)
+const unsigned int CDocumentFile::COMPATIBLE_VER = 0x0100; // Compatible file version (1.0)
 
-const char *CDocumentFile::FILE_HEADER_ID = "FamiTracker Module";
-const char *CDocumentFile::FILE_END_ID	  = "END";
+const char* CDocumentFile::FILE_HEADER_ID = "FamiTracker Module";
+const char* CDocumentFile::FILE_END_ID = "END";
 
 const unsigned int CDocumentFile::MAX_BLOCK_SIZE = 0x80000;
 const unsigned int CDocumentFile::BLOCK_SIZE = 0x10000;
 
 // CDocumentFile
 
-CDocumentFile::CDocumentFile() : 
+CDocumentFile::CDocumentFile() :
 	m_pBlockData(NULL),
 	m_cBlockID(new char[16])
 {
@@ -58,11 +58,13 @@ bool CDocumentFile::Finished() const
 
 bool CDocumentFile::BeginDocument()
 {
-	try {
+	try
+	{
 		Write(FILE_HEADER_ID, int(strlen(FILE_HEADER_ID)));
 		Write(&FILE_VER, sizeof(int));
 	}
-	catch (CFileException *e) {
+	catch (CFileException* e)
+	{
 		e->Delete();
 		return false;
 	}
@@ -72,24 +74,26 @@ bool CDocumentFile::BeginDocument()
 
 bool CDocumentFile::EndDocument()
 {
-	try {
+	try
+	{
 		Write(FILE_END_ID, int(strlen(FILE_END_ID)));
 	}
-	catch (CFileException *e) {
+	catch (CFileException* e)
+	{
 		e->Delete();
 		return false;
 	}
-	
+
 	return true;
 }
 
-void CDocumentFile::CreateBlock(const char *ID, int Version)
+void CDocumentFile::CreateBlock(const char* ID, int Version)
 {
 	memset(m_cBlockID, 0, 16);
 	strcpy(m_cBlockID, ID);
 
 	m_iBlockPointer = 0;
-	m_iBlockSize	= 0;
+	m_iBlockSize = 0;
 	m_iBlockVersion = Version & 0xFFFF;
 
 	m_iMaxBlockSize = BLOCK_SIZE;
@@ -103,21 +107,22 @@ void CDocumentFile::ReallocateBlock()
 {
 	int OldSize = m_iMaxBlockSize;
 	m_iMaxBlockSize += BLOCK_SIZE;
-	char *pData = new char[m_iMaxBlockSize];
+	char* pData = new char[m_iMaxBlockSize];
 	ASSERT(pData != NULL);
 	memcpy(pData, m_pBlockData, OldSize);
 	SAFE_RELEASE_ARRAY(m_pBlockData);
 	m_pBlockData = pData;
 }
 
-void CDocumentFile::WriteBlock(const char *pData, unsigned int Size)
+void CDocumentFile::WriteBlock(const char* pData, unsigned int Size)
 {
 	ASSERT(m_pBlockData != NULL);
 
 	unsigned int WritePtr = 0;
 
 	// Allow block to grow in size
-	while (Size > 0) {
+	while (Size > 0)
+	{
 		unsigned int WriteSize = (Size > BLOCK_SIZE) ? BLOCK_SIZE : Size;
 
 		if ((m_iBlockPointer + WriteSize) >= m_iMaxBlockSize)
@@ -130,7 +135,8 @@ void CDocumentFile::WriteBlock(const char *pData, unsigned int Size)
 	}
 }
 
-template<class T> void CDocumentFile::WriteBlockData(T Value)
+template <class T>
+void CDocumentFile::WriteBlockData(T Value)
 {
 	WriteBlock(reinterpret_cast<const char*>(&Value), sizeof(Value));
 }
@@ -161,13 +167,15 @@ bool CDocumentFile::FlushBlock()
 	if (!m_pBlockData)
 		return false;
 
-	try {
+	try
+	{
 		Write(m_cBlockID, 16);
 		Write(&m_iBlockVersion, sizeof(m_iBlockVersion));
 		Write(&m_iBlockPointer, sizeof(m_iBlockPointer));
 		Write(m_pBlockData, m_iBlockPointer);
 	}
-	catch (CFileException *e) {
+	catch (CFileException* e)
+	{
 		e->Delete();
 		return false;
 	}
@@ -209,14 +217,15 @@ bool CDocumentFile::ReadBlock()
 	int BytesRead;
 
 	m_iBlockPointer = 0;
-	
+
 	memset(m_cBlockID, 0, 16);
 
 	BytesRead = Read(m_cBlockID, 16);
 	Read(&m_iBlockVersion, sizeof(int));
 	Read(&m_iBlockSize, sizeof(int));
 
-	if (m_iBlockSize > 50000000) {
+	if (m_iBlockSize > 50000000)
+	{
 		// File is probably corrupt
 		memset(m_cBlockID, 0, 16);
 		return true;
@@ -232,18 +241,18 @@ bool CDocumentFile::ReadBlock()
 
 	if (BytesRead == 0)
 		m_bFileDone = true;
-/*
-	if (GetPosition() == GetLength() && !m_bFileDone) {
-		// Parts of file is missing
-		m_bIncomplete = true;
-		memset(m_cBlockID, 0, 16);
-		return true;
-	}
-*/
+	/*
+		if (GetPosition() == GetLength() && !m_bFileDone) {
+			// Parts of file is missing
+			m_bIncomplete = true;
+			memset(m_cBlockID, 0, 16);
+			return true;
+		}
+	*/
 	return false;
 }
 
-char *CDocumentFile::GetBlockHeaderID() const
+char* CDocumentFile::GetBlockHeaderID() const
 {
 	return m_cBlockID;
 }
@@ -294,11 +303,11 @@ CString CDocumentFile::ReadString()
 
 	while ((c = GetBlockChar()) && (str_ptr++ < 65536))
 		str.AppendChar(c);
-	
+
 	return str;
 }
 
-void CDocumentFile::GetBlock(void *Buffer, int Size)
+void CDocumentFile::GetBlock(void* Buffer, int Size)
 {
 	ASSERT(Size < MAX_BLOCK_SIZE);
 	ASSERT(Buffer != NULL);

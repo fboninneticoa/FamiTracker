@@ -24,30 +24,30 @@
 
 class CSampleEditorDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CSampleEditorDlg)
+DECLARE_DYNAMIC(CSampleEditorDlg)
 
 public:
-	CSampleEditorDlg(CWnd* pParent = NULL, CDSample *pSample = NULL);   // standard constructor
+	CSampleEditorDlg(CWnd* pParent = NULL, CDSample* pSample = NULL); // standard constructor
 	virtual ~CSampleEditorDlg();
 
-	void CopySample(CDSample *pTarget);
+	void CopySample(CDSample* pTarget);
 	void SelectionChanged();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SAMPLE_EDITOR };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void MoveControls();
 	void UpdateSampleView();
 
-	CDSample		  *m_pSample;
-	CDSample		  *m_pOriginalSample;
-	CSampleEditorView *m_pSampleEditorView;
-	CSoundGen		  *m_pSoundGen;
+	CDSample* m_pSample;
+	CDSample* m_pOriginalSample;
+	CSampleEditorView* m_pSampleEditorView;
+	CSoundGen* m_pSoundGen;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	virtual BOOL OnInitDialog();
@@ -56,7 +56,7 @@ public:
 	afx_msg void OnBnClickedPlay();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedDelete();
-	afx_msg void OnNMCustomdrawSlider1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMCustomdrawSlider1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedTest();
 	afx_msg void OnBnClickedDeltastart();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

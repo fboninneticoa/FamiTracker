@@ -24,7 +24,7 @@
 
 // Konami VRC6 external sound chip emulation
 
-CVRC6_Pulse::CVRC6_Pulse(CMixer *pMixer, int ID) : CExChannel(pMixer, SNDCHIP_VRC6, ID) 
+CVRC6_Pulse::CVRC6_Pulse(CMixer* pMixer, int ID) : CExChannel(pMixer, SNDCHIP_VRC6, ID)
 {
 	Reset();
 }
@@ -39,38 +39,41 @@ void CVRC6_Pulse::Reset()
 
 void CVRC6_Pulse::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x00:
-            m_iGate = Value & 0x80;
-            m_iDutyCycle = ((Value & 0x70) >> 4) + 1;
-            m_iVolume = Value & 0x0F;
-			if (m_iGate)
-				Mix(m_iVolume);
-  			break;
-		case 0x01:
-            m_iPeriodLow = Value;
-            m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
-			break;
-		case 0x02:
-            m_iEnabled = (Value & 0x80);
-            m_iPeriodHigh = (Value & 0x0F);
-            m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
-			break;
+	switch (Address)
+	{
+	case 0x00:
+		m_iGate = Value & 0x80;
+		m_iDutyCycle = ((Value & 0x70) >> 4) + 1;
+		m_iVolume = Value & 0x0F;
+		if (m_iGate)
+			Mix(m_iVolume);
+		break;
+	case 0x01:
+		m_iPeriodLow = Value;
+		m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
+		break;
+	case 0x02:
+		m_iEnabled = (Value & 0x80);
+		m_iPeriodHigh = (Value & 0x0F);
+		m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
+		break;
 	}
 }
 
 void CVRC6_Pulse::Process(int Time)
 {
-	if (!m_iEnabled || m_iPeriod == 0) {
+	if (!m_iEnabled || m_iPeriod == 0)
+	{
 		m_iTime += Time;
 		return;
 	}
 
-	while (Time >= m_iCounter) {
-		Time      -= m_iCounter;
-		m_iTime	  += m_iCounter;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
+		m_iTime += m_iCounter;
 		m_iCounter = m_iPeriod + 1;
-	
+
 		m_iDutyCycleCounter = (m_iDutyCycleCounter + 1) & 0x0F;
 		Mix((m_iGate || m_iDutyCycleCounter >= m_iDutyCycle) ? m_iVolume : 0);
 	}
@@ -79,7 +82,7 @@ void CVRC6_Pulse::Process(int Time)
 	m_iTime += Time;
 }
 
-CVRC6_Sawtooth::CVRC6_Sawtooth(CMixer *pMixer, int ID) : CExChannel(pMixer, SNDCHIP_VRC6, ID) 
+CVRC6_Sawtooth::CVRC6_Sawtooth(CMixer* pMixer, int ID) : CExChannel(pMixer, SNDCHIP_VRC6, ID)
 {
 	Reset();
 }
@@ -94,32 +97,35 @@ void CVRC6_Sawtooth::Reset()
 
 void CVRC6_Sawtooth::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x00:
-            m_iPhaseInput = (Value & 0x3F);
-			break;
-		case 0x01:
-            m_iPeriodLow = Value;
-            m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
-			break;
-		case 0x02:
-            m_iEnabled = (Value & 0x80);
-            m_iPeriodHigh = (Value & 0x0F);
-            m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
-			break;
+	switch (Address)
+	{
+	case 0x00:
+		m_iPhaseInput = (Value & 0x3F);
+		break;
+	case 0x01:
+		m_iPeriodLow = Value;
+		m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
+		break;
+	case 0x02:
+		m_iEnabled = (Value & 0x80);
+		m_iPeriodHigh = (Value & 0x0F);
+		m_iPeriod = m_iPeriodLow + (m_iPeriodHigh << 8);
+		break;
 	}
 }
 
 void CVRC6_Sawtooth::Process(int Time)
 {
-	if (!m_iEnabled || !m_iPeriod) {
+	if (!m_iEnabled || !m_iPeriod)
+	{
 		m_iTime += Time;
 		return;
 	}
 
-	while (Time >= m_iCounter) {
-		Time 	  -= m_iCounter;
-		m_iTime	  += m_iCounter;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
+		m_iTime += m_iCounter;
 		m_iCounter = m_iPeriod + 1;
 
 		if (m_iResetReg & 1)
@@ -127,7 +133,8 @@ void CVRC6_Sawtooth::Process(int Time)
 
 		m_iResetReg++;
 
-		if (m_iResetReg == 14) {
+		if (m_iResetReg == 14)
+		{
 			m_iPhaseAccumulator = 0;
 			m_iResetReg = 0;
 		}
@@ -140,7 +147,7 @@ void CVRC6_Sawtooth::Process(int Time)
 	m_iTime += Time;
 }
 
-CVRC6::CVRC6(CMixer *pMixer)
+CVRC6::CVRC6(CMixer* pMixer)
 {
 	m_pPulse1 = new CVRC6_Pulse(pMixer, CHANID_VRC6_PULSE1);
 	m_pPulse2 = new CVRC6_Pulse(pMixer, CHANID_VRC6_PULSE2);
@@ -168,26 +175,27 @@ void CVRC6::Reset()
 
 void CVRC6::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x9000:
-		case 0x9001:
-		case 0x9002:
-			m_pPulse1->Write(Address & 3, Value);
-			break;			
-		case 0xA000:
-		case 0xA001:
-		case 0xA002:
-			m_pPulse2->Write(Address & 3, Value);
-			break;
-		case 0xB000:
-		case 0xB001:
-		case 0xB002:
-			m_pSawtooth->Write(Address & 3, Value);
-			break;
+	switch (Address)
+	{
+	case 0x9000:
+	case 0x9001:
+	case 0x9002:
+		m_pPulse1->Write(Address & 3, Value);
+		break;
+	case 0xA000:
+	case 0xA001:
+	case 0xA002:
+		m_pPulse2->Write(Address & 3, Value);
+		break;
+	case 0xB000:
+	case 0xB001:
+	case 0xB002:
+		m_pSawtooth->Write(Address & 3, Value);
+		break;
 	}
 }
 
-uint8 CVRC6::Read(uint16 Address, bool &Mapped)
+uint8 CVRC6::Read(uint16 Address, bool& Mapped)
 {
 	Mapped = false;
 	return 0;

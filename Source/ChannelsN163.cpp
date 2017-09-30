@@ -26,10 +26,10 @@
 #include "ChannelsN163.h"
 #include "SoundGen.h"
 
-const int N163_PITCH_SLIDE_SHIFT = 2;	// Increase amplitude of pitch slides
+const int N163_PITCH_SLIDE_SHIFT = 2; // Increase amplitude of pitch slides
 
-CChannelHandlerN163::CChannelHandlerN163() : 
-	CChannelHandlerInverted(0xFFFF, 0x0F), 
+CChannelHandlerN163::CChannelHandlerN163() :
+	CChannelHandlerInverted(0xFFFF, 0x0F),
 	m_bLoadWave(false),
 	m_bResetPhase(false),
 	m_iWaveLen(0),
@@ -46,16 +46,18 @@ void CChannelHandlerN163::ResetChannel()
 	m_iWaveIndex = 0;
 }
 
-void CChannelHandlerN163::HandleNoteData(stChanNote *pNoteData, int EffColumns)
+void CChannelHandlerN163::HandleNoteData(stChanNote* pNoteData, int EffColumns)
 {
 	m_iPostEffect = 0;
 	m_iPostEffectParam = 0;
 	m_bLoadWave = false;
-	
+
 	CChannelHandler::HandleNoteData(pNoteData, EffColumns);
 
-	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE) {
-		if (m_iPostEffect && (m_iEffect == EF_SLIDE_UP || m_iEffect == EF_SLIDE_DOWN)) {
+	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE)
+	{
+		if (m_iPostEffect && (m_iEffect == EF_SLIDE_UP || m_iEffect == EF_SLIDE_DOWN))
+		{
 			SetupSlide(m_iPostEffect, m_iPostEffectParam);
 			m_iPortaSpeed <<= N163_PITCH_SLIDE_SHIFT;
 		}
@@ -66,49 +68,56 @@ void CChannelHandlerN163::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 void CChannelHandlerN163::HandleCustomEffects(int EffNum, int EffParam)
 {
-	if (EffNum == EF_PORTA_DOWN) {
+	if (EffNum == EF_PORTA_DOWN)
+	{
 		m_iPortaSpeed = EffParam << N163_PITCH_SLIDE_SHIFT;
 		m_iEffect = EF_PORTA_UP;
 	}
-	else if (EffNum == EF_PORTA_UP) {
+	else if (EffNum == EF_PORTA_UP)
+	{
 		m_iPortaSpeed = EffParam << N163_PITCH_SLIDE_SHIFT;
 		m_iEffect = EF_PORTA_DOWN;
 	}
-	else if (EffNum == EF_PORTAMENTO) {
+	else if (EffNum == EF_PORTAMENTO)
+	{
 		m_iPortaSpeed = EffParam << N163_PITCH_SLIDE_SHIFT;
 		m_iEffect = EF_PORTAMENTO;
 	}
-	else if (!CheckCommonEffects(EffNum, EffParam)) {
+	else if (!CheckCommonEffects(EffNum, EffParam))
+	{
 		// Custom effects
-		switch (EffNum) {
-			case EF_DUTY_CYCLE:
-				// Duty effect controls wave
-				m_iWaveIndex = EffParam;
-				m_bLoadWave = true;
-				break;
-			case EF_SLIDE_UP:
-			case EF_SLIDE_DOWN:
-				m_iPostEffect = EffNum;
-				m_iPostEffectParam = EffParam;
-				SetupSlide(EffNum, EffParam);
-				m_iPortaSpeed <<= N163_PITCH_SLIDE_SHIFT;
-				break;
+		switch (EffNum)
+		{
+		case EF_DUTY_CYCLE:
+			// Duty effect controls wave
+			m_iWaveIndex = EffParam;
+			m_bLoadWave = true;
+			break;
+		case EF_SLIDE_UP:
+		case EF_SLIDE_DOWN:
+			m_iPostEffect = EffNum;
+			m_iPostEffectParam = EffParam;
+			SetupSlide(EffNum, EffParam);
+			m_iPortaSpeed <<= N163_PITCH_SLIDE_SHIFT;
+			break;
 		}
 	}
 }
 
 bool CChannelHandlerN163::HandleInstrument(int Instrument, bool Trigger, bool NewInstrument)
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 	CInstrumentContainer<CInstrumentN163> instContainer(pDocument, Instrument);
-	CInstrumentN163 *pInstrument = instContainer();
+	CInstrumentN163* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return false;
 
-	for (int i = 0; i < SEQ_COUNT; ++i) {
-		const CSequence *pSequence = pDocument->GetSequence(SNDCHIP_N163, pInstrument->GetSeqIndex(i), i);
-		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i)) {
+	for (int i = 0; i < SEQ_COUNT; ++i)
+	{
+		const CSequence* pSequence = pDocument->GetSequence(SNDCHIP_N163, pInstrument->GetSeqIndex(i), i);
+		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i))
+		{
 			if (pInstrument->GetSeqEnable(i) == 1)
 				SetupSequence(i, pSequence);
 			else
@@ -141,7 +150,8 @@ void CChannelHandlerN163::HandleCut()
 
 void CChannelHandlerN163::HandleRelease()
 {
-	if (!m_bRelease) {
+	if (!m_bRelease)
+	{
 		ReleaseNote();
 		ReleaseSequences();
 	}
@@ -150,16 +160,16 @@ void CChannelHandlerN163::HandleRelease()
 void CChannelHandlerN163::HandleNote(int Note, int Octave)
 {
 	// New note
-	m_iNote	= RunNote(Octave, Note);
+	m_iNote = RunNote(Octave, Note);
 	m_iSeqVolume = 0x0F;
 	m_bRelease = false;
 
-//	m_bResetPhase = true;
+	//	m_bResetPhase = true;
 }
 
 void CChannelHandlerN163::ProcessChannel()
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 
 	// Default effects
 	CChannelHandler::ProcessChannel();
@@ -172,7 +182,8 @@ void CChannelHandlerN163::ProcessChannel()
 	for (int i = 0; i < CInstrumentN163::SEQUENCE_COUNT; ++i)
 		RunSequence(i);
 
-	if (bUpdateWave) {
+	if (bUpdateWave)
+	{
 		m_iWaveIndex = m_iDutyPeriod;
 		m_bLoadWave = true;
 	}
@@ -182,12 +193,12 @@ void CChannelHandlerN163::RefreshChannel()
 {
 	CheckWaveUpdate();
 
-	int Channel = 7 - GetIndex();		// Channel #
+	int Channel = 7 - GetIndex(); // Channel #
 	int WaveSize = 256 - (m_iWaveLen >> 2);
 	int Frequency = LimitPeriod(GetPeriod() - ((GetVibrato() + GetFinePitch() + GetPitch()) << 4)) << 2;
 
 	// Compensate for shorter waves
-//	Frequency >>= 5 - int(log(double(m_iWaveLen)) / log(2.0));
+	//	Frequency >>= 5 - int(log(double(m_iWaveLen)) / log(2.0));
 
 	int Volume = CalculateVolume();
 	int ChannelAddrBase = 0x40 + Channel * 8;
@@ -195,7 +206,8 @@ void CChannelHandlerN163::RefreshChannel()
 	if (!m_bGate)
 		Volume = 0;
 
-	if (m_bLoadWave && m_bGate) {
+	if (m_bLoadWave && m_bGate)
+	{
 		m_bLoadWave = false;
 		LoadWave();
 	}
@@ -207,7 +219,8 @@ void CChannelHandlerN163::RefreshChannel()
 	WriteData(ChannelAddrBase + 6, m_iWavePos);
 	WriteData(ChannelAddrBase + 7, (m_iChannels << 4) | Volume);
 
-	if (m_bResetPhase) {
+	if (m_bResetPhase)
+	{
 		m_bResetPhase = false;
 		WriteData(ChannelAddrBase + 1, 0);
 		WriteData(ChannelAddrBase + 3, 0);
@@ -250,14 +263,14 @@ void CChannelHandlerN163::WriteData(int Addr, char Data)
 
 void CChannelHandlerN163::LoadWave()
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 
 	if (m_iInstrument == MAX_INSTRUMENTS)
 		return;
 
 	// Fill the wave RAM
 	CInstrumentContainer<CInstrumentN163> instContainer(pDocument, m_iInstrument);
-	CInstrumentN163 *pInstrument = instContainer();
+	CInstrumentN163* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return;
@@ -271,7 +284,8 @@ void CChannelHandlerN163::LoadWave()
 	if (m_iWaveIndex >= m_iWaveCount)
 		m_iWaveIndex = m_iWaveCount - 1;
 
-	for (int i = 0; i < m_iWaveLen; i += 2) {
+	for (int i = 0; i < m_iWaveLen; i += 2)
+	{
 		WriteData((pInstrument->GetSample(m_iWaveIndex, i + 1) << 4) | pInstrument->GetSample(m_iWaveIndex, i));
 	}
 }

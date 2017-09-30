@@ -29,7 +29,7 @@ const char DRIVER_ID[] = "NSF-driver v2.11";
 
 #pragma warning( disable : 4309 ) // disable warning 4309: 'initializing' : truncation of constant value
 
-const unsigned short NSF_CALLER_SIZE = 128;	// bytes
+const unsigned short NSF_CALLER_SIZE = 128; // bytes
 
 // NES program for running a NSF
 const char NSF_CALLER_BIN[] = {
@@ -69,73 +69,74 @@ const char NSF_CALLER_BIN_VRC6[] = {
 
 #include "drivers/config.h"
 
-struct driver_t {
-	const unsigned char *driver;
+struct driver_t
+{
+	const unsigned char* driver;
 	const unsigned int driver_size;
-	const int *word_reloc;
+	const int* word_reloc;
 	const int word_reloc_size;
-	const int *byte_reloc_low;
-	const int *byte_reloc_high;
+	const int* byte_reloc_low;
+	const int* byte_reloc_high;
 	const int byte_reloc_size;
 };
 
-const driver_t DRIVER_PACK_2A03 = { 
-	DRIVER_2A03, 
+const driver_t DRIVER_PACK_2A03 = {
+	DRIVER_2A03,
 	sizeof(DRIVER_2A03),
-	DRIVER_RELOC_WORD_2A03, 
-	sizeof(DRIVER_RELOC_WORD_2A03), 
-	DRIVER_RELOC_LOW_2A03, 
-	DRIVER_RELOC_HIGH_2A03, 
-	sizeof(DRIVER_RELOC_LOW_2A03) 
+	DRIVER_RELOC_WORD_2A03,
+	sizeof(DRIVER_RELOC_WORD_2A03),
+	DRIVER_RELOC_LOW_2A03,
+	DRIVER_RELOC_HIGH_2A03,
+	sizeof(DRIVER_RELOC_LOW_2A03)
 };
 
-const driver_t DRIVER_PACK_VRC6 = { 
-	DRIVER_VRC6, 
+const driver_t DRIVER_PACK_VRC6 = {
+	DRIVER_VRC6,
 	sizeof(DRIVER_VRC6),
-	DRIVER_RELOC_WORD_VRC6, 
-	sizeof(DRIVER_RELOC_WORD_VRC6), 
-	DRIVER_RELOC_LOW_VRC6, 
-	DRIVER_RELOC_HIGH_VRC6, 
+	DRIVER_RELOC_WORD_VRC6,
+	sizeof(DRIVER_RELOC_WORD_VRC6),
+	DRIVER_RELOC_LOW_VRC6,
+	DRIVER_RELOC_HIGH_VRC6,
 	sizeof(DRIVER_RELOC_LOW_VRC6)
 };
 
-const driver_t DRIVER_PACK_VRC7 = { 
-	DRIVER_VRC7, 
+const driver_t DRIVER_PACK_VRC7 = {
+	DRIVER_VRC7,
 	sizeof(DRIVER_VRC7),
-	DRIVER_RELOC_WORD_VRC7, 
-	sizeof(DRIVER_RELOC_WORD_VRC7), 
-	DRIVER_RELOC_LOW_VRC7, 
-	DRIVER_RELOC_HIGH_VRC7, 
+	DRIVER_RELOC_WORD_VRC7,
+	sizeof(DRIVER_RELOC_WORD_VRC7),
+	DRIVER_RELOC_LOW_VRC7,
+	DRIVER_RELOC_HIGH_VRC7,
 	sizeof(DRIVER_RELOC_LOW_VRC7)
 };
 
-const driver_t DRIVER_PACK_MMC5 = { 
-	DRIVER_MMC5, 
+const driver_t DRIVER_PACK_MMC5 = {
+	DRIVER_MMC5,
 	sizeof(DRIVER_MMC5),
-	DRIVER_RELOC_WORD_MMC5, 
-	sizeof(DRIVER_RELOC_WORD_MMC5), 
-	DRIVER_RELOC_LOW_MMC5, 
-	DRIVER_RELOC_HIGH_MMC5, 
+	DRIVER_RELOC_WORD_MMC5,
+	sizeof(DRIVER_RELOC_WORD_MMC5),
+	DRIVER_RELOC_LOW_MMC5,
+	DRIVER_RELOC_HIGH_MMC5,
 	sizeof(DRIVER_RELOC_LOW_MMC5)
 };
 
-const driver_t DRIVER_PACK_FDS = { 
-	DRIVER_FDS, 
+const driver_t DRIVER_PACK_FDS = {
+	DRIVER_FDS,
 	sizeof(DRIVER_FDS),
-	DRIVER_RELOC_WORD_FDS, 
-	sizeof(DRIVER_RELOC_WORD_FDS), 
-	DRIVER_RELOC_LOW_FDS, 
-	DRIVER_RELOC_HIGH_FDS, 
+	DRIVER_RELOC_WORD_FDS,
+	sizeof(DRIVER_RELOC_WORD_FDS),
+	DRIVER_RELOC_LOW_FDS,
+	DRIVER_RELOC_HIGH_FDS,
 	sizeof(DRIVER_RELOC_LOW_FDS)
 };
 
-const driver_t DRIVER_PACK_N163 = { 
-	DRIVER_N163, 
+const driver_t DRIVER_PACK_N163 = {
+	DRIVER_N163,
 	sizeof(DRIVER_N163),
-	DRIVER_RELOC_WORD_N163, 
-	sizeof(DRIVER_RELOC_WORD_N163), 
-	DRIVER_RELOC_LOW_N163, 
-	DRIVER_RELOC_HIGH_N163, 
+	DRIVER_RELOC_WORD_N163,
+	sizeof(DRIVER_RELOC_WORD_N163),
+	DRIVER_RELOC_LOW_N163,
+	DRIVER_RELOC_HIGH_N163,
 	sizeof(DRIVER_RELOC_LOW_N163)
 };
 /*

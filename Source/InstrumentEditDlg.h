@@ -26,10 +26,10 @@ class CInstrumentEditPanel;
 
 class CInstrumentEditDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CInstrumentEditDlg)
+DECLARE_DYNAMIC(CInstrumentEditDlg)
 
 public:
-	CInstrumentEditDlg(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditDlg();
 
 	void ChangeNoteState(int Note);
@@ -37,13 +37,13 @@ public:
 	bool IsOpened() const;
 	void EndDialog(int nResult);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	void InsertPane(CInstrumentEditPanel *pPanel, bool Show);
+	void InsertPane(CInstrumentEditPanel* pPanel, bool Show);
 	void ClearPanels();
 
 	void SwitchOnNote(int x, int y);
@@ -58,27 +58,27 @@ protected:
 	static const int KEYBOARD_WIDTH;
 	static const int KEYBOARD_HEIGHT;
 
-	static const char *CHIP_NAMES[];
+	static const char* CHIP_NAMES[];
 
 protected:
 	// Variables for keyboard
-	int	m_iLastKey;
+	int m_iLastKey;
 	int m_iActiveKey;
 
 	// Variables for windows
-	CInstrumentEditPanel *m_pPanels[PANEL_COUNT];
-	CInstrumentEditPanel *m_pFocusPanel;
+	CInstrumentEditPanel* m_pPanels[PANEL_COUNT];
+	CInstrumentEditPanel* m_pFocusPanel;
 
 	bool m_bOpened;
 	int m_iSelectedInstType;
 	int m_iPanels;
-	int	m_iInstrument;
+	int m_iInstrument;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedClose();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnTcnSelchangeInstTab(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTcnSelchangeInstTab(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPaint();
 	void ChangeNoteOn(int Note, int Octave);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

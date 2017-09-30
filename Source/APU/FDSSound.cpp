@@ -65,18 +65,23 @@ void FDSSelect(unsigned type);
 #define EGCPS_BITS (12)
 #define VOL_BITS 12
 
-typedef struct {
+typedef struct
+{
 	uint8 spd;
 	uint8 cnt;
 	uint8 mode;
 	uint8 volume;
 } FDS_EG;
-typedef struct {
+
+typedef struct
+{
 	uint32 spdbase;
 	uint32 spd;
 	uint32 freq;
 } FDS_PG;
-typedef struct {
+
+typedef struct
+{
 	uint32 phase;
 	int8 wave[0x40];
 	uint8 wavptr;
@@ -84,7 +89,9 @@ typedef struct {
 	uint8 disable;
 	uint8 disable2;
 } FDS_WG;
-typedef struct {
+
+typedef struct
+{
 	FDS_EG eg;
 	FDS_PG pg;
 	FDS_WG wg;
@@ -93,7 +100,8 @@ typedef struct {
 	uint8 d[2];
 } FDS_OP;
 
-typedef struct FDSSOUND_tag {
+typedef struct FDSSOUND_tag
+{
 	FDS_OP op[2];
 	uint32 phasecps;
 	uint32 envcnt;
@@ -110,7 +118,7 @@ typedef struct FDSSOUND_tag {
 
 static FDSSOUND fdssound;
 
-static void FDSSoundWGStep(FDS_WG *pwg)
+static void FDSSoundWGStep(FDS_WG* pwg)
 {
 #if 0
 	if (pwg->disable | pwg->disable2)
@@ -119,11 +127,11 @@ static void FDSSoundWGStep(FDS_WG *pwg)
 		pwg->output = pwg->wave[(pwg->phase >> (PGCPS_BITS+16)) & 0x3f];
 #else
 	if (pwg->disable || pwg->disable2) return;
-	pwg->output = pwg->wave[(pwg->phase >> (PGCPS_BITS+16)) & 0x3f];
+	pwg->output = pwg->wave[(pwg->phase >> (PGCPS_BITS + 16)) & 0x3f];
 #endif
 }
 
-static void FDSSoundEGStep(FDS_EG *peg)
+static void FDSSoundEGStep(FDS_EG* peg)
 {
 	if (peg->mode & 0x80) return;
 	if (++peg->cnt <= peg->spd) return;
@@ -155,22 +163,22 @@ int32 __fastcall FDSSoundRender(void)
 		uint32 spd = fdssound.op[1].pg.spd; // phase to add
 		while (spd)
 		{
-			uint32 left = ENTRY_WIDTH - (fdssound.op[1].wg.phase & (ENTRY_WIDTH-1));
+			uint32 left = ENTRY_WIDTH - (fdssound.op[1].wg.phase & (ENTRY_WIDTH - 1));
 			uint32 advance = spd;
 			if (spd >= left) // advancing to the next entry
 			{
 				advance = left;
 				fdssound.op[1].wg.phase += advance;
-				fdssound.op[1].wg.output = fdssound.op[1].wg.wave[(fdssound.op[1].wg.phase >> (PGCPS_BITS+16)) & 0x3f];
+				fdssound.op[1].wg.output = fdssound.op[1].wg.wave[(fdssound.op[1].wg.phase >> (PGCPS_BITS + 16)) & 0x3f];
 
 				// adjust bias
 				int8 value = fdssound.op[1].wg.output & 7;
-				const int8 MOD_ADJUST[8] = { 0, 1, 2, 4, 0, -4, -2, -1 };
+				const int8 MOD_ADJUST[8] = {0, 1, 2, 4, 0, -4, -2, -1};
 				if (value == 4)
 					fdssound.op[1].bias = 0;
 				else
 					fdssound.op[1].bias += MOD_ADJUST[value];
-				while (fdssound.op[1].bias >  63) fdssound.op[1].bias -= 128;
+				while (fdssound.op[1].bias > 63) fdssound.op[1].bias -= 128;
 				while (fdssound.op[1].bias < -64) fdssound.op[1].bias += 128;
 			}
 			else // not advancing to the next entry
@@ -186,7 +194,7 @@ int32 __fastcall FDSSoundRender(void)
 		if (mod & 0x0F)
 		{
 			if (fdssound.op[1].bias < 0) mod -= 1;
-			else                         mod += 2;
+			else mod += 2;
 		}
 		if (mod > 193) mod -= 258;
 		if (mod < -64) mod += 256;
@@ -245,72 +253,72 @@ void __fastcall FDSSoundWrite(uint16 address, uint8 value)
 	}
 	else if (0x4080 <= address && address <= 0x408F)
 	{
-		FDS_OP *pop = &fdssound.op[(address & 4) >> 2];
+		FDS_OP* pop = &fdssound.op[(address & 4) >> 2];
 		fdssound.reg[address - 0x4080] = value;
 		switch (address & 0xf)
 		{
-			case 0:
-			case 4:
-				pop->eg.mode = value & 0xc0;
-				if (pop->eg.mode & 0x80)
-				{
-					pop->eg.volume = (value & 0x3f);
-				}
-				else
-				{
-					pop->eg.spd = value & 0x3f;
-				}
-				break;
-			case 5:
-				// EDIT rewrote modulator/bias code
-				fdssound.op[1].bias = value & 0x3F;
-				if (value & 0x40) fdssound.op[1].bias -= 0x40; // extend sign bit
-				fdssound.op[1].wg.phase = 0;
-				break;
-			case 2:	case 6:
-				pop->pg.freq &= 0x00000F00;
-				pop->pg.freq |= (value & 0xFF) << 0;
-				pop->pg.spdbase = pop->pg.freq * fdssound.phasecps;
-				break;
-			case 3:
-				fdssound.envdisable = value & 0x40;
-			case 7:
+		case 0:
+		case 4:
+			pop->eg.mode = value & 0xc0;
+			if (pop->eg.mode & 0x80)
+			{
+				pop->eg.volume = (value & 0x3f);
+			}
+			else
+			{
+				pop->eg.spd = value & 0x3f;
+			}
+			break;
+		case 5:
+			// EDIT rewrote modulator/bias code
+			fdssound.op[1].bias = value & 0x3F;
+			if (value & 0x40) fdssound.op[1].bias -= 0x40; // extend sign bit
+			fdssound.op[1].wg.phase = 0;
+			break;
+		case 2: case 6:
+			pop->pg.freq &= 0x00000F00;
+			pop->pg.freq |= (value & 0xFF) << 0;
+			pop->pg.spdbase = pop->pg.freq * fdssound.phasecps;
+			break;
+		case 3:
+			fdssound.envdisable = value & 0x40;
+		case 7:
 #if 0
 				pop->wg.phase = 0;
 #endif
-				pop->pg.freq &= 0x000000FF;
-				pop->pg.freq |= (value & 0x0F) << 8;
-				pop->pg.spdbase = pop->pg.freq * fdssound.phasecps;
-				pop->wg.disable = value & 0x80;
-				if (pop->wg.disable)
+			pop->pg.freq &= 0x000000FF;
+			pop->pg.freq |= (value & 0x0F) << 8;
+			pop->pg.spdbase = pop->pg.freq * fdssound.phasecps;
+			pop->wg.disable = value & 0x80;
+			if (pop->wg.disable)
+			{
+				pop->wg.phase = 0;
+				pop->wg.wavptr = 0;
+				pop->wavebase = 0;
+			}
+			break;
+		case 8:
+			// EDIT rewrote modulator/bias code
+			if (fdssound.op[1].wg.disable)
+			{
+				int8 append = value & 0x07;
+				for (int i = 0; i < 0x3E; ++i)
 				{
-					pop->wg.phase = 0;
-					pop->wg.wavptr = 0;
-					pop->wavebase = 0;
+					fdssound.op[1].wg.wave[i] = fdssound.op[1].wg.wave[i + 2];
 				}
-				break;
-			case 8:
-				// EDIT rewrote modulator/bias code
-				if (fdssound.op[1].wg.disable)
-				{
-					int8 append = value & 0x07;
-					for (int i=0; i < 0x3E; ++i)
-					{
-						fdssound.op[1].wg.wave[i] = fdssound.op[1].wg.wave[i+2];
-					}
-					fdssound.op[1].wg.wave[0x3E] = append;
-					fdssound.op[1].wg.wave[0x3F] = append;
-				}
-				break;
-			case 9:
-				fdssound.lvl = (value & 3);
-				fdssound.op[0].wg.disable2 = value & 0x80;
-				break;
-			case 10:
-				fdssound.envspd = value << EGCPS_BITS;
-				break;
-			default:
-				break;
+				fdssound.op[1].wg.wave[0x3E] = append;
+				fdssound.op[1].wg.wave[0x3F] = append;
+			}
+			break;
+		case 9:
+			fdssound.lvl = (value & 3);
+			fdssound.op[0].wg.disable2 = value & 0x80;
+			break;
+		case 10:
+			fdssound.envspd = value << EGCPS_BITS;
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -332,7 +340,7 @@ static uint32 DivFix(uint32 p1, uint32 p2, uint32 fix)
 {
 	uint32 ret;
 	ret = p1 / p2;
-	p1  = p1 % p2;/* p1 = p1 - p2 * ret; */
+	p1 = p1 % p2;/* p1 = p1 - p2 * ret; */
 	while (fix--)
 	{
 		p1 += p1;
@@ -366,5 +374,4 @@ void __fastcall FDSSoundReset(void)
 void FDSSoundInstall3(void)
 {
 	LogTableInitialize();
-
 }

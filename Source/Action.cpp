@@ -52,7 +52,8 @@ CActionHandler::CActionHandler()
 	m_iUndoLevel = 0;
 	m_iRedoLevel = 0;
 
-	for (int i = 0; i < MAX_LEVELS; ++i) {
+	for (int i = 0; i < MAX_LEVELS; ++i)
+	{
 		m_pActionStack[i] = NULL;
 	}
 }
@@ -67,18 +68,21 @@ void CActionHandler::Clear()
 	m_iUndoLevel = 0;
 	m_iRedoLevel = 0;
 
-	for (int i = 0; i < MAX_LEVELS; ++i) {
+	for (int i = 0; i < MAX_LEVELS; ++i)
+	{
 		SAFE_RELEASE(m_pActionStack[i]);
 	}
 }
 
-void CActionHandler::Push(CAction *pAction)
+void CActionHandler::Push(CAction* pAction)
 {
-	if (m_iUndoLevel < MAX_LEVELS) {
+	if (m_iUndoLevel < MAX_LEVELS)
+	{
 		SAFE_RELEASE(m_pActionStack[m_iUndoLevel]);
 		m_pActionStack[m_iUndoLevel++] = pAction;
 	}
-	else {
+	else
+	{
 		SAFE_RELEASE(m_pActionStack[0]);
 		for (int i = 1; i < MAX_LEVELS; ++i)
 			m_pActionStack[i - 1] = m_pActionStack[i];
@@ -88,7 +92,7 @@ void CActionHandler::Push(CAction *pAction)
 	m_iRedoLevel = 0;
 }
 
-CAction *CActionHandler::PopUndo()
+CAction* CActionHandler::PopUndo()
 {
 	if (!m_iUndoLevel)
 		return NULL;
@@ -99,7 +103,7 @@ CAction *CActionHandler::PopUndo()
 	return m_pActionStack[m_iUndoLevel];
 }
 
-CAction *CActionHandler::PopRedo()
+CAction* CActionHandler::PopRedo()
 {
 	if (!m_iRedoLevel)
 		return NULL;
@@ -110,7 +114,7 @@ CAction *CActionHandler::PopRedo()
 	return m_pActionStack[m_iUndoLevel - 1];
 }
 
-CAction *CActionHandler::GetLastAction() const
+CAction* CActionHandler::GetLastAction() const
 {
 	return (m_iUndoLevel == 0) ? NULL : m_pActionStack[m_iUndoLevel - 1];
 }

@@ -34,7 +34,7 @@ CChannelHandlerMMC5::CChannelHandlerMMC5() : CChannelHandler(0x7FF, 0x0F)
 {
 }
 
-void CChannelHandlerMMC5::HandleNoteData(stChanNote *pNoteData, int EffColumns)
+void CChannelHandlerMMC5::HandleNoteData(stChanNote* pNoteData, int EffColumns)
 {
 	m_iPostEffect = 0;
 	m_iPostEffectParam = 0;
@@ -43,7 +43,8 @@ void CChannelHandlerMMC5::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 	CChannelHandler::HandleNoteData(pNoteData, EffColumns);
 
-	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE) {
+	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE)
+	{
 		if (m_iPostEffect && (m_iEffect == EF_SLIDE_UP || m_iEffect == EF_SLIDE_DOWN))
 			SetupSlide(m_iPostEffect, m_iPostEffectParam);
 		else if (m_iEffect == EF_SLIDE_DOWN || m_iEffect == EF_SLIDE_UP)
@@ -53,40 +54,44 @@ void CChannelHandlerMMC5::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 void CChannelHandlerMMC5::HandleCustomEffects(int EffNum, int EffParam)
 {
-	if (!CheckCommonEffects(EffNum, EffParam)) {
-		switch (EffNum) {
-			case EF_VOLUME:
-				m_iInitVolume = EffParam;
-				m_bManualVolume = true;
-				break;
-			case EF_DUTY_CYCLE:
-				m_iDefaultDuty = m_iDutyPeriod = EffParam;
-				break;
-			case EF_SLIDE_UP:
-			case EF_SLIDE_DOWN:
-				m_iPostEffect = EffNum;
-				m_iPostEffectParam = EffParam;
-				SetupSlide(EffNum, EffParam);
-				break;
+	if (!CheckCommonEffects(EffNum, EffParam))
+	{
+		switch (EffNum)
+		{
+		case EF_VOLUME:
+			m_iInitVolume = EffParam;
+			m_bManualVolume = true;
+			break;
+		case EF_DUTY_CYCLE:
+			m_iDefaultDuty = m_iDutyPeriod = EffParam;
+			break;
+		case EF_SLIDE_UP:
+		case EF_SLIDE_DOWN:
+			m_iPostEffect = EffNum;
+			m_iPostEffectParam = EffParam;
+			SetupSlide(EffNum, EffParam);
+			break;
 		}
 	}
 }
 
 bool CChannelHandlerMMC5::HandleInstrument(int Instrument, bool Trigger, bool NewInstrument)
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 	CInstrumentContainer<CInstrument2A03> instContainer(pDocument, Instrument);
-	CInstrument2A03 *pInstrument = instContainer();
+	CInstrument2A03* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return false;
 
-	for (int i = 0; i < CInstrument2A03::SEQUENCE_COUNT; ++i) {
-		const CSequence *pSequence = pDocument->GetSequence(SNDCHIP_NONE, pInstrument->GetSeqIndex(i), i);
-		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i)) {
+	for (int i = 0; i < CInstrument2A03::SEQUENCE_COUNT; ++i)
+	{
+		const CSequence* pSequence = pDocument->GetSequence(SNDCHIP_NONE, pInstrument->GetSeqIndex(i), i);
+		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i))
+		{
 			if (pInstrument->GetSeqEnable(i) == 1)
 				SetupSequence(i, pSequence);
-			else 
+			else
 				ClearSequence(i);
 		}
 	}
@@ -105,7 +110,8 @@ void CChannelHandlerMMC5::HandleCut()
 
 void CChannelHandlerMMC5::HandleRelease()
 {
-	if (!m_bRelease) {
+	if (!m_bRelease)
+	{
 		ReleaseNote();
 		ReleaseSequences();
 	}
@@ -113,14 +119,14 @@ void CChannelHandlerMMC5::HandleRelease()
 
 void CChannelHandlerMMC5::HandleNote(int Note, int Octave)
 {
-	m_iNote		  = RunNote(Octave, Note);
+	m_iNote = RunNote(Octave, Note);
 	m_iDutyPeriod = m_iDefaultDuty;
-	m_iSeqVolume  = m_iInitVolume;
+	m_iSeqVolume = m_iInitVolume;
 }
 
 void CChannelHandlerMMC5::ProcessChannel()
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 
 	// Default effects
 	CChannelHandler::ProcessChannel();
@@ -145,9 +151,9 @@ void CMMC5Square1Chan::RefreshChannel()
 	int Volume = CalculateVolume();
 	char DutyCycle = (m_iDutyPeriod & 0x03);
 
-	unsigned char HiFreq		= (Period & 0xFF);
-	unsigned char LoFreq		= (Period >> 8);
-	unsigned char LastLoFreq	= (m_iLastPeriod >> 8);
+	unsigned char HiFreq = (Period & 0xFF);
+	unsigned char LoFreq = (Period >> 8);
+	unsigned char LastLoFreq = (m_iLastPeriod >> 8);
 
 	m_iLastPeriod = Period;
 
@@ -177,9 +183,9 @@ void CMMC5Square2Chan::RefreshChannel()
 	int Volume = CalculateVolume();
 	char DutyCycle = (m_iDutyPeriod & 0x03);
 
-	unsigned char HiFreq		= (Period & 0xFF);
-	unsigned char LoFreq		= (Period >> 8);
-	unsigned char LastLoFreq	= (m_iLastPeriod >> 8);
+	unsigned char HiFreq = (Period & 0xFF);
+	unsigned char LoFreq = (Period >> 8);
+	unsigned char LastLoFreq = (m_iLastPeriod >> 8);
 
 	m_iLastPeriod = Period;
 

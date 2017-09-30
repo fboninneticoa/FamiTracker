@@ -20,9 +20,10 @@
 
 #pragma once
 
-enum {
-	WM_SIZE_CHANGE = WM_USER, 
-	WM_CURSOR_CHANGE, 
+enum
+{
+	WM_SIZE_CHANGE = WM_USER,
+	WM_CURSOR_CHANGE,
 	WM_SEQUENCE_CHANGED
 };
 
@@ -34,13 +35,13 @@ class CSequenceSetting;
 // Sequence editor
 class CSequenceEditor : public CWnd
 {
-	DECLARE_DYNAMIC(CSequenceEditor)
+DECLARE_DYNAMIC(CSequenceEditor)
 public:
-	CSequenceEditor(CFamiTrackerDoc *pDoc);
+	CSequenceEditor(CFamiTrackerDoc* pDoc);
 	virtual ~CSequenceEditor();
-	
-	BOOL CreateEditor(CWnd *pParentWnd, const RECT &rect);
-	void SelectSequence(CSequence *pSequence, int Type, int InstrumentType);
+
+	BOOL CreateEditor(CWnd* pParentWnd, const RECT& rect);
+	void SelectSequence(CSequence* pSequence, int Type, int InstrumentType);
 	void SetMaxValues(int MaxVol, int MaxDuty);
 	void ChangedSetting();
 
@@ -48,14 +49,14 @@ public:
 	static const int SEQUENCE_EDIT_WIDTH = 540;
 	static const int SEQUENCE_EDIT_HEIGHT = 237;
 private:
-	CFamiTrackerDoc  *m_pDocument;
-	CWnd			 *m_pParent;
-	CFont			 *m_pFont;
-	CSizeEditor		 *m_pSizeEditor;
-	CGraphEditor	 *m_pGraphEditor;
-	CSequence		 *m_pSequence;
-	CSequenceSetting *m_pSetting;
-	
+	CFamiTrackerDoc* m_pDocument;
+	CWnd* m_pParent;
+	CFont* m_pFont;
+	CSizeEditor* m_pSizeEditor;
+	CGraphEditor* m_pGraphEditor;
+	CSequence* m_pSequence;
+	CSequenceSetting* m_pSetting;
+
 	int m_iSelectedSetting;
 	int m_iInstrumentType;
 	int m_iMaxVol;
@@ -64,7 +65,7 @@ private:
 	void DestroyGraphEditor();
 	void SequenceChangedMessage(bool Changed);
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	//virtual BOOL PreTranslateMessage(MSG* pMsg);

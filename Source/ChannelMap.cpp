@@ -37,7 +37,8 @@ CChannelMap::CChannelMap() :
 
 CChannelMap::~CChannelMap()
 {
-	for (int i = 0; i < m_iAddedChips; ++i) {
+	for (int i = 0; i < m_iAddedChips; ++i)
+	{
 		m_pChipInst[i]->Release();
 		m_pChipInst[i] = NULL;
 	}
@@ -51,10 +52,10 @@ void CChannelMap::SetupSoundChips()
 	AddChip(SNDCHIP_NONE, new CInstrument2A03(), _T("NES channels only"));
 	AddChip(SNDCHIP_VRC6, new CInstrumentVRC6(), _T("Konami VRC6"));
 	AddChip(SNDCHIP_VRC7, new CInstrumentVRC7(), _T("Konami VRC7"));
-	AddChip(SNDCHIP_FDS,  new CInstrumentFDS(),  _T("Nintendo FDS sound"));
+	AddChip(SNDCHIP_FDS, new CInstrumentFDS(), _T("Nintendo FDS sound"));
 	AddChip(SNDCHIP_MMC5, new CInstrument2A03(), _T("Nintendo MMC5"));
 	AddChip(SNDCHIP_N163, new CInstrumentN163(), _T("Namco 163"));
-	AddChip(SNDCHIP_S5B,  new CInstrumentS5B(),  _T("Sunsoft 5B"));
+	AddChip(SNDCHIP_S5B, new CInstrumentS5B(), _T("Sunsoft 5B"));
 #else /* _DEBUG */
 	// Ready for use
 	AddChip(SNDCHIP_NONE, new CInstrument2A03(), _T("NES channels only"));
@@ -67,7 +68,7 @@ void CChannelMap::SetupSoundChips()
 #endif /* _DEBUG */
 }
 
-void CChannelMap::AddChip(int Ident, CInstrument *pInst, LPCTSTR pName)
+void CChannelMap::AddChip(int Ident, CInstrument* pInst, LPCTSTR pName)
 {
 	ASSERT(m_iAddedChips < CHIP_COUNT);
 
@@ -95,10 +96,11 @@ int CChannelMap::GetChipIdent(int Index) const
 	return m_iChipIdents[Index];
 }
 
-int	CChannelMap::GetChipIndex(int Ident) const
+int CChannelMap::GetChipIndex(int Ident) const
 {
 	// Get index from chip ID
-	for (int i = 0; i < m_iAddedChips; ++i) {
+	for (int i = 0; i < m_iAddedChips; ++i)
+	{
 		if (Ident == m_iChipIdents[i])
 			return i;
 	}
@@ -139,7 +141,7 @@ void CChannelMap::ResetChannels()
 	m_iRegisteredChannels = 0;
 }
 
-void CChannelMap::RegisterChannel(CTrackerChannel *pChannel, int ChannelType, int ChipType)
+void CChannelMap::RegisterChannel(CTrackerChannel* pChannel, int ChannelType, int ChipType)
 {
 	// Adds a channel to the channel map
 	m_pChannels[m_iRegisteredChannels] = pChannel;
@@ -148,7 +150,7 @@ void CChannelMap::RegisterChannel(CTrackerChannel *pChannel, int ChannelType, in
 	++m_iRegisteredChannels;
 }
 
-CTrackerChannel *CChannelMap::GetChannel(int Index) const
+CTrackerChannel* CChannelMap::GetChannel(int Index) const
 {
 	// Return channel from index
 	ASSERT(m_iRegisteredChannels != 0);

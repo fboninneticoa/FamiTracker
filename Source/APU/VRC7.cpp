@@ -23,17 +23,20 @@
 #include "APU.h"
 #include "VRC7.h"
 
-const float  CVRC7::AMPLIFY	  = 4.6f;		// Mixing amplification, VRC7 patch 14 is 4,88 times stronger than a 50% square @ v=15
-const uint32 CVRC7::OPL_CLOCK = 3579545;	// Clock frequency
+const float CVRC7::AMPLIFY = 4.6f;
+// Mixing amplification, VRC7 patch 14 is 4,88 times stronger than a 50% square @ v=15
+const uint32 CVRC7::OPL_CLOCK = 3579545; // Clock frequency
 
-CVRC7::CVRC7(CMixer *pMixer) : CExternal(pMixer), m_pBuffer(NULL), m_pOPLLInt(NULL), m_fVolume(1.0f), m_iMaxSamples(0), m_iSoundReg(0)
+CVRC7::CVRC7(CMixer* pMixer) : CExternal(pMixer), m_pBuffer(NULL), m_pOPLLInt(NULL), m_fVolume(1.0f), m_iMaxSamples(0),
+                               m_iSoundReg(0)
 {
 	Reset();
 }
 
 CVRC7::~CVRC7()
 {
-	if (m_pOPLLInt != NULL) {
+	if (m_pOPLLInt != NULL)
+	{
 		OPLL_delete(m_pOPLLInt);
 		m_pOPLLInt = NULL;
 	}
@@ -49,7 +52,8 @@ void CVRC7::Reset()
 
 void CVRC7::SetSampleSpeed(uint32 SampleRate, double ClockRate, uint32 FrameRate)
 {
-	if (m_pOPLLInt != NULL) {
+	if (m_pOPLLInt != NULL)
+	{
 		OPLL_delete(m_pOPLLInt);
 		m_pOPLLInt = NULL;
 	}
@@ -59,7 +63,7 @@ void CVRC7::SetSampleSpeed(uint32 SampleRate, double ClockRate, uint32 FrameRate
 	OPLL_reset(m_pOPLLInt);
 	OPLL_reset_patch(m_pOPLLInt, 1);
 
-	m_iMaxSamples = (SampleRate / FrameRate) * 2;	// Allow some overflow
+	m_iMaxSamples = (SampleRate / FrameRate) * 2; // Allow some overflow
 
 	SAFE_RELEASE_ARRAY(m_pBuffer);
 	m_pBuffer = new int16[m_iMaxSamples];
@@ -73,17 +77,18 @@ void CVRC7::SetVolume(float Volume)
 
 void CVRC7::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x9010:
-			m_iSoundReg = Value;
-			break;
-		case 0x9030:
-			OPLL_writeReg(m_pOPLLInt, m_iSoundReg, Value);
-			break;
+	switch (Address)
+	{
+	case 0x9010:
+		m_iSoundReg = Value;
+		break;
+	case 0x9030:
+		OPLL_writeReg(m_pOPLLInt, m_iSoundReg, Value);
+		break;
 	}
 }
 
-uint8 CVRC7::Read(uint16 Address, bool &Mapped)
+uint8 CVRC7::Read(uint16 Address, bool& Mapped)
 {
 	return 0;
 }
@@ -95,9 +100,10 @@ void CVRC7::EndFrame()
 	static int32 LastSample = 0;
 
 	// Generate VRC7 samples
-	while (m_iBufferPtr < WantSamples) {
+	while (m_iBufferPtr < WantSamples)
+	{
 		int32 RawSample = OPLL_calc(m_pOPLLInt);
-		
+
 		// Clipping is slightly asymmetric
 		if (RawSample > 3600)
 			RawSample = 3600;

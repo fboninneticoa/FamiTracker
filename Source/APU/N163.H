@@ -26,56 +26,58 @@
 
 class CMixer;
 
-class CN163Chan : public CExChannel {
+class CN163Chan : public CExChannel
+{
 public:
-	CN163Chan(CMixer *pMixer, int ID, uint8 *pWaveData);
+	CN163Chan(CMixer* pMixer, int ID, uint8* pWaveData);
 	virtual ~CN163Chan();
 	void Reset();
 	void Write(uint16 Address, uint8 Value);
 
 	virtual inline void EndFrame();
 
-	void Process(uint32 Time, uint8 ChannelsActive, CN163 *pParent);
+	void Process(uint32 Time, uint8 ChannelsActive, CN163* pParent);
 
 	uint8 ReadMem(uint8 Reg);
 
 private:
-	uint32	m_iCounter, m_iFrequency;
-	uint32	m_iPhase;
-	uint8	m_iVolume;
-	uint32	m_iWaveLength;
-	uint8	m_iWaveOffset;
-	uint8	*m_pWaveData;
+	uint32 m_iCounter, m_iFrequency;
+	uint32 m_iPhase;
+	uint8 m_iVolume;
+	uint32 m_iWaveLength;
+	uint8 m_iWaveOffset;
+	uint8* m_pWaveData;
 
 	uint8 m_iLastSample;
 };
 
-class CN163 : public CExternal {
+class CN163 : public CExternal
+{
 public:
-	CN163(CMixer *pMixer);
+	CN163(CMixer* pMixer);
 	virtual ~CN163();
 	void Reset();
 	void Process(uint32 Time);
 	void EndFrame();
 	void Write(uint16 Address, uint8 Value);
-	uint8 Read(uint16 Address, bool &Mapped);
+	uint8 Read(uint16 Address, bool& Mapped);
 	uint8 ReadMem(uint8 Reg);
 	void Mix(int32 Value, uint32 Time, uint8 ChanID);
 
 private:
-	CN163Chan	*m_pChannels[8];
+	CN163Chan* m_pChannels[8];
 
-	uint8		*m_pWaveData;
-	uint8		m_iExpandAddr;
-	uint8		m_iChansInUse;
+	uint8* m_pWaveData;
+	uint8 m_iExpandAddr;
+	uint8 m_iChansInUse;
 
-	int32		m_iLastValue;
+	int32 m_iLastValue;
 
-	uint32		m_iGlobalTime;
+	uint32 m_iGlobalTime;
 
-	uint32		m_iChannelCntr;
-	uint32		m_iActiveChan;
-	uint32		m_iCycle;
+	uint32 m_iChannelCntr;
+	uint32 m_iActiveChan;
+	uint32 m_iCycle;
 };
 
 #endif /* N163_H */

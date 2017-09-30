@@ -28,6 +28,7 @@ const int RATE_MAX = 400;
 // CSpeedDlg dialog
 
 IMPLEMENT_DYNAMIC(CSpeedDlg, CDialog)
+
 CSpeedDlg::CSpeedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSpeedDlg::IDD, pParent), m_iInitSpeed(0), m_iSpeed(0)
 {
@@ -44,8 +45,8 @@ void CSpeedDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSpeedDlg, CDialog)
-	ON_WM_HSCROLL()
-	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+		ON_WM_HSCROLL()
+		ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -64,7 +65,7 @@ void CSpeedDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 	m_iSpeed = ((CSliderCtrl*)pScrollBar)->GetPos();
 	CString String;
-	String.Format(_T("%i Hz"), m_iSpeed );
+	String.Format(_T("%i Hz"), m_iSpeed);
 	SetDlgItemText(IDC_SPEED, String);
 }
 
@@ -72,7 +73,7 @@ BOOL CSpeedDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CSliderCtrl *Slider = static_cast<CSliderCtrl*>(GetDlgItem(IDC_SPEED_SLD));
+	CSliderCtrl* Slider = static_cast<CSliderCtrl*>(GetDlgItem(IDC_SPEED_SLD));
 	CString String;
 
 	// TODO: Program will crash if speed is set below 25Hz, I don't know why
@@ -82,7 +83,7 @@ BOOL CSpeedDlg::OnInitDialog()
 	String.Format(_T("%i Hz"), m_iSpeed);
 	SetDlgItemText(IDC_SPEED, String);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 

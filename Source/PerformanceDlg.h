@@ -25,19 +25,19 @@
 
 class CPerformanceDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CPerformanceDlg)
+DECLARE_DYNAMIC(CPerformanceDlg)
 
 public:
-	CPerformanceDlg(CWnd* pParent = NULL);   // standard constructor
+	CPerformanceDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CPerformanceDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PERFORMANCE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);

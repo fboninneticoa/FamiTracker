@@ -32,18 +32,18 @@ public:
 	void Create(int Width, int Height);
 	void SetSampleRate(int SampleRate);
 	void Draw();
-	void Display(CDC *pDC, bool bPaintMsg);
+	void Display(CDC* pDC, bool bPaintMsg);
 
 private:
 	void RenderBuffer();
 	void ClearBackground();
 
 private:
-	COLORREF *m_pBlitBuffer;
+	COLORREF* m_pBlitBuffer;
 
 	bool m_bBlur;
-	int	 m_iWindowBufPtr;
-	short *m_pWindowBuf;
+	int m_iWindowBufPtr;
+	short* m_pWindowBuf;
 
 #ifdef _DEBUG
 	int m_iPeak;

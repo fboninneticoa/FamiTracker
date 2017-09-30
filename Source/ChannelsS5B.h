@@ -24,13 +24,14 @@
 // Derived channels, 5B
 //
 
-class CChannelHandlerS5B : public CChannelHandler {
+class CChannelHandlerS5B : public CChannelHandler
+{
 public:
 	CChannelHandlerS5B();
 	virtual void ProcessChannel();
 
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -42,13 +43,13 @@ protected:
 	void WriteReg(int Reg, int Value);
 
 	// Static functions
-protected:	
+protected:
 	static void SetEnvelopeHigh(int Val);
 	static void SetEnvelopeLow(int Val);
 	static void SetEnvelopeType(int Val);
 	static void SetMode(int Chan, int Square, int Noise);
 	static void SetNoiseFreq(int Freq);
-	static void UpdateRegs(CAPU *pAPU);
+	static void UpdateRegs(CAPU* pAPU);
 
 	// Static memebers
 protected:
@@ -66,21 +67,21 @@ protected:
 
 	bool m_bUpdate;
 
-//	void RunSequence(int Index, CSequence *pSequence);
-/*
-	unsigned char m_cSweep;
-	unsigned char m_cDutyCycle, m_iDefaultDuty;
-
-	int ModEnable[SEQ_COUNT];
-	int	ModIndex[SEQ_COUNT];
-	int	ModDelay[SEQ_COUNT];
-	int	ModPointer[SEQ_COUNT];
-	*/
-
+	//	void RunSequence(int Index, CSequence *pSequence);
+	/*
+		unsigned char m_cSweep;
+		unsigned char m_cDutyCycle, m_iDefaultDuty;
+	
+		int ModEnable[SEQ_COUNT];
+		int	ModIndex[SEQ_COUNT];
+		int	ModDelay[SEQ_COUNT];
+		int	ModPointer[SEQ_COUNT];
+		*/
 };
 
 // Channel 1
-class CS5BChannel1 : public CChannelHandlerS5B {
+class CS5BChannel1 : public CChannelHandlerS5B
+{
 public:
 	CS5BChannel1() : CChannelHandlerS5B() { m_iDefaultDuty = 0; };
 	void RefreshChannel();
@@ -89,7 +90,8 @@ protected:
 };
 
 // Channel 2
-class CS5BChannel2 : public CChannelHandlerS5B {
+class CS5BChannel2 : public CChannelHandlerS5B
+{
 public:
 	CS5BChannel2() : CChannelHandlerS5B() { m_iDefaultDuty = 0; };
 	void RefreshChannel();
@@ -98,7 +100,8 @@ protected:
 };
 
 // Channel 3
-class CS5BChannel3 : public CChannelHandlerS5B {
+class CS5BChannel3 : public CChannelHandlerS5B
+{
 public:
 	CS5BChannel3() : CChannelHandlerS5B() { m_iDefaultDuty = 0; };
 	void RefreshChannel();

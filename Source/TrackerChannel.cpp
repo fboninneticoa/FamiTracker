@@ -28,7 +28,7 @@
  *
  */
 
-CTrackerChannel::CTrackerChannel(LPCTSTR pName, const int iChip, const int iID) : 
+CTrackerChannel::CTrackerChannel(LPCTSTR pName, const int iChip, const int iID) :
 	m_pChannelName(pName),
 	m_iChip(iChip),
 	m_iChannelID(iID),
@@ -69,11 +69,12 @@ void CTrackerChannel::SetColumnCount(int Count)
 	m_iColumnCount = Count;
 }
 
-void CTrackerChannel::SetNote(stChanNote &Note, note_prio_t Priority)
+void CTrackerChannel::SetNote(stChanNote& Note, note_prio_t Priority)
 {
 	m_csNoteLock.Lock();
 
-	if (Priority >= m_iNotePriority) {
+	if (Priority >= m_iNotePriority)
+	{
 		m_Note = Note;
 		m_bNewNote = true;
 		m_iNotePriority = Priority;
@@ -85,7 +86,7 @@ void CTrackerChannel::SetNote(stChanNote &Note, note_prio_t Priority)
 stChanNote CTrackerChannel::GetNote()
 {
 	stChanNote Note;
-	
+
 	m_csNoteLock.Lock();
 
 	Note = m_Note;
@@ -133,24 +134,25 @@ int CTrackerChannel::GetPitch() const
 	return m_iPitch;
 }
 
-bool CTrackerChannel::IsInstrumentCompatible(int Instrument, CFamiTrackerDoc *pDoc) const
+bool CTrackerChannel::IsInstrumentCompatible(int Instrument, CFamiTrackerDoc* pDoc) const
 {
 	int InstType = pDoc->GetInstrumentType(Instrument);
 
-	switch (m_iChip) {
-		case SNDCHIP_NONE:
-		case SNDCHIP_MMC5:
-			return InstType == INST_2A03;
-		case SNDCHIP_N163:
-			return InstType == INST_N163;
-		case SNDCHIP_S5B:
-			return InstType == INST_S5B;
-		case SNDCHIP_VRC6:
-			return InstType == INST_VRC6;
-		case SNDCHIP_VRC7:
-			return InstType == INST_VRC7;
-		case SNDCHIP_FDS:
-			return InstType == INST_FDS;
+	switch (m_iChip)
+	{
+	case SNDCHIP_NONE:
+	case SNDCHIP_MMC5:
+		return InstType == INST_2A03;
+	case SNDCHIP_N163:
+		return InstType == INST_N163;
+	case SNDCHIP_S5B:
+		return InstType == INST_S5B;
+	case SNDCHIP_VRC6:
+		return InstType == INST_VRC6;
+	case SNDCHIP_VRC7:
+		return InstType == INST_VRC7;
+	case SNDCHIP_FDS:
+		return InstType == INST_FDS;
 	}
 
 	return false;

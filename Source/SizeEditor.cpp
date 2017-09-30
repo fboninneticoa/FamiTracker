@@ -36,18 +36,18 @@ const int CHANGE_SPEED = 50;
 IMPLEMENT_DYNAMIC(CSizeEditor, CWnd)
 
 BEGIN_MESSAGE_MAP(CSizeEditor, CWnd)
-	ON_WM_PAINT()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_LBUTTONDBLCLK()
-	ON_WM_MOUSEMOVE()
-	ON_WM_SETCURSOR()
-	ON_WM_TIMER()
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
+		ON_WM_PAINT()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_LBUTTONUP()
+		ON_WM_LBUTTONDBLCLK()
+		ON_WM_MOUSEMOVE()
+		ON_WM_SETCURSOR()
+		ON_WM_TIMER()
+		ON_WM_SETFOCUS()
+		ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
-CSizeEditor::CSizeEditor(CWnd *pParent) : 
+CSizeEditor::CSizeEditor(CWnd* pParent) :
 	CWnd(),
 	m_iValue(0),
 	m_iButtonPressed(0),
@@ -65,9 +65,10 @@ void CSizeEditor::OnPaint()
 	CPaintDC dc(this);
 
 	CFont Font;
-	Font.CreateFont(-11, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Tahoma"));
+	Font.CreateFont(-11, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+	                DEFAULT_QUALITY, DEFAULT_PITCH, _T("Tahoma"));
 
-	CFont *pOldFont = dc.SelectObject(&Font);
+	CFont* pOldFont = dc.SelectObject(&Font);
 
 	CRect rect;
 	GetClientRect(rect);
@@ -80,7 +81,8 @@ void CSizeEditor::OnPaint()
 	dc.FillSolidRect(rect, 0x00);
 	dc.Draw3dRect(rect, BUTTON_SHADOW, BUTTON_HILIGHT);
 
-	if (this == GetFocus()) {
+	if (this == GetFocus())
+	{
 		CRect focusRect = rect;
 		focusRect.DeflateRect(rect.Height() - 1, 2, rect.Height() + 1, 2);
 		dc.SetBkColor(0xFFFFFF);
@@ -122,7 +124,8 @@ void CSizeEditor::OnPaint()
 
 BOOL CSizeEditor::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	if (m_bSizeCursor) {
+	if (m_bSizeCursor)
+	{
 		SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENS));
 		return TRUE;
 	}
@@ -137,7 +140,8 @@ void CSizeEditor::OnLButtonDown(UINT nFlags, CPoint point)
 	SetCapture();
 	SetFocus();
 
-	if ((point.x > rect.bottom) && (point.x < (rect.right - rect.bottom))) {
+	if ((point.x > rect.bottom) && (point.x < (rect.right - rect.bottom)))
+	{
 		m_iButtonPressed = 3;
 	}
 	else
@@ -162,7 +166,8 @@ void CSizeEditor::OnMouseMove(UINT nFlags, CPoint point)
 	CRect rect;
 	GetClientRect(rect);
 
-	if ((nFlags & MK_LBUTTON) && (m_iButtonPressed == 3)) {
+	if ((nFlags & MK_LBUTTON) && (m_iButtonPressed == 3))
+	{
 		// Drag
 		static int LastY;
 		if (LastY - point.y > 0)
@@ -172,9 +177,11 @@ void CSizeEditor::OnMouseMove(UINT nFlags, CPoint point)
 		LastY = point.y;
 		RedrawWindow(NULL);
 	}
-	else {
+	else
+	{
 		MouseAction(nFlags, point);
-		if (!(nFlags & MK_LBUTTON)) {
+		if (!(nFlags & MK_LBUTTON))
+		{
 			if ((point.x > rect.bottom) && (point.x < (rect.right - rect.bottom)))
 				m_bSizeCursor = true;
 			else
@@ -188,15 +195,19 @@ void CSizeEditor::MouseAction(UINT nFlags, CPoint point)
 	CRect rect;
 	GetClientRect(rect);
 
-	if (point.x < rect.bottom && (nFlags & MK_LBUTTON)) {
-		if (m_iButtonPressed == 0) {
+	if (point.x < rect.bottom && (nFlags & MK_LBUTTON))
+	{
+		if (m_iButtonPressed == 0)
+		{
 			DecreaseValue();
 			SetTimer(0, CHANGE_DELAY, NULL);
 		}
 		m_iButtonPressed = 1;
 	}
-	else if (point.x > (rect.right - rect.bottom) && (nFlags & MK_LBUTTON)) {
-		if (m_iButtonPressed == 0) {
+	else if (point.x > (rect.right - rect.bottom) && (nFlags & MK_LBUTTON))
+	{
+		if (m_iButtonPressed == 0)
+		{
 			IncreaseValue();
 			SetTimer(0, CHANGE_DELAY, NULL);
 		}

@@ -23,45 +23,46 @@
 
 #include "Channel.h"
 
-class CDPCM : public CChannel {
+class CDPCM : public CChannel
+{
 public:
-	CDPCM(CMixer *pMixer, CSampleMem *pSampleMem, int ID);
+	CDPCM(CMixer* pMixer, CSampleMem* pSampleMem, int ID);
 	~CDPCM();
 
-	void	Reset();
-	void	Write(uint16 Address, uint8 Value);
-	void	WriteControl(uint8 Value);
-	uint8	ReadControl() const;
-	uint8	DidIRQ() const;
-	void	Process(uint32 Time);
-	void	Reload();
+	void Reset();
+	void Write(uint16 Address, uint8 Value);
+	void WriteControl(uint8 Value);
+	uint8 ReadControl() const;
+	uint8 DidIRQ() const;
+	void Process(uint32 Time);
+	void Reload();
 
-	uint8	GetSamplePos() const { return  (m_iDMA_Address - (m_iDMA_LoadReg << 6 | 0x4000)) >> 6; };
-	uint8	GetDeltaCounter() const { return m_iDeltaCounter; };
-	bool	IsPlaying() const { return (m_iDMA_BytesRemaining > 0); };
+	uint8 GetSamplePos() const { return (m_iDMA_Address - (m_iDMA_LoadReg << 6 | 0x4000)) >> 6; };
+	uint8 GetDeltaCounter() const { return m_iDeltaCounter; };
+	bool IsPlaying() const { return (m_iDMA_BytesRemaining > 0); };
 
 public:
-	static const uint16	DMC_PERIODS_NTSC[];
-	static const uint16	DMC_PERIODS_PAL[];
+	static const uint16 DMC_PERIODS_NTSC[];
+	static const uint16 DMC_PERIODS_PAL[];
 
-	const uint16 *PERIOD_TABLE;
+	const uint16* PERIOD_TABLE;
 
 private:
-	uint8	m_iBitDivider;
-	uint8	m_iShiftReg;
-	uint8	m_iPlayMode;
-	uint8	m_iDeltaCounter;
-	uint8	m_iSampleBuffer;
+	uint8 m_iBitDivider;
+	uint8 m_iShiftReg;
+	uint8 m_iPlayMode;
+	uint8 m_iDeltaCounter;
+	uint8 m_iSampleBuffer;
 
-	uint16	m_iDMA_LoadReg;
-	uint16	m_iDMA_LengthReg;
-	uint16	m_iDMA_Address;
-	uint16	m_iDMA_BytesRemaining;
+	uint16 m_iDMA_LoadReg;
+	uint16 m_iDMA_LengthReg;
+	uint16 m_iDMA_Address;
+	uint16 m_iDMA_BytesRemaining;
 
-	bool	m_bTriggeredIRQ, m_bSampleFilled, m_bSilenceFlag;
+	bool m_bTriggeredIRQ, m_bSampleFilled, m_bSilenceFlag;
 
 	// Needed by FamiTracker 
-	CSampleMem	*m_pSampleMem;
+	CSampleMem* m_pSampleMem;
 };
 
 #endif /* DPCM_H */

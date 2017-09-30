@@ -26,10 +26,10 @@ const uint16 CNoise::NOISE_PERIODS_NTSC[] = {
 };
 
 const uint16 CNoise::NOISE_PERIODS_PAL[] = {
-	4, 8, 14, 30, 60, 88, 118, 148, 188, 236, 354, 472, 708,  944, 1890, 3778
+	4, 8, 14, 30, 60, 88, 118, 148, 188, 236, 354, 472, 708, 944, 1890, 3778
 };
 
-CNoise::CNoise(CMixer *pMixer, int ID) : CChannel(pMixer, ID, SNDCHIP_NONE)
+CNoise::CNoise(CMixer* pMixer, int ID) : CChannel(pMixer, ID, SNDCHIP_NONE)
 {
 	m_iLooping = 0;
 	m_iEnvelopeFix = 0;
@@ -51,7 +51,7 @@ void CNoise::Reset()
 {
 	m_iEnabled = m_iControlReg = 0;
 	m_iCounter = m_iLengthCounter = 0;
-	
+
 	m_iShiftReg = 1;
 
 	m_iEnvelopeCounter = m_iEnvelopeSpeed = 1;
@@ -66,7 +66,8 @@ void CNoise::Reset()
 
 void CNoise::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
+	switch (Address)
+	{
 	case 0x00:
 		m_iLooping = Value & 0x20;
 		m_iEnvelopeFix = Value & 0x10;
@@ -92,7 +93,7 @@ void CNoise::WriteControl(uint8 Value)
 {
 	m_iControlReg = Value & 1;
 
-	if (m_iControlReg == 0) 
+	if (m_iControlReg == 0)
 		m_iEnabled = 0;
 }
 
@@ -105,9 +106,10 @@ void CNoise::Process(uint32 Time)
 {
 	bool Valid = m_iEnabled && (m_iLengthCounter > 0);
 
-	while (Time >= m_iCounter) {
-		Time	  -= m_iCounter;
-		m_iTime	  += m_iCounter;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
+		m_iTime += m_iCounter;
 		m_iCounter = m_iPeriod;
 		uint8 Volume = m_iEnvelopeFix ? m_iFixedVolume : m_iEnvelopeVolume;
 		Mix(Valid && (m_iShiftReg & 1) ? Volume : 0);
@@ -120,15 +122,17 @@ void CNoise::Process(uint32 Time)
 
 void CNoise::LengthCounterUpdate()
 {
-	if ((m_iLooping == 0) && (m_iLengthCounter > 0)) 
+	if ((m_iLooping == 0) && (m_iLengthCounter > 0))
 		--m_iLengthCounter;
 }
 
 void CNoise::EnvelopeUpdate()
 {
-	if (--m_iEnvelopeCounter == 0) {
+	if (--m_iEnvelopeCounter == 0)
+	{
 		m_iEnvelopeCounter = m_iEnvelopeSpeed;
-		if (!m_iEnvelopeFix) {
+		if (!m_iEnvelopeFix)
+		{
 			if (m_iLooping)
 				m_iEnvelopeVolume = (m_iEnvelopeVolume - 1) & 0x0F;
 			else if (m_iEnvelopeVolume > 0)

@@ -24,23 +24,23 @@
 
 class CInstrumentEditorFDSEnvelope : public CSequenceInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorFDSEnvelope)
+DECLARE_DYNAMIC(CInstrumentEditorFDSEnvelope)
 
 public:
-	CInstrumentEditorFDSEnvelope(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorFDSEnvelope(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorFDSEnvelope();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Envelopes"); };
+	virtual TCHAR* GetTitle() const { return _T("Envelopes"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 	virtual void SetSequenceString(CString Sequence, bool Changed);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_FDS_ENVELOPE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	virtual void OnKeyReturn();
 	void LoadSequence();
@@ -49,10 +49,10 @@ protected:
 	static const int MAX_VOLUME = 32;
 
 protected:
-	CInstrumentFDS	*m_pInstrument;
-	int				m_iSelectedType;
+	CInstrumentFDS* m_pInstrument;
+	int m_iSelectedType;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnCbnSelchangeType();

@@ -30,11 +30,12 @@
 // CConfigShortcuts dialog
 
 IMPLEMENT_DYNAMIC(CConfigShortcuts, CPropertyPage)
-CConfigShortcuts::CConfigShortcuts() : 
-	CPropertyPage(CConfigShortcuts::IDD), 
-	m_bShift(false), 
-	m_bControl(false), 
-	m_bAlt(false), 
+
+CConfigShortcuts::CConfigShortcuts() :
+	CPropertyPage(CConfigShortcuts::IDD),
+	m_bShift(false),
+	m_bControl(false),
+	m_bAlt(false),
 	m_iSelectedItem(0),
 	m_iKeys(new int[CAccelerator::ACCEL_COUNT]),
 	m_iMods(new int[CAccelerator::ACCEL_COUNT])
@@ -54,9 +55,9 @@ void CConfigShortcuts::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigShortcuts, CPropertyPage)
-	ON_NOTIFY(NM_CLICK, IDC_SHORTCUTS, OnNMClickShortcuts)
-	ON_BN_CLICKED(IDC_DEFAULT, OnBnClickedDefault)
-	ON_BN_CLICKED(IDC_CLEAR, &CConfigShortcuts::OnBnClickedClear)
+		ON_NOTIFY(NM_CLICK, IDC_SHORTCUTS, OnNMClickShortcuts)
+		ON_BN_CLICKED(IDC_DEFAULT, OnBnClickedDefault)
+		ON_BN_CLICKED(IDC_CLEAR, &CConfigShortcuts::OnBnClickedClear)
 END_MESSAGE_MAP()
 
 
@@ -66,8 +67,8 @@ BOOL CConfigShortcuts::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	CAccelerator *pAccel = theApp.GetAccelerator();
-	CListCtrl *pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
+	CAccelerator* pAccel = theApp.GetAccelerator();
+	CListCtrl* pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
 
 	pListView->DeleteAllItems();
 	pListView->InsertColumn(0, _T("Action"), LVCFMT_LEFT, 170);
@@ -75,7 +76,8 @@ BOOL CConfigShortcuts::OnInitDialog()
 	pListView->InsertColumn(2, _T("Key"), LVCFMT_LEFT, 110);
 
 	// Build shortcut list
-	for (int i = 0; i < CAccelerator::ACCEL_COUNT; ++i) {
+	for (int i = 0; i < CAccelerator::ACCEL_COUNT; ++i)
+	{
 		pListView->InsertItem(i, pAccel->GetItemName(i), 0);
 		pListView->SetItemText(i, 1, pAccel->GetItemModName(i));
 		pListView->SetItemText(i, 2, pAccel->GetItemKeyName(i));
@@ -83,19 +85,19 @@ BOOL CConfigShortcuts::OnInitDialog()
 		m_iKeys[i] = pAccel->GetItemKey(i);
 		m_iMods[i] = pAccel->GetItemMod(i);
 	}
-	
+
 	pListView->SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	pListView->SetSelectionMark(0);
 
 	m_iSelectedItem = 0;
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CConfigShortcuts::OnNMClickShortcuts(NMHDR *pNMHDR, LRESULT *pResult)
+void CConfigShortcuts::OnNMClickShortcuts(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	CListCtrl *pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
+	CListCtrl* pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
 	m_iSelectedItem = pListView->GetSelectionMark();
 	CString KeyString = AssembleKeyString(m_iMods[m_iSelectedItem], m_iKeys[m_iSelectedItem]);
 	SetDlgItemText(IDC_KEY, KeyString);
@@ -105,8 +107,8 @@ void CConfigShortcuts::OnNMClickShortcuts(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CConfigShortcuts::OnBnClickedDefault()
 {
-	CAccelerator *pAccel = theApp.GetAccelerator();
-	
+	CAccelerator* pAccel = theApp.GetAccelerator();
+
 	int Key = pAccel->GetDefaultKey(m_iSelectedItem);
 	int Mod = pAccel->GetDefaultMod(m_iSelectedItem);
 
@@ -120,7 +122,7 @@ void CConfigShortcuts::OnBnClickedDefault()
 
 BOOL CConfigShortcuts::OnApply()
 {
-	CAccelerator *pAccel = theApp.GetAccelerator();
+	CAccelerator* pAccel = theApp.GetAccelerator();
 
 	// Store keys
 	for (int i = 0; i < CAccelerator::ACCEL_COUNT; ++i)
@@ -137,16 +139,18 @@ BOOL CConfigShortcuts::OnApply()
 
 BOOL CConfigShortcuts::PreTranslateMessage(MSG* pMsg)
 {
-	if (GetFocus() == GetDlgItem(IDC_KEY)) {
-		switch (pMsg->message) {
-			case WM_KEYDOWN:
-			case WM_SYSKEYDOWN:
-				KeyPressed(pMsg->wParam);
-				return TRUE;
-			case WM_KEYUP:
-			case WM_SYSKEYUP:
-				KeyReleased(pMsg->wParam);
-				return TRUE;
+	if (GetFocus() == GetDlgItem(IDC_KEY))
+	{
+		switch (pMsg->message)
+		{
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+			KeyPressed(pMsg->wParam);
+			return TRUE;
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			KeyReleased(pMsg->wParam);
+			return TRUE;
 		}
 	}
 
@@ -155,16 +159,17 @@ BOOL CConfigShortcuts::PreTranslateMessage(MSG* pMsg)
 
 void CConfigShortcuts::KeyPressed(int Key)
 {
-	switch (Key) {
-		case VK_SHIFT:
-			m_bShift = true;
-			return;
-		case VK_CONTROL:
-			m_bControl = true;
-			return;
-		case VK_MENU:
-			m_bAlt = true;
-			return;
+	switch (Key)
+	{
+	case VK_SHIFT:
+		m_bShift = true;
+		return;
+	case VK_CONTROL:
+		m_bControl = true;
+		return;
+	case VK_MENU:
+		m_bAlt = true;
+		return;
 	}
 
 	SetupKey(Key);
@@ -172,16 +177,17 @@ void CConfigShortcuts::KeyPressed(int Key)
 
 void CConfigShortcuts::KeyReleased(int Key)
 {
-	switch (Key) {
-		case VK_SHIFT:
-			m_bShift = false;
-			break;
-		case VK_CONTROL:
-			m_bControl = false;
-			break;
-		case VK_MENU:
-			m_bAlt = false;
-			break;
+	switch (Key)
+	{
+	case VK_SHIFT:
+		m_bShift = false;
+		break;
+	case VK_CONTROL:
+		m_bControl = false;
+		break;
+	case VK_MENU:
+		m_bAlt = false;
+		break;
 	}
 }
 
@@ -201,11 +207,11 @@ void CConfigShortcuts::SetupKey(int Key)
 void CConfigShortcuts::StoreKey(int Item, int Key, int Mod)
 {
 	// Store in temp. list
-	CAccelerator *pAccel = theApp.GetAccelerator();
+	CAccelerator* pAccel = theApp.GetAccelerator();
 	CString KeyName = pAccel->GetVKeyName(Key);
 
 	// Save to list
-	CListCtrl *pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
+	CListCtrl* pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
 
 	pListView->SetItemText(m_iSelectedItem, 1, CAccelerator::MOD_NAMES[Mod]);
 	pListView->SetItemText(m_iSelectedItem, 2, KeyName);
@@ -216,8 +222,8 @@ void CConfigShortcuts::StoreKey(int Item, int Key, int Mod)
 
 void CConfigShortcuts::OnBnClickedClear()
 {
-	CListCtrl *pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
-	
+	CListCtrl* pListView = static_cast<CListCtrl*>(GetDlgItem(IDC_SHORTCUTS));
+
 	pListView->SetItemText(m_iSelectedItem, 1, CAccelerator::MOD_NAMES[MOD_NONE]);
 	pListView->SetItemText(m_iSelectedItem, 2, _T("None"));
 
@@ -231,20 +237,23 @@ void CConfigShortcuts::OnBnClickedClear()
 
 CString CConfigShortcuts::AssembleKeyString(int Mod, int Key)
 {
-	CAccelerator *pAccel = theApp.GetAccelerator();
+	CAccelerator* pAccel = theApp.GetAccelerator();
 	CString KeyStr;
 
-	if (Mod & MOD_SHIFT) {
+	if (Mod & MOD_SHIFT)
+	{
 		KeyStr.Append(pAccel->GetVKeyName(VK_SHIFT));
 		KeyStr.Append(_T(" + "));
 	}
 
-	if (Mod & MOD_CONTROL) {
+	if (Mod & MOD_CONTROL)
+	{
 		KeyStr.Append(pAccel->GetVKeyName(VK_CONTROL));
 		KeyStr.Append(_T(" + "));
 	}
 
-	if (Mod & MOD_ALT) {
+	if (Mod & MOD_ALT)
+	{
 		KeyStr.Append(pAccel->GetVKeyName(VK_MENU));
 		KeyStr.Append(_T(" + "));
 	}

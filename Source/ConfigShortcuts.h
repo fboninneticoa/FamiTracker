@@ -25,23 +25,23 @@
 
 class CConfigShortcuts : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CConfigShortcuts)
+DECLARE_DYNAMIC(CConfigShortcuts)
 
 public:
-	CConfigShortcuts();   // standard constructor
+	CConfigShortcuts(); // standard constructor
 	virtual ~CConfigShortcuts();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CONFIG_SHORTCUTS };
 
 private:
-	int	m_iSelectedItem;
+	int m_iSelectedItem;
 	bool m_bShift;
 	bool m_bControl;
 	bool m_bAlt;
 
-	int *m_iKeys;
-	int *m_iMods;
+	int* m_iKeys;
+	int* m_iMods;
 
 protected:
 	void SetupKey(int Key);
@@ -49,15 +49,15 @@ protected:
 	void KeyReleased(int Key);
 	void StoreKey(int Item, int Key, int Mod);
 
-	CString	AssembleKeyString(int Mod, int Key);
+	CString AssembleKeyString(int Mod, int Key);
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnNMClickShortcuts(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMClickShortcuts(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedDefault();
 	virtual BOOL OnApply();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

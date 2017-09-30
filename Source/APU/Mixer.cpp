@@ -62,8 +62,8 @@
 
 static const double AMP_2A03 = 400.0;
 
-static const float LEVEL_FALL_OFF_RATE	= 0.6f;
-static const int   LEVEL_FALL_OFF_DELAY = 3;
+static const float LEVEL_FALL_OFF_RATE = 0.6f;
+static const int LEVEL_FALL_OFF_DELAY = 3;
 
 CMixer::CMixer()
 {
@@ -123,25 +123,26 @@ void CMixer::ExternalSound(int Chip)
 
 void CMixer::SetChipLevel(chip_level_t Chip, float Level)
 {
-	switch (Chip) {
-		case CHIP_LEVEL_APU1:
-			m_fLevelAPU1 = Level;
-			break;
-		case CHIP_LEVEL_APU2:
-			m_fLevelAPU2 = Level;
-			break;
-		case CHIP_LEVEL_VRC6:
-			m_fLevelVRC6 = Level;
-			break;
-		case CHIP_LEVEL_MMC5:
-			m_fLevelMMC5 = Level;
-			break;
-		case CHIP_LEVEL_FDS:
-			m_fLevelFDS = Level;
-			break;
-		case CHIP_LEVEL_N163:
-			m_fLevelN163 = Level;
-			break;
+	switch (Chip)
+	{
+	case CHIP_LEVEL_APU1:
+		m_fLevelAPU1 = Level;
+		break;
+	case CHIP_LEVEL_APU2:
+		m_fLevelAPU2 = Level;
+		break;
+	case CHIP_LEVEL_VRC6:
+		m_fLevelVRC6 = Level;
+		break;
+	case CHIP_LEVEL_MMC5:
+		m_fLevelMMC5 = Level;
+		break;
+	case CHIP_LEVEL_FDS:
+		m_fLevelFDS = Level;
+		break;
+	case CHIP_LEVEL_N163:
+		m_fLevelN163 = Level;
+		break;
 	}
 }
 
@@ -151,7 +152,7 @@ float CMixer::GetAttenuation() const
 	const float ATTENUATION_VRC7 = 0.64f;
 	const float ATTENUATION_N163 = 0.70f;
 	const float ATTENUATION_MMC5 = 0.83f;
-	const float ATTENUATION_FDS  = 0.90f;
+	const float ATTENUATION_FDS = 0.90f;
 
 	float Attenuation = 1.0f;
 
@@ -175,7 +176,7 @@ float CMixer::GetAttenuation() const
 	return Attenuation;
 }
 
-void CMixer::UpdateSettings(int LowCut,	int HighCut, int HighDamp, float OverallVol)
+void CMixer::UpdateSettings(int LowCut, int HighCut, int HighDamp, float OverallVol)
 {
 	float Volume = OverallVol * GetAttenuation();
 
@@ -214,7 +215,7 @@ void CMixer::UpdateSettings(int LowCut,	int HighCut, int HighDamp, float Overall
 	SynthVRC6.volume(Volume * 3.98333f * m_fLevelVRC6);
 	SynthFDS.volume(Volume * 1.00f * m_fLevelFDS);
 	SynthMMC5.volume(Volume * 1.18421f * m_fLevelMMC5);
-	
+
 	// Not checked
 	SynthN163.volume(Volume * 1.1f * m_fLevelN163);
 	//SynthS5B.volume(Volume * 1.0f);
@@ -232,7 +233,7 @@ void CMixer::SetNamcoVolume(float fVol)
 	SynthN163.volume(fVolume * 1.1f * m_fLevelN163);
 }
 
-void CMixer::MixSamples(blip_sample_t *pBuffer, uint32 Count)
+void CMixer::MixSamples(blip_sample_t* pBuffer, uint32 Count)
 {
 	// For VRC7
 	BlipBuffer.mix_samples(pBuffer, Count);
@@ -265,7 +266,7 @@ void CMixer::ClearBuffer()
 }
 
 int CMixer::SamplesAvail() const
-{	
+{
 	return (int)BlipBuffer.samples_avail();
 }
 
@@ -281,11 +282,14 @@ int CMixer::FinishBuffer(int t)
 	for (int i = 0; i < 3; ++i)
 		StoreChannelLevel(CHANID_S5B_CH1 + i, PSG_getchanvol(i));
 
-	for (int i = 0; i < CHANNELS; ++i) {
+	for (int i = 0; i < CHANNELS; ++i)
+	{
 		if (m_iChanLevelFallOff[i] > 0)
 			m_iChanLevelFallOff[i]--;
-		else {
-			if (m_fChannelLevels[i] > 0) {
+		else
+		{
+			if (m_fChannelLevels[i] > 0)
+			{
 				m_fChannelLevels[i] -= LEVEL_FALL_OFF_RATE;
 				if (m_fChannelLevels[i] < 0)
 					m_fChannelLevels[i] = 0;
@@ -358,41 +362,43 @@ void CMixer::AddValue(int ChanID, int Chip, int Value, int AbsValue, int FrameCy
 {
 	// Add sound to mixer
 	//
-	
+
 	int Delta = Value - m_iChannels[ChanID];
 	StoreChannelLevel(ChanID, AbsValue);
 	m_iChannels[ChanID] = Value;
 
-	switch (Chip) {
-		case SNDCHIP_NONE:
-			switch (ChanID) {
-				case CHANID_SQUARE1:
-				case CHANID_SQUARE2:
-					MixInternal1(FrameCycles);
-					break;
-				case CHANID_TRIANGLE:
-				case CHANID_NOISE:
-				case CHANID_DPCM:
-					MixInternal2(FrameCycles);
-					break;
-			}
+	switch (Chip)
+	{
+	case SNDCHIP_NONE:
+		switch (ChanID)
+		{
+		case CHANID_SQUARE1:
+		case CHANID_SQUARE2:
+			MixInternal1(FrameCycles);
 			break;
-		case SNDCHIP_N163:
-			MixN163(Value, FrameCycles);
+		case CHANID_TRIANGLE:
+		case CHANID_NOISE:
+		case CHANID_DPCM:
+			MixInternal2(FrameCycles);
 			break;
-		case SNDCHIP_FDS:
-			MixFDS(Value, FrameCycles);
-			break;
-		case SNDCHIP_MMC5:
-			MixMMC5(Delta, FrameCycles);
-			break;
-		case SNDCHIP_VRC6:
-			MixVRC6(Value, FrameCycles);
-			break;
+		}
+		break;
+	case SNDCHIP_N163:
+		MixN163(Value, FrameCycles);
+		break;
+	case SNDCHIP_FDS:
+		MixFDS(Value, FrameCycles);
+		break;
+	case SNDCHIP_MMC5:
+		MixMMC5(Delta, FrameCycles);
+		break;
+	case SNDCHIP_VRC6:
+		MixVRC6(Value, FrameCycles);
+		break;
 	}
 }
 
-int CMixer::ReadBuffer(int Size, void *Buffer, bool Stereo)
+int CMixer::ReadBuffer(int Size, void* Buffer, bool Stereo)
 {
 	return BlipBuffer.read_samples((blip_sample_t*)Buffer, Size);
 }
@@ -416,20 +422,24 @@ void CMixer::StoreChannelLevel(int Channel, int Value)
 	if (Channel == CHANID_FDS)
 		AbsVol = AbsVol / 38;
 
-	if (Channel >= CHANID_N163_CHAN1 && Channel <= CHANID_N163_CHAN8) {
+	if (Channel >= CHANID_N163_CHAN1 && Channel <= CHANID_N163_CHAN8)
+	{
 		AbsVol /= 15;
 		Channel = (7 - (Channel - CHANID_N163_CHAN1)) + CHANID_N163_CHAN1;
 	}
 
-	if (Channel >= CHANID_VRC7_CH1 && Channel <= CHANID_VRC7_CH6) {
+	if (Channel >= CHANID_VRC7_CH1 && Channel <= CHANID_VRC7_CH6)
+	{
 		AbsVol = (int)(logf((float)AbsVol) * 3.0f);
 	}
 
-	if (Channel >= CHANID_S5B_CH1 && Channel <= CHANID_S5B_CH3) {
+	if (Channel >= CHANID_S5B_CH1 && Channel <= CHANID_S5B_CH3)
+	{
 		AbsVol = (int)(logf((float)AbsVol) * 2.8f);
 	}
 
-	if (float(AbsVol) >= m_fChannelLevels[Channel]) {
+	if (float(AbsVol) >= m_fChannelLevels[Channel])
+	{
 		m_fChannelLevels[Channel] = float(AbsVol);
 		m_iChanLevelFallOff[Channel] = LEVEL_FALL_OFF_DELAY;
 	}

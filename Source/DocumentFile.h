@@ -29,68 +29,69 @@ public:
 	CDocumentFile();
 	virtual ~CDocumentFile();
 
-	bool		Finished() const;
+	bool Finished() const;
 
 	// Write functions
-	bool		BeginDocument();
-	bool		EndDocument();
+	bool BeginDocument();
+	bool EndDocument();
 
-	void		CreateBlock(const char *ID, int Version);
-	void		WriteBlock(const char *pData, unsigned int Size);
-	void		WriteBlockInt(int Value);
-	void		WriteBlockChar(char Value);
-	void		WriteString(CString String);
-	bool		FlushBlock();
+	void CreateBlock(const char* ID, int Version);
+	void WriteBlock(const char* pData, unsigned int Size);
+	void WriteBlockInt(int Value);
+	void WriteBlockChar(char Value);
+	void WriteString(CString String);
+	bool FlushBlock();
 
 	// Read functions
-	bool		ValidateFile();
+	bool ValidateFile();
 	unsigned int GetFileVersion() const;
 
-	bool		ReadBlock();
-	void		GetBlock(void *Buffer, int Size);
-	int			GetBlockVersion() const;
-	bool		BlockDone() const;
-	char		*GetBlockHeaderID() const;
-	int			GetBlockInt();
-	char		GetBlockChar();
+	bool ReadBlock();
+	void GetBlock(void* Buffer, int Size);
+	int GetBlockVersion() const;
+	bool BlockDone() const;
+	char* GetBlockHeaderID() const;
+	int GetBlockInt();
+	char GetBlockChar();
 
-	int			GetBlockPos() const;
-	int			GetBlockSize() const;
+	int GetBlockPos() const;
+	int GetBlockSize() const;
 
-	CString		ReadString();
+	CString ReadString();
 
-	void		RollbackPointer(int count);	// avoid this
+	void RollbackPointer(int count); // avoid this
 
-	bool		IsFileIncomplete() const;
+	bool IsFileIncomplete() const;
 
 public:
 	// Constants
 	static const unsigned int FILE_VER;
 	static const unsigned int COMPATIBLE_VER;
 
-	static const char *FILE_HEADER_ID;
-	static const char *FILE_END_ID;
+	static const char* FILE_HEADER_ID;
+	static const char* FILE_END_ID;
 
 	static const unsigned int MAX_BLOCK_SIZE;
 	static const unsigned int BLOCK_SIZE;
 
 private:
-	template<class T> void WriteBlockData(T Value);
+	template <class T>
+	void WriteBlockData(T Value);
 
 protected:
 	void ReallocateBlock();
 
 protected:
-	unsigned int	m_iFileVersion;
-	bool			m_bFileDone;
-	bool			m_bIncomplete;
+	unsigned int m_iFileVersion;
+	bool m_bFileDone;
+	bool m_bIncomplete;
 
-	char			*m_cBlockID;
-	unsigned int	m_iBlockSize;
-	unsigned int	m_iBlockVersion;
-	char			*m_pBlockData;
+	char* m_cBlockID;
+	unsigned int m_iBlockSize;
+	unsigned int m_iBlockVersion;
+	char* m_pBlockData;
 
-	unsigned int	m_iMaxBlockSize;
+	unsigned int m_iMaxBlockSize;
 
-	unsigned int	m_iBlockPointer;	
+	unsigned int m_iBlockPointer;
 };

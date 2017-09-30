@@ -28,9 +28,9 @@
 #include "ChannelsFDS.h"
 #include "SoundGen.h"
 
-CChannelHandlerFDS::CChannelHandlerFDS() : 
+CChannelHandlerFDS::CChannelHandlerFDS() :
 	CChannelHandlerInverted(0xFFF, 32)
-{ 
+{
 	ClearSequences();
 
 	memset(m_iModTable, 0, 32);
@@ -39,7 +39,7 @@ CChannelHandlerFDS::CChannelHandlerFDS() :
 	m_bResetMod = false;
 }
 
-void CChannelHandlerFDS::HandleNoteData(stChanNote *pNoteData, int EffColumns)
+void CChannelHandlerFDS::HandleNoteData(stChanNote* pNoteData, int EffColumns)
 {
 	m_iPostEffect = 0;
 	m_iPostEffectParam = 0;
@@ -50,7 +50,8 @@ void CChannelHandlerFDS::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 	CChannelHandler::HandleNoteData(pNoteData, EffColumns);
 
-	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE) {
+	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE)
+	{
 		if (m_iPostEffect && (m_iEffect == EF_SLIDE_UP || m_iEffect == EF_SLIDE_DOWN))
 			SetupSlide(m_iPostEffect, m_iPostEffectParam);
 		else if (m_iEffect == EF_SLIDE_DOWN || m_iEffect == EF_SLIDE_UP)
@@ -69,64 +70,70 @@ void CChannelHandlerFDS::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 void CChannelHandlerFDS::HandleCustomEffects(int EffNum, int EffParam)
 {
-	if (EffNum == EF_PORTA_DOWN) {
+	if (EffNum == EF_PORTA_DOWN)
+	{
 		m_iPortaSpeed = EffParam;
 		m_iEffect = EF_PORTA_UP;
 	}
-	else if (EffNum == EF_PORTA_UP) {
+	else if (EffNum == EF_PORTA_UP)
+	{
 		m_iPortaSpeed = EffParam;
 		m_iEffect = EF_PORTA_DOWN;
 	}
-	else if (!CheckCommonEffects(EffNum, EffParam)) {
+	else if (!CheckCommonEffects(EffNum, EffParam))
+	{
 		// Custom effects
-		switch (EffNum) {
-			case EF_SLIDE_UP:
-			case EF_SLIDE_DOWN:
-				m_iPostEffect = EffNum;
-				m_iPostEffectParam = EffParam;
-				SetupSlide(EffNum, EffParam);
-				break;
-			case EF_FDS_MOD_DEPTH:
-				m_iEffModDepth = EffParam & 0x3F;
-				break;
-			case EF_FDS_MOD_SPEED_HI:
-				m_iEffModSpeedHi = EffParam & 0x0F;
-				break;
-			case EF_FDS_MOD_SPEED_LO:
-				m_iEffModSpeedLo = EffParam;
-				break;
+		switch (EffNum)
+		{
+		case EF_SLIDE_UP:
+		case EF_SLIDE_DOWN:
+			m_iPostEffect = EffNum;
+			m_iPostEffectParam = EffParam;
+			SetupSlide(EffNum, EffParam);
+			break;
+		case EF_FDS_MOD_DEPTH:
+			m_iEffModDepth = EffParam & 0x3F;
+			break;
+		case EF_FDS_MOD_SPEED_HI:
+			m_iEffModSpeedHi = EffParam & 0x0F;
+			break;
+		case EF_FDS_MOD_SPEED_LO:
+			m_iEffModSpeedLo = EffParam;
+			break;
 		}
 	}
 }
 
 bool CChannelHandlerFDS::HandleInstrument(int Instrument, bool Trigger, bool NewInstrument)
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
-	CInstrumentContainer<CInstrumentFDS> instContainer(pDocument, Instrument);	// TODO check this
-	CInstrumentFDS *pInstrument = instContainer();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
+	CInstrumentContainer<CInstrumentFDS> instContainer(pDocument, Instrument); // TODO check this
+	CInstrumentFDS* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return false;
 
-	if (Trigger || NewInstrument) {
+	if (Trigger || NewInstrument)
+	{
 		FillWaveRAM(pInstrument);
 		FillModulationTable(pInstrument);
 	}
 
-	if (Trigger) {
-		CSequence *pVolSeq = pInstrument->GetVolumeSeq();
-		CSequence *pArpSeq = pInstrument->GetArpSeq();
-		CSequence *pPitchSeq = pInstrument->GetPitchSeq();
+	if (Trigger)
+	{
+		CSequence* pVolSeq = pInstrument->GetVolumeSeq();
+		CSequence* pArpSeq = pInstrument->GetArpSeq();
+		CSequence* pPitchSeq = pInstrument->GetPitchSeq();
 
 		(pVolSeq->GetItemCount() > 0) ? SetupSequence(SEQ_VOLUME, pVolSeq) : ClearSequence(SEQ_VOLUME);
 		(pArpSeq->GetItemCount() > 0) ? SetupSequence(SEQ_ARPEGGIO, pArpSeq) : ClearSequence(SEQ_ARPEGGIO);
 		(pPitchSeq->GetItemCount() > 0) ? SetupSequence(SEQ_PITCH, pPitchSeq) : ClearSequence(SEQ_PITCH);
 
-//			if (pInstrument->GetModulationEnable()) {
-			m_iModulationSpeed = pInstrument->GetModulationSpeed();
-			m_iModulationDepth = pInstrument->GetModulationDepth();
-			m_iModulationDelay = pInstrument->GetModulationDelay();
-//			}
+		//			if (pInstrument->GetModulationEnable()) {
+		m_iModulationSpeed = pInstrument->GetModulationSpeed();
+		m_iModulationDepth = pInstrument->GetModulationDepth();
+		m_iModulationDelay = pInstrument->GetModulationDelay();
+		//			}
 	}
 
 	return true;
@@ -143,7 +150,8 @@ void CChannelHandlerFDS::HandleCut()
 
 void CChannelHandlerFDS::HandleRelease()
 {
-	if (!m_bRelease) {
+	if (!m_bRelease)
+	{
 		ReleaseNote();
 		ReleaseSequences();
 	}
@@ -152,7 +160,7 @@ void CChannelHandlerFDS::HandleRelease()
 void CChannelHandlerFDS::HandleNote(int Note, int Octave)
 {
 	// Trigger a new note
-	m_iNote	= RunNote(Octave, Note);
+	m_iNote = RunNote(Octave, Note);
 	m_bResetMod = true;
 	m_iLastInstrument = m_iInstrument;
 
@@ -162,7 +170,7 @@ void CChannelHandlerFDS::HandleNote(int Note, int Octave)
 void CChannelHandlerFDS::ProcessChannel()
 {
 	// Default effects
-	CChannelHandler::ProcessChannel();	
+	CChannelHandler::ProcessChannel();
 
 	// Sequences
 	if (GetSequenceState(SEQ_VOLUME) != SEQ_STATE_DISABLED)
@@ -177,7 +185,7 @@ void CChannelHandlerFDS::ProcessChannel()
 
 void CChannelHandlerFDS::RefreshChannel()
 {
-	CheckWaveUpdate();	
+	CheckWaveUpdate();
 
 	int Frequency = CalculatePeriod();
 	unsigned char LoFreq = Frequency & 0xFF;
@@ -204,24 +212,25 @@ void CChannelHandlerFDS::RefreshChannel()
 	m_bResetMod = false;
 
 	// Update modulation unit
-	if (m_iModulationDelay == 0) {
+	if (m_iModulationDelay == 0)
+	{
 		// Modulation frequency
 		WriteExternalRegister(0x4086, ModFreqLo);
 		WriteExternalRegister(0x4087, ModFreqHi);
 
 		// Sweep depth, disable sweep envelope
-		WriteExternalRegister(0x4084, 0x80 | m_iModulationDepth); 
+		WriteExternalRegister(0x4084, 0x80 | m_iModulationDepth);
 	}
-	else {
+	else
+	{
 		// Delayed modulation
 		WriteExternalRegister(0x4087, 0x80);
 		m_iModulationDelay--;
 	}
-
 }
 
 void CChannelHandlerFDS::ClearRegisters()
-{	
+{
 	// Clear gain
 	WriteExternalRegister(0x4090, 0x00);
 
@@ -243,18 +252,21 @@ void CChannelHandlerFDS::ClearRegisters()
 	memset(m_iWaveTable, 0, 64);
 }
 
-void CChannelHandlerFDS::FillWaveRAM(CInstrumentFDS *pInstrument)
+void CChannelHandlerFDS::FillWaveRAM(CInstrumentFDS* pInstrument)
 {
 	bool bNew(false);
 
-	for (int i = 0; i < 64; ++i) {
-		if (m_iWaveTable[i] != pInstrument->GetSample(i)) {
+	for (int i = 0; i < 64; ++i)
+	{
+		if (m_iWaveTable[i] != pInstrument->GetSample(i))
+		{
 			bNew = true;
 			break;
 		}
 	}
 
-	if (bNew) {
+	if (bNew)
+	{
 		for (int i = 0; i < 64; ++i)
 			m_iWaveTable[i] = pInstrument->GetSample(i);
 
@@ -274,20 +286,23 @@ void CChannelHandlerFDS::FillWaveRAM(CInstrumentFDS *pInstrument)
 	}
 }
 
-void CChannelHandlerFDS::FillModulationTable(CInstrumentFDS *pInstrument)
+void CChannelHandlerFDS::FillModulationTable(CInstrumentFDS* pInstrument)
 {
 	// Fills the 32 byte modulation table
 
 	bool bNew(true);
 
-	for (int i = 0; i < 32; ++i) {
-		if (m_iModTable[i] != pInstrument->GetModulation(i)) {
+	for (int i = 0; i < 32; ++i)
+	{
+		if (m_iModTable[i] != pInstrument->GetModulation(i))
+		{
 			bNew = true;
 			break;
 		}
 	}
 
-	if (bNew) {
+	if (bNew)
+	{
 		// Copy table
 		for (int i = 0; i < 32; ++i)
 			m_iModTable[i] = pInstrument->GetModulation(i);
@@ -305,13 +320,15 @@ void CChannelHandlerFDS::FillModulationTable(CInstrumentFDS *pInstrument)
 void CChannelHandlerFDS::CheckWaveUpdate()
 {
 	// Check wave changes
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 	bool bWaveChanged = theApp.GetSoundGenerator()->HasWaveChanged();
 
-	if (m_iInstrument != MAX_INSTRUMENTS && bWaveChanged) {
+	if (m_iInstrument != MAX_INSTRUMENTS && bWaveChanged)
+	{
 		CInstrumentContainer<CInstrumentFDS> instContainer(pDocument, m_iInstrument);
-		CInstrumentFDS *pInstrument = instContainer();
-		if (pInstrument != NULL) {
+		CInstrumentFDS* pInstrument = instContainer();
+		if (pInstrument != NULL)
+		{
 			// Realtime update
 			m_iModulationSpeed = pInstrument->GetModulationSpeed();
 			m_iModulationDepth = pInstrument->GetModulationDepth();

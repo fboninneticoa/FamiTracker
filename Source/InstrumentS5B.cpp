@@ -27,17 +27,19 @@ const int CInstrumentS5B::SEQUENCE_TYPES[] = {SEQ_VOLUME, SEQ_ARPEGGIO, SEQ_PITC
 
 CInstrumentS5B::CInstrumentS5B()
 {
-	for (int i = 0; i < SEQUENCE_COUNT; ++i) {
+	for (int i = 0; i < SEQUENCE_COUNT; ++i)
+	{
 		m_iSeqEnable[i] = 0;
 		m_iSeqIndex[i] = 0;
 	}
 }
 
-CInstrument *CInstrumentS5B::Clone() const
+CInstrument* CInstrumentS5B::Clone() const
 {
-	CInstrumentS5B *pNew = new CInstrumentS5B();
+	CInstrumentS5B* pNew = new CInstrumentS5B();
 
-	for (int i = 0; i < SEQUENCE_COUNT; i++) {
+	for (int i = 0; i < SEQUENCE_COUNT; i++)
+	{
 		pNew->SetSeqEnable(i, GetSeqEnable(i));
 		pNew->SetSeqIndex(i, GetSeqIndex(i));
 	}
@@ -51,17 +53,18 @@ void CInstrumentS5B::Setup()
 {
 }
 
-void CInstrumentS5B::Store(CDocumentFile *pDocFile)
+void CInstrumentS5B::Store(CDocumentFile* pDocFile)
 {
 	pDocFile->WriteBlockInt(SEQUENCE_COUNT);
 
-	for (int i = 0; i < SEQUENCE_COUNT; i++) {
+	for (int i = 0; i < SEQUENCE_COUNT; i++)
+	{
 		pDocFile->WriteBlockChar(GetSeqEnable(i));
 		pDocFile->WriteBlockChar(GetSeqIndex(i));
 	}
 }
 
-bool CInstrumentS5B::Load(CDocumentFile *pDocFile)
+bool CInstrumentS5B::Load(CDocumentFile* pDocFile)
 {
 	int SeqCnt = pDocFile->GetBlockInt();
 
@@ -69,7 +72,8 @@ bool CInstrumentS5B::Load(CDocumentFile *pDocFile)
 
 	SeqCnt = SEQUENCE_COUNT;
 
-	for (int i = 0; i < SeqCnt; i++) {
+	for (int i = 0; i < SeqCnt; i++)
+	{
 		SetSeqEnable(i, pDocFile->GetBlockChar());
 		int Index = pDocFile->GetBlockChar();
 		ASSERT_FILE_DATA(Index < MAX_SEQUENCES);
@@ -79,17 +83,17 @@ bool CInstrumentS5B::Load(CDocumentFile *pDocFile)
 	return true;
 }
 
-void CInstrumentS5B::SaveFile(CInstrumentFile *pFile, const CFamiTrackerDoc *pDoc)
+void CInstrumentS5B::SaveFile(CInstrumentFile* pFile, const CFamiTrackerDoc* pDoc)
 {
 	AfxMessageBox(_T("Saving 5B instruments is not yet supported"));
 }
 
-bool CInstrumentS5B::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTrackerDoc *pDoc)
+bool CInstrumentS5B::LoadFile(CInstrumentFile* pFile, int iVersion, CFamiTrackerDoc* pDoc)
 {
 	return false;
 }
 
-int CInstrumentS5B::Compile(CFamiTrackerDoc *pDoc, CChunk *pChunk, int Index)
+int CInstrumentS5B::Compile(CFamiTrackerDoc* pDoc, CChunk* pChunk, int Index)
 {
 	return 0;
 }
@@ -99,12 +103,12 @@ bool CInstrumentS5B::CanRelease() const
 	return false; // TODO
 }
 
-int	CInstrumentS5B::GetSeqEnable(int Index) const
+int CInstrumentS5B::GetSeqEnable(int Index) const
 {
 	return m_iSeqEnable[Index];
 }
 
-int	CInstrumentS5B::GetSeqIndex(int Index) const
+int CInstrumentS5B::GetSeqIndex(int Index) const
 {
 	return m_iSeqIndex[Index];
 }

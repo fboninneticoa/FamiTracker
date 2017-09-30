@@ -38,7 +38,7 @@ const int FIXED_FDS_INST_SIZE = 1 + 16 + 4 + 1;
 
 CInstrumentFDS::CInstrumentFDS() : CInstrument()
 {
-	memcpy(m_iSamples, TEST_WAVE, WAVE_SIZE);	
+	memcpy(m_iSamples, TEST_WAVE, WAVE_SIZE);
 	memset(m_iModulation, 0, MOD_SIZE);
 
 	m_iModulationSpeed = 0;
@@ -58,9 +58,9 @@ CInstrumentFDS::~CInstrumentFDS()
 	SAFE_RELEASE(m_pPitch);
 }
 
-CInstrument *CInstrumentFDS::Clone() const
+CInstrument* CInstrumentFDS::Clone() const
 {
-	CInstrumentFDS *pNewInst = new CInstrumentFDS();
+	CInstrumentFDS* pNewInst = new CInstrumentFDS();
 
 	// Copy parameters
 	memcpy(pNewInst->m_iSamples, m_iSamples, WAVE_SIZE);
@@ -84,7 +84,7 @@ void CInstrumentFDS::Setup()
 {
 }
 
-void CInstrumentFDS::StoreInstSequence(CInstrumentFile *pFile, CSequence *pSeq)
+void CInstrumentFDS::StoreInstSequence(CInstrumentFile* pFile, CSequence* pSeq)
 {
 	// Store number of items in this sequence
 	pFile->WriteInt(pSeq->GetItemCount());
@@ -99,7 +99,7 @@ void CInstrumentFDS::StoreInstSequence(CInstrumentFile *pFile, CSequence *pSeq)
 		pFile->WriteChar(pSeq->GetItem(i));
 }
 
-bool CInstrumentFDS::LoadInstSequence(CInstrumentFile *pFile, CSequence *pSeq)
+bool CInstrumentFDS::LoadInstSequence(CInstrumentFile* pFile, CSequence* pSeq)
 {
 	unsigned SeqCount = pFile->ReadInt();
 	if (SeqCount > MAX_SEQUENCE_ITEMS)
@@ -117,7 +117,7 @@ bool CInstrumentFDS::LoadInstSequence(CInstrumentFile *pFile, CSequence *pSeq)
 	return true;
 }
 
-void CInstrumentFDS::StoreSequence(CDocumentFile *pDocFile, CSequence *pSeq)
+void CInstrumentFDS::StoreSequence(CDocumentFile* pDocFile, CSequence* pSeq)
 {
 	// Store number of items in this sequence
 	pDocFile->WriteBlockChar(pSeq->GetItemCount());
@@ -128,12 +128,13 @@ void CInstrumentFDS::StoreSequence(CDocumentFile *pDocFile, CSequence *pSeq)
 	// Store setting (v4)
 	pDocFile->WriteBlockInt(pSeq->GetSetting());
 	// Store items
-	for (unsigned int j = 0; j < pSeq->GetItemCount(); j++) {
+	for (unsigned int j = 0; j < pSeq->GetItemCount(); j++)
+	{
 		pDocFile->WriteBlockChar(pSeq->GetItem(j));
 	}
 }
 
-bool CInstrumentFDS::LoadSequence(CDocumentFile *pDocFile, CSequence *pSeq)
+bool CInstrumentFDS::LoadSequence(CDocumentFile* pDocFile, CSequence* pSeq)
 {
 	int SeqCount;
 	unsigned int LoopPoint;
@@ -153,7 +154,8 @@ bool CInstrumentFDS::LoadSequence(CDocumentFile *pDocFile, CSequence *pSeq)
 	pSeq->SetReleasePoint(ReleasePoint);
 	pSeq->SetSetting(Settings);
 
-	for (int x = 0; x < SeqCount; ++x) {
+	for (int x = 0; x < SeqCount; ++x)
+	{
 		char Value = pDocFile->GetBlockChar();
 		pSeq->SetItem(x, Value);
 	}
@@ -161,15 +163,17 @@ bool CInstrumentFDS::LoadSequence(CDocumentFile *pDocFile, CSequence *pSeq)
 	return true;
 }
 
-void CInstrumentFDS::Store(CDocumentFile *pDocFile)
+void CInstrumentFDS::Store(CDocumentFile* pDocFile)
 {
 	// Write wave
-	for (int i = 0; i < WAVE_SIZE; ++i) {
+	for (int i = 0; i < WAVE_SIZE; ++i)
+	{
 		pDocFile->WriteBlockChar(GetSample(i));
 	}
 
 	// Write modulation table
-	for (int i = 0; i < MOD_SIZE; ++i) {
+	for (int i = 0; i < MOD_SIZE; ++i)
+	{
 		pDocFile->WriteBlockChar(GetModulation(i));
 	}
 
@@ -184,13 +188,15 @@ void CInstrumentFDS::Store(CDocumentFile *pDocFile)
 	StoreSequence(pDocFile, m_pPitch);
 }
 
-bool CInstrumentFDS::Load(CDocumentFile *pDocFile)
+bool CInstrumentFDS::Load(CDocumentFile* pDocFile)
 {
-	for (int i = 0; i < WAVE_SIZE; ++i) {
+	for (int i = 0; i < WAVE_SIZE; ++i)
+	{
 		SetSample(i, pDocFile->GetBlockChar());
 	}
 
-	for (int i = 0; i < MOD_SIZE; ++i) {
+	for (int i = 0; i < MOD_SIZE; ++i)
+	{
 		SetModulation(i, pDocFile->GetBlockChar());
 	}
 
@@ -199,22 +205,24 @@ bool CInstrumentFDS::Load(CDocumentFile *pDocFile)
 	SetModulationDelay(pDocFile->GetBlockInt());
 
 	// hack to fix earlier saved files (remove this eventually)
-/*
-	if (pDocFile->GetBlockVersion() > 2) {
-		LoadSequence(pDocFile, m_pVolume);
-		LoadSequence(pDocFile, m_pArpeggio);
-		if (pDocFile->GetBlockVersion() > 2)
-			LoadSequence(pDocFile, m_pPitch);
-	}
-	else {
-*/
+	/*
+		if (pDocFile->GetBlockVersion() > 2) {
+			LoadSequence(pDocFile, m_pVolume);
+			LoadSequence(pDocFile, m_pArpeggio);
+			if (pDocFile->GetBlockVersion() > 2)
+				LoadSequence(pDocFile, m_pPitch);
+		}
+		else {
+	*/
 	unsigned int a = pDocFile->GetBlockInt();
 	unsigned int b = pDocFile->GetBlockInt();
 	pDocFile->RollbackPointer(8);
 
-	if (a < 256 && (b & 0xFF) != 0x00) {
+	if (a < 256 && (b & 0xFF) != 0x00)
+	{
 	}
-	else {
+	else
+	{
 		LoadSequence(pDocFile, m_pVolume);
 		LoadSequence(pDocFile, m_pArpeggio);
 		//
@@ -226,10 +234,11 @@ bool CInstrumentFDS::Load(CDocumentFile *pDocFile)
 			LoadSequence(pDocFile, m_pPitch);
 	}
 
-//	}
+	//	}
 
 	// Older files was 0-15, new is 0-31
-	if (pDocFile->GetBlockVersion() <= 3) {
+	if (pDocFile->GetBlockVersion() <= 3)
+	{
 		for (unsigned int i = 0; i < m_pVolume->GetItemCount(); ++i)
 			m_pVolume->SetItem(i, m_pVolume->GetItem(i) * 2);
 	}
@@ -237,15 +246,17 @@ bool CInstrumentFDS::Load(CDocumentFile *pDocFile)
 	return true;
 }
 
-void CInstrumentFDS::SaveFile(CInstrumentFile *pFile, const CFamiTrackerDoc *pDoc)
+void CInstrumentFDS::SaveFile(CInstrumentFile* pFile, const CFamiTrackerDoc* pDoc)
 {
 	// Write wave
-	for (int i = 0; i < WAVE_SIZE; ++i) {
+	for (int i = 0; i < WAVE_SIZE; ++i)
+	{
 		pFile->WriteChar(GetSample(i));
 	}
 
 	// Write modulation table
-	for (int i = 0; i < MOD_SIZE; ++i) {
+	for (int i = 0; i < MOD_SIZE; ++i)
+	{
 		pFile->WriteChar(GetModulation(i));
 	}
 
@@ -260,15 +271,17 @@ void CInstrumentFDS::SaveFile(CInstrumentFile *pFile, const CFamiTrackerDoc *pDo
 	StoreInstSequence(pFile, m_pPitch);
 }
 
-bool CInstrumentFDS::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTrackerDoc *pDoc)
+bool CInstrumentFDS::LoadFile(CInstrumentFile* pFile, int iVersion, CFamiTrackerDoc* pDoc)
 {
 	// Read wave
-	for (int i = 0; i < WAVE_SIZE; ++i) {
+	for (int i = 0; i < WAVE_SIZE; ++i)
+	{
 		SetSample(i, pFile->ReadChar());
 	}
 
 	// Read modulation table
-	for (int i = 0; i < MOD_SIZE; ++i) {
+	for (int i = 0; i < MOD_SIZE; ++i)
+	{
 		SetModulation(i, pFile->ReadChar());
 	}
 
@@ -282,7 +295,8 @@ bool CInstrumentFDS::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTracker
 	LoadInstSequence(pFile, m_pArpeggio);
 	LoadInstSequence(pFile, m_pPitch);
 
-	if (iVersion <= 22) {
+	if (iVersion <= 22)
+	{
 		for (unsigned int i = 0; i < m_pVolume->GetItemCount(); ++i)
 			m_pVolume->SetItem(i, m_pVolume->GetItem(i) * 2);
 	}
@@ -290,44 +304,49 @@ bool CInstrumentFDS::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTracker
 	return true;
 }
 
-int CInstrumentFDS::Compile(CFamiTrackerDoc *pDoc, CChunk *pChunk, int Index)
+int CInstrumentFDS::Compile(CFamiTrackerDoc* pDoc, CChunk* pChunk, int Index)
 {
 	CStringA str;
 
 	// Store wave
-//	int Table = pCompiler->AddWavetable(m_iSamples);
-//	int Table = 0;
-//	pChunk->StoreByte(Table);
+	//	int Table = pCompiler->AddWavetable(m_iSamples);
+	//	int Table = 0;
+	//	pChunk->StoreByte(Table);
 
 	// Store modulation table, two entries/byte
-	for (int i = 0; i < 16; ++i) {
+	for (int i = 0; i < 16; ++i)
+	{
 		char Data = GetModulation(i << 1) | (GetModulation((i << 1) + 1) << 3);
 		pChunk->StoreByte(Data);
 	}
-	
+
 	pChunk->StoreByte(GetModulationDelay());
 	pChunk->StoreByte(GetModulationDepth());
 	pChunk->StoreWord(GetModulationSpeed());
 
 	// Store sequences
-	char Switch = (m_pVolume->GetItemCount() > 0 ? 1 : 0) | (m_pArpeggio->GetItemCount() > 0 ? 2 : 0) | (m_pPitch->GetItemCount() > 0 ? 4 : 0);
+	char Switch = (m_pVolume->GetItemCount() > 0 ? 1 : 0) | (m_pArpeggio->GetItemCount() > 0 ? 2 : 0) | (
+		m_pPitch->GetItemCount() > 0 ? 4 : 0);
 
 	pChunk->StoreByte(Switch);
 
 	// Volume
-	if (Switch & 1) {
+	if (Switch & 1)
+	{
 		str.Format(CCompiler::LABEL_SEQ_FDS, Index * 5 + 0);
 		pChunk->StoreReference(str);
 	}
 
 	// Arpeggio
-	if (Switch & 2) {
+	if (Switch & 2)
+	{
 		str.Format(CCompiler::LABEL_SEQ_FDS, Index * 5 + 1);
 		pChunk->StoreReference(str);
 	}
-	
+
 	// Pitch
-	if (Switch & 4) {
+	if (Switch & 4)
+	{
 		str.Format(CCompiler::LABEL_SEQ_FDS, Index * 5 + 2);
 		pChunk->StoreReference(str);
 	}
@@ -341,10 +360,10 @@ int CInstrumentFDS::Compile(CFamiTrackerDoc *pDoc, CChunk *pChunk, int Index)
 
 bool CInstrumentFDS::CanRelease() const
 {
-	if (m_pVolume->GetItemCount() > 0) {
+	if (m_pVolume->GetItemCount() > 0)
+	{
 		if (m_pVolume->GetReleasePoint() != -1)
 			return true;
-		
 	}
 	return false;
 }

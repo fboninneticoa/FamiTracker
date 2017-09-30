@@ -20,7 +20,8 @@
 
 #pragma once
 
-enum {
+enum
+{
 	WM_USER_WAVE_CHANGED = WM_USER
 };
 
@@ -29,17 +30,17 @@ class CWaveEditor : public CWnd
 public:
 	CWaveEditor(int sx, int sy, int lx, int ly);
 	virtual ~CWaveEditor();
-	DECLARE_DYNAMIC(CWaveEditor)
+DECLARE_DYNAMIC(CWaveEditor)
 private:
 	void EditWave(CPoint pt1, CPoint pt2);
 	void EditWave(CPoint point);
-	void DrawLine(CDC *pDC);
+	void DrawLine(CDC* pDC);
 
 protected:
 	virtual int GetSample(int i) const = 0;
 	virtual void SetSample(int i, int s) = 0;
 	virtual int GetMaxSamples() const = 0;
-	virtual void DrawRect(CDC *pDC, int x, int y, int sx, int sy) const = 0;
+	virtual void DrawRect(CDC* pDC, int x, int y, int sx, int sy) const = 0;
 	virtual bool GetLineMode() const = 0;
 	virtual void SetLineMode(bool Mode) = 0;
 
@@ -51,17 +52,18 @@ protected:
 
 	bool m_bDrawLine;
 
-//	static virtual bool m_bLineMode;
+	//	static virtual bool m_bLineMode;
 
 public:
 	void WaveChanged();
 	virtual afx_msg void OnPaint();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 
 public:
-	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd);
+	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+	              CWnd* pParentWnd);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
@@ -76,13 +78,15 @@ public:
 class CWaveEditorFDS : public CWaveEditor
 {
 public:
-	CWaveEditorFDS(int sx, int sy, int lx, int ly) : CWaveEditor(sx, sy, lx, ly), m_pInstrument(NULL) {};
-	void SetInstrument(CInstrumentFDS *pInst);
+	CWaveEditorFDS(int sx, int sy, int lx, int ly) : CWaveEditor(sx, sy, lx, ly), m_pInstrument(NULL)
+	{
+	};
+	void SetInstrument(CInstrumentFDS* pInst);
 protected:
 	virtual int GetSample(int i) const;
 	virtual void SetSample(int i, int s);
 	virtual int GetMaxSamples() const;
-	virtual void DrawRect(CDC *pDC, int x, int y, int sx, int sy) const;
+	virtual void DrawRect(CDC* pDC, int x, int y, int sx, int sy) const;
 	virtual bool GetLineMode() const { return m_bLineMode; };
 	virtual void SetLineMode(bool Mode) { m_bLineMode = Mode; };
 
@@ -90,22 +94,24 @@ protected:
 	static bool m_bLineMode;
 
 protected:
-	CInstrumentFDS *m_pInstrument;
+	CInstrumentFDS* m_pInstrument;
 };
 
 // N163 wave
 class CWaveEditorN163 : public CWaveEditor
 {
 public:
-	CWaveEditorN163(int sx, int sy, int lx, int ly) : CWaveEditor(sx, sy, lx, ly), m_pInstrument(NULL), m_iWaveIndex(0) {};
+	CWaveEditorN163(int sx, int sy, int lx, int ly) : CWaveEditor(sx, sy, lx, ly), m_pInstrument(NULL), m_iWaveIndex(0)
+	{
+	};
 	void SetLength(int Length);
-	void SetInstrument(CInstrumentN163 *pInst);
+	void SetInstrument(CInstrumentN163* pInst);
 	void SetWave(int i);
 protected:
 	virtual int GetSample(int i) const;
 	virtual void SetSample(int i, int s);
 	virtual int GetMaxSamples() const;
-	virtual void DrawRect(CDC *pDC, int x, int y, int sx, int sy) const;
+	virtual void DrawRect(CDC* pDC, int x, int y, int sx, int sy) const;
 	virtual bool GetLineMode() const { return m_bLineMode; };
 	virtual void SetLineMode(bool Mode) { m_bLineMode = Mode; };
 
@@ -113,6 +119,6 @@ protected:
 	static bool m_bLineMode;
 
 protected:
-	CInstrumentN163 *m_pInstrument;
+	CInstrumentN163* m_pInstrument;
 	int m_iWaveIndex;
 };

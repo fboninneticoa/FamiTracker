@@ -22,23 +22,23 @@
 
 class CSequenceSetting : public CWnd
 {
-	DECLARE_DYNAMIC(CSequenceSetting)
-	CSequenceSetting(CWnd *pParent);
+DECLARE_DYNAMIC(CSequenceSetting)
+	CSequenceSetting(CWnd* pParent);
 	virtual ~CSequenceSetting();
 public:
-	void Setup(CFont *pFont);
-	void SelectSequence(CSequence *pSequence, int Type, int InstrumentType);
+	void Setup(CFont* pFont);
+	void SelectSequence(CSequence* pSequence, int Type, int InstrumentType);
 
 private:
-	CWnd *m_pParent;
+	CWnd* m_pParent;
 	CMenu m_menuPopup;
-	CFont *m_pFont;
-	CSequence *m_pSequence;
+	CFont* m_pFont;
+	CSequence* m_pSequence;
 	int m_iInstType;
 	int m_iType;
 	bool m_bMouseOver;
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

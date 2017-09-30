@@ -35,27 +35,28 @@
 
 // Static stuff
 
-CMIDI *CMIDI::m_pInstance = NULL;
+CMIDI* CMIDI::m_pInstance = NULL;
 
 void CALLBACK CMIDI::MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2)
 {
 	// MIDI input callback function
 
-	if (wMsg == MIM_DATA) {
+	if (wMsg == MIM_DATA)
+	{
 		unsigned char Status = (char)(dwParam1 & 0xFF);
-		unsigned char Data1	 = (char)(dwParam1 >> 8) & 0xFF;
-		unsigned char Data2	 = (char)(dwParam1 >> 16) & 0xFF;
+		unsigned char Data1 = (char)(dwParam1 >> 8) & 0xFF;
+		unsigned char Data2 = (char)(dwParam1 >> 16) & 0xFF;
 		m_pInstance->Event(Status, Data1, Data2);
 	}
 }
 
 // Instance stuff
 
-CMIDI::CMIDI() : 
-	m_bInStarted(false), 
+CMIDI::CMIDI() :
+	m_bInStarted(false),
 	m_iInDevice(0),
 	m_iOutDevice(0),
-	m_iQueueHead(0), 
+	m_iQueueHead(0),
 	m_iQueueTail(0),
 	m_hMIDIIn(NULL),
 	m_hMIDIOut(NULL),
@@ -104,11 +105,12 @@ bool CMIDI::OpenDevices(void)
 		return true;
 
 	// Input
-	if (m_iInDevice != 0) {
-
+	if (m_iInDevice != 0)
+	{
 		Result = midiInOpen(&m_hMIDIIn, m_iInDevice - 1, (DWORD_PTR)MidiInProc, 0, CALLBACK_FUNCTION);
 
-		if (Result != MMSYSERR_NOERROR) {
+		if (Result != MMSYSERR_NOERROR)
+		{
 			m_hMIDIIn = NULL;
 			AfxMessageBox(IDS_MIDI_ERR_INPUT);
 			return false;
@@ -120,11 +122,12 @@ bool CMIDI::OpenDevices(void)
 	}
 
 	// Output
-	if (m_iOutDevice != 0) {
-
+	if (m_iOutDevice != 0)
+	{
 		Result = midiOutOpen(&m_hMIDIOut, m_iOutDevice - 1, NULL, 0, CALLBACK_NULL);
 
-		if (Result != MMSYSERR_NOERROR) {
+		if (Result != MMSYSERR_NOERROR)
+		{
 			m_hMIDIOut = NULL;
 			AfxMessageBox(IDS_MIDI_ERR_OUTPUT);
 			return false;
@@ -149,17 +152,20 @@ bool CMIDI::OpenDevices(void)
 
 bool CMIDI::CloseDevices(void)
 {
-	if (m_bInStarted) {
+	if (m_bInStarted)
+	{
 		midiInStop(m_hMIDIIn);
 		m_bInStarted = false;
 	}
 
-	if (m_hMIDIIn != NULL) {
+	if (m_hMIDIIn != NULL)
+	{
 		midiInClose(m_hMIDIIn);
 		m_hMIDIIn = NULL;
 	}
 
-	if (m_hMIDIOut != NULL) {
+	if (m_hMIDIOut != NULL)
+	{
 		midiOutClose(m_hMIDIOut);
 		m_hMIDIOut = NULL;
 	}
@@ -177,14 +183,14 @@ int CMIDI::GetNumOutputDevices() const
 	return midiOutGetNumDevs();
 }
 
-void CMIDI::GetInputDeviceString(int Num, CString &Text) const
+void CMIDI::GetInputDeviceString(int Num, CString& Text) const
 {
 	MIDIINCAPS InCaps;
 	midiInGetDevCaps(Num, &InCaps, sizeof(MIDIINCAPS));
 	Text = InCaps.szPname;
 }
 
-void CMIDI::GetOutputDeviceString(int Num, CString &Text) const
+void CMIDI::GetOutputDeviceString(int Num, CString& Text) const
 {
 	MIDIOUTCAPS OutCaps;
 	midiOutGetDevCaps(Num, &OutCaps, sizeof(MIDIOUTCAPS));
@@ -211,11 +217,11 @@ void CMIDI::SetOutputDevice(int Device)
 void CMIDI::Enqueue(unsigned char MsgType, unsigned char MsgChannel, unsigned char Data1, unsigned char Data2)
 {
 	m_csQueue.Lock();
-	
+
 	m_iMsgTypeQueue[m_iQueueHead] = MsgType;
 	m_iMsgChanQueue[m_iQueueHead] = MsgChannel;
-	m_iData1Queue[m_iQueueHead]   = Data1;
-	m_iData2Queue[m_iQueueHead]   = Data2;
+	m_iData1Queue[m_iQueueHead] = Data1;
+	m_iData2Queue[m_iQueueHead] = Data2;
 	m_iQuantization[m_iQueueHead] = m_iTimingCounter;
 
 	m_iQueueHead = (m_iQueueHead + 1) % MAX_QUEUE;
@@ -225,56 +231,61 @@ void CMIDI::Enqueue(unsigned char MsgType, unsigned char MsgChannel, unsigned ch
 
 void CMIDI::Event(unsigned char Status, unsigned char Data1, unsigned char Data2)
 {
-	const unsigned char MsgType	   = Status >> 4;
+	const unsigned char MsgType = Status >> 4;
 	const unsigned char MsgChannel = Status & 0x0F;
 
-	CFrameWnd *pFrame = static_cast<CFrameWnd*>(AfxGetApp()->m_pMainWnd);
-	CView *pView = pFrame->GetActiveView();
+	CFrameWnd* pFrame = static_cast<CFrameWnd*>(AfxGetApp()->m_pMainWnd);
+	CView* pView = pFrame->GetActiveView();
 
 	TRACE("%i: MIDI message %02X %02X %02X\n", GetTickCount(), Status, Data1, Data2);
 
 	// Timing
-	switch (Status) {
-	case 0xF8:	// Timing tick
-		if (m_bMasterSync) {
-			if (++m_iTimingCounter == 6) {
+	switch (Status)
+	{
+	case 0xF8: // Timing tick
+		if (m_bMasterSync)
+		{
+			if (++m_iTimingCounter == 6)
+			{
 				m_iTimingCounter = 0;
 				Enqueue(MsgType, MsgChannel, Data1, Data2);
 				pView->PostMessage(WM_USER_MIDI_EVENT);
 			}
 		}
 		break;
-	case 0xFA:	// Start
+	case 0xFA: // Start
 		m_iTimingCounter = 0;
 		break;
-	case 0xFC:	// Stop
+	case 0xFC: // Stop
 		m_iTimingCounter = 0;
 		break;
 	default:
-		switch (MsgType) {
-			case MIDI_MSG_NOTE_OFF:
-			case MIDI_MSG_NOTE_ON: 
-			case MIDI_MSG_PITCH_WHEEL:
-				Enqueue(MsgType, MsgChannel, Data1, Data2);
-				pView->PostMessage(WM_USER_MIDI_EVENT);
-				break;
+		switch (MsgType)
+		{
+		case MIDI_MSG_NOTE_OFF:
+		case MIDI_MSG_NOTE_ON:
+		case MIDI_MSG_PITCH_WHEEL:
+			Enqueue(MsgType, MsgChannel, Data1, Data2);
+			pView->PostMessage(WM_USER_MIDI_EVENT);
+			break;
 		}
 	}
 }
 
-bool CMIDI::ReadMessage(unsigned char & Message, unsigned char & Channel, unsigned char & Data1, unsigned char & Data2)
+bool CMIDI::ReadMessage(unsigned char& Message, unsigned char& Channel, unsigned char& Data1, unsigned char& Data2)
 {
 	bool Result = false;
-	
+
 	m_csQueue.Lock();
 
-	if (m_iQueueHead != m_iQueueTail) {
+	if (m_iQueueHead != m_iQueueTail)
+	{
 		Result = true;
 
 		Message = m_iMsgTypeQueue[m_iQueueTail];
 		Channel = m_iMsgChanQueue[m_iQueueTail];
-		Data1	= m_iData1Queue[m_iQueueTail];
-		Data2	= m_iData2Queue[m_iQueueTail];
+		Data1 = m_iData1Queue[m_iQueueTail];
+		Data2 = m_iData2Queue[m_iQueueTail];
 		m_iQuant = m_iQuantization[m_iQueueTail];
 
 		m_iQueueTail = (m_iQueueTail + 1) % MAX_QUEUE;
@@ -302,8 +313,8 @@ void CMIDI::ToggleInput()
 
 void CMIDI::WriteNote(unsigned char Channel, unsigned char Note, unsigned char Octave, unsigned char Velocity)
 {
-	static unsigned int LastNote[MAX_CHANNELS];	// Quick hack
-//	static unsigned int LastVolume[MAX_CHANNELS];
+	static unsigned int LastNote[MAX_CHANNELS]; // Quick hack
+	//	static unsigned int LastVolume[MAX_CHANNELS];
 
 	if (/*!m_bOpened ||*/ m_iOutDevice == 0 || m_hMIDIOut == NULL)
 		return;
@@ -318,24 +329,26 @@ void CMIDI::WriteNote(unsigned char Channel, unsigned char Note, unsigned char O
 
 	if (Velocity == 0x10)
 		Velocity--;
-		/*
-		Velocity = LastVolume[Channel];
-	else
-		LastVolume[Channel] = Velocity;*/
+	/*
+	Velocity = LastVolume[Channel];
+else
+	LastVolume[Channel] = Velocity;*/
 
 	unsigned int MsgChannel = Channel;
 	unsigned int MsgType;
 
-	unsigned int Data1 = Note - 1 + Octave * 12;		// note
-	unsigned int Data2 = Velocity * 8;					// velocity
+	unsigned int Data1 = Note - 1 + Octave * 12; // note
+	unsigned int Data2 = Velocity * 8; // velocity
 
-	if (Note == HALT || Note == RELEASE) {
+	if (Note == HALT || Note == RELEASE)
+	{
 		MsgType = MIDI_MSG_NOTE_OFF;
 		Data2 = 0;
 		Data1 = LastNote[Channel];
 		LastNote[Channel] = 0;
 	}
-	else {
+	else
+	{
 		if (LastNote[Channel] != 0 && Note != LastNote[Channel])
 			WriteNote(Channel, HALT, 0, 0);
 
@@ -364,12 +377,12 @@ bool CMIDI::IsAvailable() const
 	return m_hMIDIIn != NULL;
 }
 
-int CMIDI::GetInputDevice() const 
-{ 
-	return m_iInDevice; 
+int CMIDI::GetInputDevice() const
+{
+	return m_iInDevice;
 }
 
-int CMIDI::GetOutputDevice() const 
-{ 
-	return m_iOutDevice; 
+int CMIDI::GetOutputDevice() const
+{
+	return m_iOutDevice;
 }

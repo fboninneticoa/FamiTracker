@@ -23,7 +23,8 @@
 #include "Action.h"
 #include "PatternEditorTypes.h"
 
-enum transpose_t {
+enum transpose_t
+{
 	TRANSPOSE_DEC_NOTES,
 	TRANSPOSE_INC_NOTES,
 	TRANSPOSE_DEC_OCTAVES,
@@ -63,40 +64,40 @@ public:
 	CPatternAction(int iAction);
 	virtual ~CPatternAction();
 
-	bool SaveState(CMainFrame *pMainFrm);
-	void Undo(CMainFrame *pMainFrm);
-	void Redo(CMainFrame *pMainFrm);
+	bool SaveState(CMainFrame* pMainFrm);
+	void Undo(CMainFrame* pMainFrm);
+	void Redo(CMainFrame* pMainFrm);
 
 public:
-	void SetNote(stChanNote &Note);
+	void SetNote(stChanNote& Note);
 	void SetDelete(bool PullUp, bool Back);
-	void SetPaste(CPatternClipData *pClipData);
+	void SetPaste(CPatternClipData* pClipData);
 	void SetTranspose(transpose_t Mode);
 	void SetScroll(int Scroll);
 	void SetInstrument(int Instrument);
-	void SetDragAndDrop(const CPatternClipData *pClipData, bool bDelete, bool bMix, const CSelection *pDragTarget);
+	void SetDragAndDrop(const CPatternClipData* pClipData, bool bDelete, bool bMix, const CSelection* pDragTarget);
 	void SetPatternLength(int Length);
-	void Update(CMainFrame *pMainFrm);
+	void Update(CMainFrame* pMainFrm);
 	void SetClickedChannel(int Channel);
 
 private:
-	void SaveEntire(const CPatternEditor *pPatternEditor);
-	void RestoreEntire(CPatternEditor *pPatternEditor);
-	void IncreaseRowAction(CFamiTrackerDoc *pDoc) const;
-	void DecreaseRowAction(CFamiTrackerDoc *pDoc) const;
+	void SaveEntire(const CPatternEditor* pPatternEditor);
+	void RestoreEntire(CPatternEditor* pPatternEditor);
+	void IncreaseRowAction(CFamiTrackerDoc* pDoc) const;
+	void DecreaseRowAction(CFamiTrackerDoc* pDoc) const;
 
-	void RestoreSelection(CPatternEditor *pPatternEditor);
+	void RestoreSelection(CPatternEditor* pPatternEditor);
 
-	void InsertRows(CFamiTrackerDoc *pDoc) const;
-	void PullUpRows(CFamiTrackerDoc *pDoc) const;
-	void ExpandPattern(CFamiTrackerDoc *pDoc) const;
-	void ShrinkPattern(CFamiTrackerDoc *pDoc) const;
-	void ReplaceInstrument(CFamiTrackerDoc *pDoc) const;
-	void Transpose(CFamiTrackerDoc *pDoc) const;
-	void Interpolate(CFamiTrackerDoc *pDoc) const;
-	void Reverse(CFamiTrackerDoc *pDoc) const;
-	void ScrollValues(CFamiTrackerDoc *pDoc) const;
-	void DeleteSelection(CFamiTrackerDoc *pDoc) const;
+	void InsertRows(CFamiTrackerDoc* pDoc) const;
+	void PullUpRows(CFamiTrackerDoc* pDoc) const;
+	void ExpandPattern(CFamiTrackerDoc* pDoc) const;
+	void ShrinkPattern(CFamiTrackerDoc* pDoc) const;
+	void ReplaceInstrument(CFamiTrackerDoc* pDoc) const;
+	void Transpose(CFamiTrackerDoc* pDoc) const;
+	void Interpolate(CFamiTrackerDoc* pDoc) const;
+	void Reverse(CFamiTrackerDoc* pDoc) const;
+	void ScrollValues(CFamiTrackerDoc* pDoc) const;
+	void DeleteSelection(CFamiTrackerDoc* pDoc) const;
 
 private:
 	stChanNote m_NewNote;
@@ -124,9 +125,9 @@ private:
 	bool m_bPullUp;
 	bool m_bBack;
 
-	const CPatternClipData *m_pClipData;
-	CPatternClipData *m_pUndoClipData;
-	
+	const CPatternClipData* m_pClipData;
+	CPatternClipData* m_pUndoClipData;
+
 	bool m_bSelecting;
 	CSelection m_selection;
 
@@ -139,5 +140,4 @@ private:
 	CSelection m_dragTarget;
 
 	int m_iClickedChannel;
-
 };

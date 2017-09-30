@@ -22,39 +22,40 @@
 
 // CSampleView control
 
-class CSampleEditorView : public CStatic {
-	DECLARE_DYNAMIC(CSampleEditorView)
+class CSampleEditorView : public CStatic
+{
+DECLARE_DYNAMIC(CSampleEditorView)
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	CSampleEditorView();
 	virtual ~CSampleEditorView();
 
-	void	DrawPlayCursor(int Pos);
-	void	DrawStartCursor();
-	void	ExpandSample(CDSample *pSample, int Start);
-	void	UpdateInfo();
-	void	OnHome();
-	void	OnEnd();
-	void	OnRight();
-	void	OnLeft();
+	void DrawPlayCursor(int Pos);
+	void DrawStartCursor();
+	void ExpandSample(CDSample* pSample, int Start);
+	void UpdateInfo();
+	void OnHome();
+	void OnEnd();
+	void OnRight();
+	void OnLeft();
 
-	int		GetStartOffset() const { return m_iStartCursor; };
-	int		GetSelStart() const { return (m_iSelStart < m_iSelEnd) ? m_iSelStart : m_iSelEnd; };
-	int		GetSelEnd() const { return (m_iSelStart > m_iSelEnd) ? m_iSelStart : m_iSelEnd; };
-	int		GetBlock(int Pixel) const;
-	int		GetPixel(int Block) const;
+	int GetStartOffset() const { return m_iStartCursor; };
+	int GetSelStart() const { return (m_iSelStart < m_iSelEnd) ? m_iSelStart : m_iSelEnd; };
+	int GetSelEnd() const { return (m_iSelStart > m_iSelEnd) ? m_iSelStart : m_iSelEnd; };
+	int GetBlock(int Pixel) const;
+	int GetPixel(int Block) const;
 
-	bool	HasSelection() const;
+	bool HasSelection() const;
 
-	void	SetZoom(float Factor);
-	float	GetMaxZoomFactor() const;
-
-private:
-	void	SetScroll(UINT nPos);
+	void SetZoom(float Factor);
+	float GetMaxZoomFactor() const;
 
 private:
-	int *m_pSamples;
+	void SetScroll(UINT nPos);
+
+private:
+	int* m_pSamples;
 
 	int m_iSize;
 	int m_iBlockSize;
@@ -67,19 +68,19 @@ private:
 	int m_iViewStart;
 	int m_iViewEnd;
 	int m_iScrollMax;
-	
+
 	float m_fZoom;
 
-	CRect	m_clientRect;
-	CDC		m_dcCopy;
+	CRect m_clientRect;
+	CDC m_dcCopy;
 	CBitmap m_bmpCopy;
 
-	CPen *m_pSolidPen;
-	CPen *m_pDashedPen;
-	CPen *m_pGrayDashedPen;
-	CPen *m_pDarkGrayDashedPen;
+	CPen* m_pSolidPen;
+	CPen* m_pDashedPen;
+	CPen* m_pGrayDashedPen;
+	CPen* m_pDarkGrayDashedPen;
 
-	CScrollBar *m_pScrollBar;
+	CScrollBar* m_pScrollBar;
 
 protected:
 	afx_msg void OnPaint();

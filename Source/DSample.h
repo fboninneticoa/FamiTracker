@@ -23,43 +23,44 @@
 
 // DPCM sample class
 
-class CDSample {
+class CDSample
+{
 public:
 	// Empty constructor
 	CDSample();
 
 	// Unnamed sample constructor
-	CDSample(unsigned int Size, char *pData = NULL);
+	CDSample(unsigned int Size, char* pData = NULL);
 
 	// Copy constructor
-	CDSample(CDSample &sample);
+	CDSample(CDSample& sample);
 
 	// Destructor
 	~CDSample();
 
 	// Copy from existing sample
-	void Copy(const CDSample *pDSample);
-	
+	void Copy(const CDSample* pDSample);
+
 	// Allocate memory, optionally copy data
-	void Allocate(unsigned int iSize, const char *pData = NULL);
+	void Allocate(unsigned int iSize, const char* pData = NULL);
 
 	// Clear sample data
 	void Clear();
 
 	// Set sample data and size, the object will own the memory area assigned
-	void SetData(unsigned int Size, char *pData);
+	void SetData(unsigned int Size, char* pData);
 
 	// Get sample size
 	unsigned int GetSize() const;
 
 	// Get sample data
-	char *GetData() const;
+	char* GetData() const;
 
 	// Set sample name
-	void SetName(const char *pName);
+	void SetName(const char* pName);
 
 	// Get sample name
-	const char *GetName() const;
+	const char* GetName() const;
 
 public:
 	// Max size of a sample as supported by the NES, in bytes
@@ -70,6 +71,6 @@ public:
 private:
 	// Sample data
 	unsigned int m_iSampleSize;
-	char		 *m_pSampleData;
-	char		 m_Name[MAX_NAME_SIZE];
+	char* m_pSampleData;
+	char m_Name[MAX_NAME_SIZE];
 };

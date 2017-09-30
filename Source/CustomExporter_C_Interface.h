@@ -9,7 +9,7 @@ void SetDoc(CFamiTrackerDocInterface* doc);
 void GetInterface(FamitrackerDocInterface* iface);
 
 //overall document functions
-void GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote *Data);
+void GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote* Data);
 unsigned int GetFrameCount();
 unsigned int GetPatternLength();
 unsigned int GetSongSpeed();
@@ -35,7 +35,7 @@ unsigned int GetNoteEffectParam(unsigned int Frame, unsigned int Channel, unsign
 
 //DPCM functions
 int GetSampleCount();
-void GetSampleName(unsigned int Index, char *Name);
+void GetSampleName(unsigned int Index, char* Name);
 int GetSampleSize(unsigned int Sample);
 char GetSampleData(unsigned int Sample, unsigned int Offset);
 

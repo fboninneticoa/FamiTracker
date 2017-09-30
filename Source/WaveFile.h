@@ -25,16 +25,14 @@
 
 class CWaveFile
 {
-	public:
-		bool	OpenFile(LPTSTR Filename, int SampleRate, int SampleSize, int Channels);
-		void	CloseFile();
-		void	WriteWave(char *Data, int Size);
+public:
+	bool OpenFile(LPTSTR Filename, int SampleRate, int SampleSize, int Channels);
+	void CloseFile();
+	void WriteWave(char* Data, int Size);
 
-	private:
-		PCMWAVEFORMAT	WaveFormat;
-		MMCKINFO		ckOutRIFF, ckOut;
-		MMIOINFO		mmioinfoOut;
-		HMMIO			hmmioOut;
-
+private:
+	PCMWAVEFORMAT WaveFormat;
+	MMCKINFO ckOutRIFF, ckOut;
+	MMIOINFO mmioinfoOut;
+	HMMIO hmmioOut;
 };
-

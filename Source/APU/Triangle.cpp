@@ -22,11 +22,11 @@
 #include "Triangle.h"
 
 const uint8 CTriangle::TRIANGLE_WAVE[] = {
-	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 
+	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
 	0x0F, 0x0E, 0x0D, 0x0C, 0x0B, 0x0A, 0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00
 };
 
-CTriangle::CTriangle(CMixer *pMixer, int ID) : CChannel(pMixer, ID, SNDCHIP_NONE)
+CTriangle::CTriangle(CMixer* pMixer, int ID) : CChannel(pMixer, ID, SNDCHIP_NONE)
 {
 	m_iStepGen = 0;
 	m_iLoop = 0;
@@ -54,30 +54,31 @@ void CTriangle::Reset()
 
 void CTriangle::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x00:
-			m_iLinearLoad = Value & 0x7F;
-			m_iLoop = Value & 0x80;
-			break;
-		case 0x01:
-			break;
-		case 0x02:
-			m_iPeriod = Value | (m_iPeriod & 0x0700);
-			break;
-		case 0x03:
-			m_iPeriod = ((Value & 0x07) << 8) | (m_iPeriod & 0xFF);
-			m_iLengthCounter = CAPU::LENGTH_TABLE[(Value & 0xF8) >> 3];
-			m_iHalt = 1;
-			if (m_iControlReg)
-				m_iEnabled = 1;
-			break;
+	switch (Address)
+	{
+	case 0x00:
+		m_iLinearLoad = Value & 0x7F;
+		m_iLoop = Value & 0x80;
+		break;
+	case 0x01:
+		break;
+	case 0x02:
+		m_iPeriod = Value | (m_iPeriod & 0x0700);
+		break;
+	case 0x03:
+		m_iPeriod = ((Value & 0x07) << 8) | (m_iPeriod & 0xFF);
+		m_iLengthCounter = CAPU::LENGTH_TABLE[(Value & 0xF8) >> 3];
+		m_iHalt = 1;
+		if (m_iControlReg)
+			m_iEnabled = 1;
+		break;
 	}
 }
 
 void CTriangle::WriteControl(uint8 Value)
 {
 	m_iControlReg = Value & 1;
-	
+
 	if (m_iControlReg == 0)
 		m_iEnabled = 0;
 }
@@ -93,11 +94,13 @@ void CTriangle::Process(uint32 Time)
 	// It takes to much CPU and it wouldn't be possible to hear anyway
 	//
 
-	if (!m_iLinearCounter || !m_iLengthCounter || !m_iEnabled) {
+	if (!m_iLinearCounter || !m_iLengthCounter || !m_iEnabled)
+	{
 		m_iTime += Time;
 		return;
 	}
-	else if (m_iPeriod <= 1) {
+	else if (m_iPeriod <= 1)
+	{
 		// Frequency is too high to be audible
 		m_iTime += Time;
 		m_iStepGen = 7;
@@ -105,21 +108,22 @@ void CTriangle::Process(uint32 Time)
 		return;
 	}
 
-	while (Time >= m_iCounter) {
-		Time	  -= m_iCounter;
-		m_iTime   += m_iCounter;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
+		m_iTime += m_iCounter;
 		m_iCounter = m_iPeriod + 1;
 		Mix(TRIANGLE_WAVE[m_iStepGen]);
 		m_iStepGen = (m_iStepGen + 1) & 0x1F;
 	}
-	
+
 	m_iCounter -= Time;
 	m_iTime += Time;
 }
 
 void CTriangle::LengthCounterUpdate()
 {
-	if ((m_iLoop == 0) && (m_iLengthCounter > 0)) 
+	if ((m_iLoop == 0) && (m_iLengthCounter > 0))
 		m_iLengthCounter--;
 }
 
@@ -134,9 +138,8 @@ void CTriangle::LinearCounterUpdate()
 
 	if (m_iHalt == 1)
 		m_iLinearCounter = m_iLinearLoad;
-	else
-		if (m_iLinearCounter > 0)
-			m_iLinearCounter--;
+	else if (m_iLinearCounter > 0)
+		m_iLinearCounter--;
 
 	if (m_iLoop == 0)
 		m_iHalt = 0;

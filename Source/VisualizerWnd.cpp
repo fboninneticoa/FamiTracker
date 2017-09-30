@@ -35,17 +35,17 @@
 void CVisualizerBase::Create(int Width, int Height)
 {
 	memset(&m_bmi, 0, sizeof(BITMAPINFO));
-	m_bmi.bmiHeader.biSize	   = sizeof(BITMAPINFOHEADER);
+	m_bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	m_bmi.bmiHeader.biBitCount = 32;
-	m_bmi.bmiHeader.biHeight   = -Height;
-	m_bmi.bmiHeader.biWidth	   = Width;
-	m_bmi.bmiHeader.biPlanes   = 1;
+	m_bmi.bmiHeader.biHeight = -Height;
+	m_bmi.bmiHeader.biWidth = Width;
+	m_bmi.bmiHeader.biPlanes = 1;
 
 	m_iWidth = Width;
 	m_iHeight = Height;
 }
 
-void CVisualizerBase::SetSampleData(short *pSamples, unsigned int iCount)
+void CVisualizerBase::SetSampleData(short* pSamples, unsigned int iCount)
 {
 	m_pSamples = pSamples;
 	m_iSampleCount = iCount;
@@ -60,7 +60,7 @@ void CVisualizerBase::SetSampleData(short *pSamples, unsigned int iCount)
 
 UINT CVisualizerWnd::ThreadProcFunc(LPVOID pParam)
 {
-	CVisualizerWnd *pObj = reinterpret_cast<CVisualizerWnd*>(pParam);
+	CVisualizerWnd* pObj = reinterpret_cast<CVisualizerWnd*>(pParam);
 
 	if (pObj == NULL || !pObj->IsKindOf(RUNTIME_CLASS(CVisualizerWnd)))
 		return 1;
@@ -91,7 +91,8 @@ CVisualizerWnd::CVisualizerWnd() :
 
 CVisualizerWnd::~CVisualizerWnd()
 {
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 4; ++i)
+	{
 		SAFE_RELEASE(m_pStates[i]);
 	}
 
@@ -100,12 +101,12 @@ CVisualizerWnd::~CVisualizerWnd()
 }
 
 BEGIN_MESSAGE_MAP(CVisualizerWnd, CWnd)
-	ON_WM_ERASEBKGND()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_PAINT()
-	ON_WM_LBUTTONDBLCLK()
-	ON_WM_RBUTTONUP()
-	ON_WM_DESTROY()
+		ON_WM_ERASEBKGND()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_PAINT()
+		ON_WM_LBUTTONDBLCLK()
+		ON_WM_RBUTTONUP()
+		ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // State methods
@@ -125,19 +126,22 @@ void CVisualizerWnd::NextState()
 
 void CVisualizerWnd::SetSampleRate(int SampleRate)
 {
-	for (int i = 0; i < 4; ++i) {
-		if (m_pStates[i] != NULL) {
+	for (int i = 0; i < 4; ++i)
+	{
+		if (m_pStates[i] != NULL)
+		{
 			m_pStates[i]->SetSampleRate(SampleRate);
 		}
 	}
 }
 
-void CVisualizerWnd::FlushSamples(short *pSamples, int Count)
+void CVisualizerWnd::FlushSamples(short* pSamples, int Count)
 {
 	if (!m_bThreadRunning)
 		return;
 
-	if (Count != m_iBufferSize) {
+	if (Count != m_iBufferSize)
+	{
 		m_csBuffer.Lock();
 		SAFE_RELEASE_ARRAY(m_pBuffer1);
 		SAFE_RELEASE_ARRAY(m_pBuffer2);
@@ -168,14 +172,14 @@ UINT CVisualizerWnd::ThreadProc()
 
 	TRACE1("Visualizer: Started thread (0x%04x)\n", nThreadID);
 
-	while (::WaitForSingleObject(m_hNewSamples, INFINITE) == WAIT_OBJECT_0 && m_bThreadRunning) {
-
+	while (::WaitForSingleObject(m_hNewSamples, INFINITE) == WAIT_OBJECT_0 && m_bThreadRunning)
+	{
 		m_bNoAudio = false;
 
 		// Switch buffers
 		m_csBufferSelect.Lock();
 
-		short *pDrawBuffer = m_pFillBuffer;
+		short* pDrawBuffer = m_pFillBuffer;
 
 		if (m_pFillBuffer == m_pBuffer1)
 			m_pFillBuffer = m_pBuffer2;
@@ -187,8 +191,9 @@ UINT CVisualizerWnd::ThreadProc()
 		// Draw
 		m_csBuffer.Lock();
 
-		CDC *pDC = GetDC();
-		if (pDC != NULL) {
+		CDC* pDC = GetDC();
+		if (pDC != NULL)
+		{
 			m_pStates[m_iCurrentState]->SetSampleData(pDrawBuffer, m_iBufferSize);
 			m_pStates[m_iCurrentState]->Draw();
 			m_pStates[m_iCurrentState]->Display(pDC, false);
@@ -203,8 +208,9 @@ UINT CVisualizerWnd::ThreadProc()
 	return 0;
 }
 
-BOOL CVisualizerWnd::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
-{	
+BOOL CVisualizerWnd::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+                              const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+{
 	// This is saved
 	m_iCurrentState = theApp.GetSettings()->SampleWinState;
 
@@ -213,11 +219,13 @@ BOOL CVisualizerWnd::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lp
 
 	BOOL Result = CWnd::CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 
-	if (Result) {
+	if (Result)
+	{
 		// Get client rect and create visualizers
 		CRect crect;
 		GetClientRect(&crect);
-		for (int i = 0; i < STATE_COUNT; ++i) {
+		for (int i = 0; i < STATE_COUNT; ++i)
+		{
 			m_pStates[i]->Create(crect.Width(), crect.Height());
 		}
 
@@ -246,7 +254,8 @@ void CVisualizerWnd::OnPaint()
 
 	CPaintDC dc(this); // device context for painting
 
-	if (m_bNoAudio) {
+	if (m_bNoAudio)
+	{
 		CRect rect;
 		GetClientRect(rect);
 		dc.DrawText("No audio", rect, DT_CENTER | DT_VCENTER);
@@ -262,7 +271,7 @@ void CVisualizerWnd::OnRButtonUp(UINT nFlags, CPoint point)
 	CMenu PopupMenuBar;
 	PopupMenuBar.LoadMenu(IDR_SAMPLE_WND_POPUP);
 
-	CMenu *pPopupMenu = PopupMenuBar.GetSubMenu(0);
+	CMenu* pPopupMenu = PopupMenuBar.GetSubMenu(0);
 
 	CPoint menuPoint;
 	CRect rect;
@@ -280,19 +289,20 @@ void CVisualizerWnd::OnRButtonUp(UINT nFlags, CPoint point)
 
 	m_csBuffer.Lock();
 
-	switch (Result) {
-		case ID_POPUP_SAMPLESCOPE1:
-			m_iCurrentState = 0;
-			break;
-		case ID_POPUP_SAMPLESCOPE2:
-			m_iCurrentState = 1;
-			break;
-		case ID_POPUP_SPECTRUMANALYZER:
-			m_iCurrentState = 2;
-			break;
-		case ID_POPUP_NOTHING:
-			m_iCurrentState = 3;
-			break;
+	switch (Result)
+	{
+	case ID_POPUP_SAMPLESCOPE1:
+		m_iCurrentState = 0;
+		break;
+	case ID_POPUP_SAMPLESCOPE2:
+		m_iCurrentState = 1;
+		break;
+	case ID_POPUP_SPECTRUMANALYZER:
+		m_iCurrentState = 2;
+		break;
+	case ID_POPUP_NOTHING:
+		m_iCurrentState = 3;
+		break;
 	}
 
 	m_csBuffer.Unlock();
@@ -306,20 +316,23 @@ void CVisualizerWnd::OnRButtonUp(UINT nFlags, CPoint point)
 void CVisualizerWnd::OnDestroy()
 {
 	// Shut down worker thread
-	if (m_pWorkerThread != NULL) {
+	if (m_pWorkerThread != NULL)
+	{
 		HANDLE hThread = m_pWorkerThread->m_hThread;
-		
+
 		m_bThreadRunning = false;
 		::SetEvent(m_hNewSamples);
 
 		TRACE0("Visualizer: Joining thread...\n");
-		if (::WaitForSingleObject(hThread, 5000) == WAIT_OBJECT_0) {
+		if (::WaitForSingleObject(hThread, 5000) == WAIT_OBJECT_0)
+		{
 			::CloseHandle(m_hNewSamples);
 			m_hNewSamples = NULL;
 			m_pWorkerThread = NULL;
 			TRACE0("Visualizer: Thread has finished.\n");
 		}
-		else {
+		else
+		{
 			TRACE0("Visualizer: Could not shutdown worker thread\n");
 		}
 	}

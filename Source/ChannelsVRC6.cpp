@@ -31,14 +31,15 @@ CChannelHandlerVRC6::CChannelHandlerVRC6() : CChannelHandler(0xFFF, 0x0F)
 {
 }
 
-void CChannelHandlerVRC6::HandleNoteData(stChanNote *pNoteData, int EffColumns)
+void CChannelHandlerVRC6::HandleNoteData(stChanNote* pNoteData, int EffColumns)
 {
 	m_iPostEffect = 0;
 	m_iPostEffectParam = 0;
 
 	CChannelHandler::HandleNoteData(pNoteData, EffColumns);
 
-	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE) {
+	if (pNoteData->Note != NONE && pNoteData->Note != HALT && pNoteData->Note != RELEASE)
+	{
 		if (m_iPostEffect && (m_iEffect == EF_SLIDE_UP || m_iEffect == EF_SLIDE_DOWN))
 			SetupSlide(m_iPostEffect, m_iPostEffectParam);
 		else if (m_iEffect == EF_SLIDE_DOWN || m_iEffect == EF_SLIDE_UP)
@@ -48,34 +49,38 @@ void CChannelHandlerVRC6::HandleNoteData(stChanNote *pNoteData, int EffColumns)
 
 void CChannelHandlerVRC6::HandleCustomEffects(int EffNum, int EffParam)
 {
-	if (!CheckCommonEffects(EffNum, EffParam)) {
-		switch (EffNum) {
-			case EF_DUTY_CYCLE:
-				m_iDefaultDuty = m_iDutyPeriod = EffParam;
-				break;
-			case EF_SLIDE_UP:
-			case EF_SLIDE_DOWN:
-				m_iPostEffect = EffNum;
-				m_iPostEffectParam = EffParam;
-				SetupSlide(EffNum, EffParam);
-				break;
+	if (!CheckCommonEffects(EffNum, EffParam))
+	{
+		switch (EffNum)
+		{
+		case EF_DUTY_CYCLE:
+			m_iDefaultDuty = m_iDutyPeriod = EffParam;
+			break;
+		case EF_SLIDE_UP:
+		case EF_SLIDE_DOWN:
+			m_iPostEffect = EffNum;
+			m_iPostEffectParam = EffParam;
+			SetupSlide(EffNum, EffParam);
+			break;
 		}
 	}
 }
 
 bool CChannelHandlerVRC6::HandleInstrument(int Instrument, bool Trigger, bool NewInstrument)
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 	CInstrumentContainer<CInstrumentVRC6> instContainer(pDocument, Instrument);
-	CInstrumentVRC6 *pInstrument = instContainer();
+	CInstrumentVRC6* pInstrument = instContainer();
 
 	if (!pInstrument)
 		return false;
 
 	// Setup instrument
-	for (int i = 0; i < CInstrumentVRC6::SEQUENCE_COUNT; ++i) {
-		const CSequence *pSequence = pDocument->GetSequence(SNDCHIP_VRC6, pInstrument->GetSeqIndex(i), i);
-		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i)) {
+	for (int i = 0; i < CInstrumentVRC6::SEQUENCE_COUNT; ++i)
+	{
+		const CSequence* pSequence = pDocument->GetSequence(SNDCHIP_VRC6, pInstrument->GetSeqIndex(i), i);
+		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i))
+		{
 			if (pInstrument->GetSeqEnable(i) == 1)
 				SetupSequence(i, pSequence);
 			else
@@ -97,7 +102,8 @@ void CChannelHandlerVRC6::HandleCut()
 
 void CChannelHandlerVRC6::HandleRelease()
 {
-	if (!m_bRelease) {
+	if (!m_bRelease)
+	{
 		ReleaseNote();
 		ReleaseSequences();
 	}
@@ -105,14 +111,14 @@ void CChannelHandlerVRC6::HandleRelease()
 
 void CChannelHandlerVRC6::HandleNote(int Note, int Octave)
 {
-	m_iNote		  = RunNote(Octave, Note);
-	m_iSeqVolume  = 0x0F;
+	m_iNote = RunNote(Octave, Note);
+	m_iSeqVolume = 0x0F;
 	m_iDutyPeriod = m_iDefaultDuty;
 }
 
 void CChannelHandlerVRC6::ProcessChannel()
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 
 	// Default effects
 	CChannelHandler::ProcessChannel();
@@ -140,7 +146,8 @@ void CVRC6Square1::RefreshChannel()
 	unsigned char HiFreq = (Period & 0xFF);
 	unsigned char LoFreq = (Period >> 8);
 
-	if (!m_bGate || !Volume) {
+	if (!m_bGate || !Volume)
+	{
 		WriteExternalRegister(0x9002, 0x00);
 		return;
 	}
@@ -170,7 +177,8 @@ void CVRC6Square2::RefreshChannel()
 	unsigned char HiFreq = (Period & 0xFF);
 	unsigned char LoFreq = (Period >> 8);
 
-	if (!m_bGate || !Volume) {
+	if (!m_bGate || !Volume)
+	{
 		WriteExternalRegister(0xA002, 0x00);
 		return;
 	}
@@ -214,7 +222,8 @@ void CVRC6Sawtooth::RefreshChannel()
 	if (!m_bGate)
 		Volume = 0;
 
-	if (!m_bGate || !Volume) {
+	if (!m_bGate || !Volume)
+	{
 		WriteExternalRegister(0xB002, 0x00);
 		return;
 	}

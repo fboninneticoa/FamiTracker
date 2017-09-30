@@ -28,7 +28,7 @@ class CLinkLabel : public CStatic
 public:
 	CLinkLabel(CString address);
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 	CString m_strAddress;
 	bool m_bHover;
 public:
@@ -44,7 +44,7 @@ class CHead : public CStatic
 public:
 	CHead();
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual void CHead::DrawItem(LPDRAWITEMSTRUCT);
 };
@@ -56,21 +56,21 @@ public:
 	CAboutDlg();
 	~CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_ABOUTBOX };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	CLinkLabel *m_pMail, *m_pWeb;
 	CToolTipCtrl m_wndToolTip;
-	
-	CFont *m_pLinkFont, *m_pBoldFont, *m_pTitleFont;
-	CHead *m_pHead;
 
-// Implementation
+	CFont *m_pLinkFont, *m_pBoldFont, *m_pTitleFont;
+	CHead* m_pHead;
+
+	// Implementation
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedOk();

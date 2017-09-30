@@ -25,13 +25,13 @@
 
 class CCommentsDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CCommentsDlg)
+DECLARE_DYNAMIC(CCommentsDlg)
 
 public:
-	CCommentsDlg(CWnd* pParent = NULL);   // standard constructor
+	CCommentsDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CCommentsDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_COMMENTS };
 
 	static LPCTSTR FONT_FACE;
@@ -41,15 +41,15 @@ protected:
 	static RECT WinRect;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void SaveComment();
 
 protected:
 	bool m_bChanged;
-	CFont *m_pFont;
+	CFont* m_pFont;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();

@@ -25,29 +25,29 @@
 
 class CModulePropertiesDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CModulePropertiesDlg)
+DECLARE_DYNAMIC(CModulePropertiesDlg)
 
 private:
 	void SelectSong(int Song);
 	void UpdateSongButtons();
-	
+
 	unsigned int m_iSelectedSong;
 
-	CFamiTrackerDoc *m_pDocument;
+	CFamiTrackerDoc* m_pDocument;
 
 public:
-	CModulePropertiesDlg(CWnd* pParent = NULL);   // standard constructor
+	CModulePropertiesDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CModulePropertiesDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PROPERTIES };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void FillSongList();
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedOk();
@@ -56,10 +56,10 @@ public:
 	afx_msg void OnBnClickedSongUp();
 	afx_msg void OnBnClickedSongDown();
 	afx_msg void OnEnChangeSongname();
-	afx_msg void OnClickSongList(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnClickSongList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedSongImport();
 	afx_msg void OnCbnSelchangeExpansion();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnLvnItemchangedSonglist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedSonglist(NMHDR* pNMHDR, LRESULT* pResult);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

@@ -32,11 +32,11 @@
  * Binary file writer, base class binary renderers
  */
 
-CBinaryFileWriter::CBinaryFileWriter(CFile *pFile) : m_pFile(pFile), m_iDataWritten(0)
+CBinaryFileWriter::CBinaryFileWriter(CFile* pFile) : m_pFile(pFile), m_iDataWritten(0)
 {
 }
 
-void CBinaryFileWriter::Store(const void *pData, unsigned int Size)
+void CBinaryFileWriter::Store(const void* pData, unsigned int Size)
 {
 	m_pFile->Write(pData, Size);
 	m_iDataWritten += Size;
@@ -60,28 +60,31 @@ unsigned int CBinaryFileWriter::GetWritten() const
  *
  */
 
-CChunkRenderBinary::CChunkRenderBinary(CFile *pFile) : CBinaryFileWriter(pFile), m_iSampleAddress(0)
+CChunkRenderBinary::CChunkRenderBinary(CFile* pFile) : CBinaryFileWriter(pFile), m_iSampleAddress(0)
 {
 }
 
-void CChunkRenderBinary::StoreChunks(const std::vector<CChunk*> &Chunks) 
+void CChunkRenderBinary::StoreChunks(const std::vector<CChunk*>& Chunks)
 {
 	std::for_each(Chunks.begin(), Chunks.end(), std::bind1st(std::mem_fun(&CChunkRenderBinary::StoreChunk), this));
 }
 
-void CChunkRenderBinary::StoreSamples(const std::vector<const CDSample*> &Samples)
+void CChunkRenderBinary::StoreSamples(const std::vector<const CDSample*>& Samples)
 {
 	std::for_each(Samples.begin(), Samples.end(), std::bind1st(std::mem_fun(&CChunkRenderBinary::StoreSample), this));
 }
 
-void CChunkRenderBinary::StoreChunk(CChunk *pChunk)
+void CChunkRenderBinary::StoreChunk(CChunk* pChunk)
 {
-	for (int i = 0; i < pChunk->GetLength(); ++i) {
-		if (pChunk->GetType() == CHUNK_PATTERN) {
-			const std::vector<char> &vec = pChunk->GetStringData(CCompiler::PATTERN_CHUNK_INDEX);
+	for (int i = 0; i < pChunk->GetLength(); ++i)
+	{
+		if (pChunk->GetType() == CHUNK_PATTERN)
+		{
+			const std::vector<char>& vec = pChunk->GetStringData(CCompiler::PATTERN_CHUNK_INDEX);
 			Store(&vec.front(), vec.size());
 		}
-		else {
+		else
+		{
 			unsigned short data = pChunk->GetData(i);
 			unsigned short size = pChunk->GetDataSize(i);
 			Store(&data, size);
@@ -89,7 +92,7 @@ void CChunkRenderBinary::StoreChunk(CChunk *pChunk)
 	}
 }
 
-void CChunkRenderBinary::StoreSample(const CDSample *pDSample)
+void CChunkRenderBinary::StoreSample(const CDSample* pDSample)
 {
 	unsigned int SampleSize = pDSample->GetSize();
 
@@ -97,7 +100,8 @@ void CChunkRenderBinary::StoreSample(const CDSample *pDSample)
 	m_iSampleAddress += SampleSize;
 
 	// Adjust size
-	if ((m_iSampleAddress & 0x3F) > 0) {
+	if ((m_iSampleAddress & 0x3F) > 0)
+	{
 		int PadSize = 0x40 - (m_iSampleAddress & 0x3F);
 		m_iSampleAddress += PadSize;
 		Fill(PadSize);
@@ -110,32 +114,33 @@ void CChunkRenderBinary::StoreSample(const CDSample *pDSample)
  *
  */
 
-CChunkRenderNSF::CChunkRenderNSF(CFile *pFile, unsigned int StartAddr) : 
+CChunkRenderNSF::CChunkRenderNSF(CFile* pFile, unsigned int StartAddr) :
 	CBinaryFileWriter(pFile),
 	m_iStartAddr(StartAddr),
 	m_iSampleAddr(0)
 {
 }
 
-void CChunkRenderNSF::StoreDriver(const char *pDriver, unsigned int Size)
+void CChunkRenderNSF::StoreDriver(const char* pDriver, unsigned int Size)
 {
 	// Store NSF driver
 	Store(pDriver, Size);
 }
 
-void CChunkRenderNSF::StoreChunks(const std::vector<CChunk*> &Chunks)
+void CChunkRenderNSF::StoreChunks(const std::vector<CChunk*>& Chunks)
 {
 	// Store chunks into NSF banks
 	std::for_each(Chunks.begin(), Chunks.end(), std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreChunk), this));
 }
 
-void CChunkRenderNSF::StoreChunksBankswitched(const std::vector<CChunk*> &Chunks)
+void CChunkRenderNSF::StoreChunksBankswitched(const std::vector<CChunk*>& Chunks)
 {
 	// Store chunks into NSF banks with bankswitching
-	std::for_each(Chunks.begin(), Chunks.end(), std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreChunkBankswitched), this));
+	std::for_each(Chunks.begin(), Chunks.end(),
+	              std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreChunkBankswitched), this));
 }
 
-void CChunkRenderNSF::StoreSamples(const std::vector<const CDSample*> &Samples)
+void CChunkRenderNSF::StoreSamples(const std::vector<const CDSample*>& Samples)
 {
 	// Align samples to $C000
 	while (GetAbsoluteAddr() < CCompiler::PAGE_SAMPLES)
@@ -146,30 +151,32 @@ void CChunkRenderNSF::StoreSamples(const std::vector<const CDSample*> &Samples)
 	std::for_each(Samples.begin(), Samples.end(), std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreSample), this));
 }
 
-void CChunkRenderNSF::StoreSamplesBankswitched(const std::vector<const CDSample*> &Samples)
+void CChunkRenderNSF::StoreSamplesBankswitched(const std::vector<const CDSample*>& Samples)
 {
 	// Start samples on a clean bank
 	if ((GetAbsoluteAddr() & 0xFFF) != 0)
 		AllocateNewBank();
 
 	m_iSampleAddr = CCompiler::PAGE_SAMPLES;
-	std::for_each(Samples.begin(), Samples.end(), std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreSampleBankswitched), this));
+	std::for_each(Samples.begin(), Samples.end(),
+	              std::bind1st(std::mem_fun(&CChunkRenderNSF::StoreSampleBankswitched), this));
 }
 
-void CChunkRenderNSF::StoreSample(const CDSample *pDSample)
+void CChunkRenderNSF::StoreSample(const CDSample* pDSample)
 {
 	// Store sample and fill with zeros
 	Store(pDSample->GetData(), pDSample->GetSize());
 	Fill(CCompiler::AdjustSampleAddress(GetAbsoluteAddr()));
 }
 
-void CChunkRenderNSF::StoreSampleBankswitched(const CDSample *pDSample)
+void CChunkRenderNSF::StoreSampleBankswitched(const CDSample* pDSample)
 {
 	unsigned int SampleSize = pDSample->GetSize();
 
-	if (m_iSampleAddr + SampleSize >= (unsigned)CCompiler::DPCM_SWITCH_ADDRESS) {
+	if (m_iSampleAddr + SampleSize >= (unsigned)CCompiler::DPCM_SWITCH_ADDRESS)
+	{
 		// Allocate new bank
-		if (GetRemainingSize() != 0x1000)	// Skip if already on beginning of new bank
+		if (GetRemainingSize() != 0x1000) // Skip if already on beginning of new bank
 			AllocateNewBank();
 		m_iSampleAddr = CCompiler::PAGE_SAMPLES;
 	}
@@ -185,29 +192,33 @@ int CChunkRenderNSF::GetBankCount() const
 	return GetBank() + 1;
 }
 
-void CChunkRenderNSF::StoreChunkBankswitched(const CChunk *pChunk)
+void CChunkRenderNSF::StoreChunkBankswitched(const CChunk* pChunk)
 {
-	switch (pChunk->GetType()) {			
-		case CHUNK_FRAME_LIST:
-		case CHUNK_FRAME:
-		case CHUNK_PATTERN:
-			// Switchable data
-			while ((GetBank() + 1) <= pChunk->GetBank() && pChunk->GetBank() > CCompiler::PATTERN_SWITCH_BANK)
-				AllocateNewBank();
+	switch (pChunk->GetType())
+	{
+	case CHUNK_FRAME_LIST:
+	case CHUNK_FRAME:
+	case CHUNK_PATTERN:
+		// Switchable data
+		while ((GetBank() + 1) <= pChunk->GetBank() && pChunk->GetBank() > CCompiler::PATTERN_SWITCH_BANK)
+			AllocateNewBank();
 	}
 
 	// Write chunk
 	StoreChunk(pChunk);
 }
 
-void CChunkRenderNSF::StoreChunk(const CChunk *pChunk)
+void CChunkRenderNSF::StoreChunk(const CChunk* pChunk)
 {
-	for (int i = 0; i < pChunk->GetLength(); ++i) {
-		if (pChunk->GetType() == CHUNK_PATTERN) {
-			const std::vector<char> &vec = pChunk->GetStringData(CCompiler::PATTERN_CHUNK_INDEX);
-			Store(&vec.front(), vec.size());			
+	for (int i = 0; i < pChunk->GetLength(); ++i)
+	{
+		if (pChunk->GetType() == CHUNK_PATTERN)
+		{
+			const std::vector<char>& vec = pChunk->GetStringData(CCompiler::PATTERN_CHUNK_INDEX);
+			Store(&vec.front(), vec.size());
 		}
-		else {
+		else
+		{
 			unsigned short data = pChunk->GetData(i);
 			unsigned short size = pChunk->GetDataSize(i);
 			Store(&data, size);
@@ -245,11 +256,11 @@ int CChunkRenderNSF::GetAbsoluteAddr() const
  *
  */
 
-CChunkRenderNES::CChunkRenderNES(CFile *pFile, unsigned int StartAddr) : CChunkRenderNSF(pFile, StartAddr)
+CChunkRenderNES::CChunkRenderNES(CFile* pFile, unsigned int StartAddr) : CChunkRenderNSF(pFile, StartAddr)
 {
 }
 
-void CChunkRenderNES::StoreCaller(const void *pData, unsigned int Size)
+void CChunkRenderNES::StoreCaller(const void* pData, unsigned int Size)
 {
 	while (GetBank() < 7)
 		AllocateNewBank();

@@ -39,7 +39,8 @@ CChunk::~CChunk()
 
 void CChunk::Clear()
 {
-	for (std::vector<CChunkData*>::iterator it = m_vChunkData.begin(); it != m_vChunkData.end(); ++it) {
+	for (std::vector<CChunkData*>::iterator it = m_vChunkData.begin(); it != m_vChunkData.end(); ++it)
+	{
 		delete (*it);
 	}
 
@@ -102,7 +103,7 @@ void CChunk::StoreBankReference(CStringA refName, int bank)
 	m_vChunkData.push_back(new CChunkDataBank(refName, bank));
 }
 
-void CChunk::StoreString(const std::vector<char> &data)
+void CChunk::StoreString(const std::vector<char>& data)
 {
 	m_vChunkData.push_back(new CChunkDataString(data));
 }
@@ -124,14 +125,14 @@ unsigned char CChunk::GetStringData(int index, int pos) const
 	return static_cast<CChunkDataString*>(m_vChunkData[index])->m_vData[pos];
 }
 
-const std::vector<char> &CChunk::GetStringData(int index) const
+const std::vector<char>& CChunk::GetStringData(int index) const
 {
 	return (static_cast<CChunkDataString*>(m_vChunkData[index]))->m_vData;
 }
 
 LPCSTR CChunk::GetDataRefName(int index) const
-{	
-	CChunkDataReference *pChunkData = dynamic_cast<CChunkDataReference*>(m_vChunkData[index]);
+{
+	CChunkDataReference* pChunkData = dynamic_cast<CChunkDataReference*>(m_vChunkData[index]);
 
 	if (pChunkData != NULL)
 		return pChunkData->m_refName;
@@ -139,15 +140,15 @@ LPCSTR CChunk::GetDataRefName(int index) const
 	return "";
 }
 
-void CChunk::UpdateDataRefName(int index, CStringA &name)
+void CChunk::UpdateDataRefName(int index, CStringA& name)
 {
-	CChunkDataReference *pChunkData = dynamic_cast<CChunkDataReference*>(m_vChunkData[index]);
+	CChunkDataReference* pChunkData = dynamic_cast<CChunkDataReference*>(m_vChunkData[index]);
 
 	if (pChunkData != NULL)
 		pChunkData->m_refName = name;
 }
 
-bool CChunk::IsDataReference(int index) const 
+bool CChunk::IsDataReference(int index) const
 {
 	return dynamic_cast<CChunkDataReference*>(m_vChunkData[index]) != NULL;
 }
@@ -168,10 +169,11 @@ unsigned int CChunk::CountDataSize() const
 	return Size;
 }
 
-void CChunk::AssignLabels(CMap<CStringA, LPCSTR, int, int> &labelMap)
+void CChunk::AssignLabels(CMap<CStringA, LPCSTR, int, int>& labelMap)
 {
-	for (std::vector<CChunkData*>::iterator it = m_vChunkData.begin(); it != m_vChunkData.end(); ++it) {
-		CChunkDataReference *pChunkData = dynamic_cast<CChunkDataReference*>(*it);
+	for (std::vector<CChunkData*>::iterator it = m_vChunkData.begin(); it != m_vChunkData.end(); ++it)
+	{
+		CChunkDataReference* pChunkData = dynamic_cast<CChunkDataReference*>(*it);
 		if (pChunkData != NULL)
 			pChunkData->ref = labelMap[pChunkData->m_refName];
 	}

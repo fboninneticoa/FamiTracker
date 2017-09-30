@@ -25,42 +25,42 @@
 
 class CConfigGeneral : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CConfigGeneral)
+DECLARE_DYNAMIC(CConfigGeneral)
 
 public:
 	CConfigGeneral();
 	virtual ~CConfigGeneral();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CONFIG_GENERAL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	bool	m_bWrapCursor;
-	bool	m_bWrapFrames;
-	bool	m_bFreeCursorEdit;
-	bool	m_bPreviewWAV;
-	bool	m_bKeyRepeat;
-	bool	m_bRowInHex;
-	bool	m_bFramePreview;
-	int		m_iEditStyle;
-	bool	m_bNoDPCMReset;
-	bool	m_bNoStepMove;
-	int		m_iPageStepSize;
-	bool	m_bPullUpDelete;
-	bool	m_bBackups;
-	bool	m_bSingleInstance;
-	bool	m_bPreviewFullRow;
-	bool	m_bDisableDblClick;
-	int		m_iKeyNoteCut;
-	int		m_iKeyNoteRelease;
-	int		m_iKeyClear;
-	int		m_iKeyRepeat;
+	bool m_bWrapCursor;
+	bool m_bWrapFrames;
+	bool m_bFreeCursorEdit;
+	bool m_bPreviewWAV;
+	bool m_bKeyRepeat;
+	bool m_bRowInHex;
+	bool m_bFramePreview;
+	int m_iEditStyle;
+	bool m_bNoDPCMReset;
+	bool m_bNoStepMove;
+	int m_iPageStepSize;
+	bool m_bPullUpDelete;
+	bool m_bBackups;
+	bool m_bSingleInstance;
+	bool m_bPreviewFullRow;
+	bool m_bDisableDblClick;
+	int m_iKeyNoteCut;
+	int m_iKeyNoteRelease;
+	int m_iKeyClear;
+	int m_iKeyRepeat;
 
 	CToolTipCtrl m_wndToolTip;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnSetActive();
 	virtual void OnOK();
@@ -87,6 +87,4 @@ public:
 	afx_msg void OnBnClickedOptPreviewFullRow();
 	afx_msg void OnBnClickedOptDisableDoubleClick();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-
 };
-

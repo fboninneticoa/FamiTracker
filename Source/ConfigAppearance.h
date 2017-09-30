@@ -20,7 +20,8 @@
 
 #pragma once
 
-enum color_items_t {
+enum color_items_t
+{
 	COL_BACKGROUND,
 	COL_BACKGROUND_HILITE,
 	COL_BACKGROUND_HILITE2,
@@ -41,47 +42,47 @@ enum color_items_t {
 
 class CConfigAppearance : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CConfigAppearance)
+DECLARE_DYNAMIC(CConfigAppearance)
 
 public:
 	CConfigAppearance();
 	virtual ~CConfigAppearance();
 
-	void AddFontName(char *Name);
+	void AddFontName(char* Name);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CONFIG_APPEARANCE };
 
 protected:
-	static int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, DWORD FontType, LPARAM lParam);
+	static int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam);
 
-	static const TCHAR *COLOR_ITEMS[];
+	static const TCHAR* COLOR_ITEMS[];
 	static const int NUM_COLOR_SCHEMES;
 
-	static const COLOR_SCHEME *COLOR_SCHEMES[];
+	static const COLOR_SCHEME* COLOR_SCHEMES[];
 
 	static const int FONT_SIZES[];
 	static const int FONT_SIZE_COUNT;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	void SelectColorScheme(const COLOR_SCHEME *pColorScheme);
+	void SelectColorScheme(const COLOR_SCHEME* pColorScheme);
 
 	void SetColor(int Index, int Color);
 	int GetColor(int Index) const;
 
 protected:
-	CString		m_strFont;
-	
-	int			m_iFontSize;
-	int			m_iSelectedItem;
-	bool		m_bPatternColors;
-	bool		m_bDisplayFlats;
+	CString m_strFont;
 
-	int			m_iColors[COLOR_ITEM_COUNT];
+	int m_iFontSize;
+	int m_iSelectedItem;
+	bool m_bPatternColors;
+	bool m_bDisplayFlats;
 
-	DECLARE_MESSAGE_MAP()
+	int m_iColors[COLOR_ITEM_COUNT];
+
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	virtual BOOL OnInitDialog();

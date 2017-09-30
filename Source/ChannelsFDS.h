@@ -20,13 +20,14 @@
 
 #pragma once
 
-class CChannelHandlerFDS : public CChannelHandlerInverted {
+class CChannelHandlerFDS : public CChannelHandlerInverted
+{
 public:
 	CChannelHandlerFDS();
 	virtual void ProcessChannel();
 	virtual void RefreshChannel();
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -37,8 +38,8 @@ protected:
 
 protected:
 	// FDS functions
-	void FillWaveRAM(CInstrumentFDS *pInst);
-	void FillModulationTable(CInstrumentFDS *pInst);
+	void FillWaveRAM(CInstrumentFDS* pInst);
+	void FillModulationTable(CInstrumentFDS* pInst);
 private:
 	void CheckWaveUpdate();
 protected:

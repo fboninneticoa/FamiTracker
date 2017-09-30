@@ -46,7 +46,7 @@
 const TCHAR CFamiTrackerView::CLIPBOARD_ID[] = _T("FamiTracker Pattern");
 
 // Effect texts (TODO update this list)
-const TCHAR *EFFECT_TEXTS[] = {
+const TCHAR* EFFECT_TEXTS[] = {
 	{_T("FXX - Set speed/tempo, XX < 20 = speed, XX >= 20 = tempo")},
 	{_T("BXX - Jump to frame")},
 	{_T("DXX - Skip to next frame")},
@@ -74,16 +74,17 @@ const TCHAR *EFFECT_TEXTS[] = {
 // OLE copy and mix
 #define	DROPEFFECT_COPY_MIX	( 8 )
 
-const unsigned char KEY_DOT = 0xBD;		// '.'
-const unsigned char KEY_DASH = 0xBE;	// '-'
+const unsigned char KEY_DOT = 0xBD; // '.'
+const unsigned char KEY_DASH = 0xBE; // '-'
 
 const int NOTE_HALT = -1;
 const int NOTE_RELEASE = -2;
 
-const int SINGLE_STEP = 1;				// Size of single step moves (default: 1)
+const int SINGLE_STEP = 1; // Size of single step moves (default: 1)
 
 // Timer IDs
-enum { 
+enum
+{
 	TMR_UPDATE,
 	TMR_SCROLL
 };
@@ -93,97 +94,98 @@ enum {
 IMPLEMENT_DYNCREATE(CFamiTrackerView, CView)
 
 BEGIN_MESSAGE_MAP(CFamiTrackerView, CView)
-	ON_WM_CREATE()
-	ON_WM_ERASEBKGND()
-	ON_WM_KILLFOCUS()
-	ON_WM_SETFOCUS()
-	ON_WM_TIMER()
-	ON_WM_VSCROLL()
-	ON_WM_HSCROLL()
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP()
-	ON_WM_MOUSEMOVE()
-	ON_WM_MOUSEWHEEL()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_LBUTTONDBLCLK()
-	ON_WM_RBUTTONUP()
-	ON_WM_MENUCHAR()
-	ON_WM_SYSKEYDOWN()
-	ON_COMMAND(ID_EDIT_PASTEMIX, OnEditPastemix)
-	ON_COMMAND(ID_EDIT_INSTRUMENTMASK, OnEditInstrumentMask)
-	ON_COMMAND(ID_EDIT_VOLUMEMASK, OnEditVolumeMask)
-	ON_COMMAND(ID_EDIT_INTERPOLATE, OnEditInterpolate)
-	ON_COMMAND(ID_EDIT_REVERSE, OnEditReverse)
-	ON_COMMAND(ID_EDIT_REPLACEINSTRUMENT, OnEditReplaceInstrument)
-	ON_COMMAND(ID_TRANSPOSE_DECREASENOTE, OnTransposeDecreasenote)
-	ON_COMMAND(ID_TRANSPOSE_DECREASEOCTAVE, OnTransposeDecreaseoctave)
-	ON_COMMAND(ID_TRANSPOSE_INCREASENOTE, OnTransposeIncreasenote)
-	ON_COMMAND(ID_TRANSPOSE_INCREASEOCTAVE, OnTransposeIncreaseoctave)
-	ON_COMMAND(ID_DECREASEVALUES, OnDecreaseValues)
-	ON_COMMAND(ID_INCREASEVALUES, OnIncreaseValues)
-	ON_COMMAND(ID_TRACKER_PLAYROW, OnTrackerPlayrow)
-	ON_COMMAND(ID_TRACKER_EDIT, OnTrackerEdit)
-	ON_COMMAND(ID_TRACKER_PAL, OnTrackerPal)
-	ON_COMMAND(ID_TRACKER_NTSC, OnTrackerNtsc)
-	ON_COMMAND(ID_SPEED_CUSTOM, OnSpeedCustom)
-	ON_COMMAND(ID_SPEED_DEFAULT, OnSpeedDefault)
-	ON_COMMAND(ID_TRACKER_TOGGLECHANNEL, OnTrackerToggleChannel)
-	ON_COMMAND(ID_TRACKER_SOLOCHANNEL, OnTrackerSoloChannel)
-	ON_COMMAND(ID_CMD_OCTAVE_NEXT, OnNextOctave)
-	ON_COMMAND(ID_CMD_OCTAVE_PREVIOUS, OnPreviousOctave)
-	ON_COMMAND(ID_CMD_INCREASESTEPSIZE, OnIncreaseStepSize)
-	ON_COMMAND(ID_CMD_DECREASESTEPSIZE, OnDecreaseStepSize)
-	ON_COMMAND(ID_CMD_STEP_UP, OnOneStepUp)
-	ON_COMMAND(ID_CMD_STEP_DOWN, OnOneStepDown)	
-	ON_COMMAND(ID_POPUP_TOGGLECHANNEL, OnTrackerToggleChannel)
-	ON_COMMAND(ID_POPUP_SOLOCHANNEL, OnTrackerSoloChannel)
-	ON_COMMAND(ID_POPUP_UNMUTEALLCHANNELS, OnTrackerUnmuteAllChannels)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_INSTRUMENTMASK, OnUpdateEditInstrumentMask)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_VOLUMEMASK, OnUpdateEditVolumeMask)
-	ON_UPDATE_COMMAND_UI(ID_TRACKER_EDIT, OnUpdateTrackerEdit)
-	ON_UPDATE_COMMAND_UI(ID_TRACKER_PAL, OnUpdateTrackerPal)
-	ON_UPDATE_COMMAND_UI(ID_TRACKER_NTSC, OnUpdateTrackerNtsc)
-	ON_UPDATE_COMMAND_UI(ID_SPEED_DEFAULT, OnUpdateSpeedDefault)
-	ON_UPDATE_COMMAND_UI(ID_SPEED_CUSTOM, OnUpdateSpeedCustom)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTEMIX, OnUpdateEditPaste)
-	ON_WM_NCMOUSEMOVE()
-	ON_COMMAND(ID_BLOCK_START, OnBlockStart)	
-	ON_COMMAND(ID_BLOCK_END, OnBlockEnd)
-	ON_COMMAND(ID_POPUP_PICKUPROW, OnPickupRow)
-	ON_MESSAGE(WM_USER_MIDI_EVENT, OnUserMidiEvent)
-	ON_MESSAGE(WM_USER_PLAYER, OnUserPlayerEvent)
-	ON_MESSAGE(WM_USER_NOTE_EVENT, OnUserNoteEvent)
-	ON_WM_CLOSE()
-	ON_WM_DESTROY()
+		ON_WM_CREATE()
+		ON_WM_ERASEBKGND()
+		ON_WM_KILLFOCUS()
+		ON_WM_SETFOCUS()
+		ON_WM_TIMER()
+		ON_WM_VSCROLL()
+		ON_WM_HSCROLL()
+		ON_WM_KEYDOWN()
+		ON_WM_KEYUP()
+		ON_WM_MOUSEMOVE()
+		ON_WM_MOUSEWHEEL()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_LBUTTONUP()
+		ON_WM_LBUTTONDBLCLK()
+		ON_WM_RBUTTONUP()
+		ON_WM_MENUCHAR()
+		ON_WM_SYSKEYDOWN()
+		ON_COMMAND(ID_EDIT_PASTEMIX, OnEditPastemix)
+		ON_COMMAND(ID_EDIT_INSTRUMENTMASK, OnEditInstrumentMask)
+		ON_COMMAND(ID_EDIT_VOLUMEMASK, OnEditVolumeMask)
+		ON_COMMAND(ID_EDIT_INTERPOLATE, OnEditInterpolate)
+		ON_COMMAND(ID_EDIT_REVERSE, OnEditReverse)
+		ON_COMMAND(ID_EDIT_REPLACEINSTRUMENT, OnEditReplaceInstrument)
+		ON_COMMAND(ID_TRANSPOSE_DECREASENOTE, OnTransposeDecreasenote)
+		ON_COMMAND(ID_TRANSPOSE_DECREASEOCTAVE, OnTransposeDecreaseoctave)
+		ON_COMMAND(ID_TRANSPOSE_INCREASENOTE, OnTransposeIncreasenote)
+		ON_COMMAND(ID_TRANSPOSE_INCREASEOCTAVE, OnTransposeIncreaseoctave)
+		ON_COMMAND(ID_DECREASEVALUES, OnDecreaseValues)
+		ON_COMMAND(ID_INCREASEVALUES, OnIncreaseValues)
+		ON_COMMAND(ID_TRACKER_PLAYROW, OnTrackerPlayrow)
+		ON_COMMAND(ID_TRACKER_EDIT, OnTrackerEdit)
+		ON_COMMAND(ID_TRACKER_PAL, OnTrackerPal)
+		ON_COMMAND(ID_TRACKER_NTSC, OnTrackerNtsc)
+		ON_COMMAND(ID_SPEED_CUSTOM, OnSpeedCustom)
+		ON_COMMAND(ID_SPEED_DEFAULT, OnSpeedDefault)
+		ON_COMMAND(ID_TRACKER_TOGGLECHANNEL, OnTrackerToggleChannel)
+		ON_COMMAND(ID_TRACKER_SOLOCHANNEL, OnTrackerSoloChannel)
+		ON_COMMAND(ID_CMD_OCTAVE_NEXT, OnNextOctave)
+		ON_COMMAND(ID_CMD_OCTAVE_PREVIOUS, OnPreviousOctave)
+		ON_COMMAND(ID_CMD_INCREASESTEPSIZE, OnIncreaseStepSize)
+		ON_COMMAND(ID_CMD_DECREASESTEPSIZE, OnDecreaseStepSize)
+		ON_COMMAND(ID_CMD_STEP_UP, OnOneStepUp)
+		ON_COMMAND(ID_CMD_STEP_DOWN, OnOneStepDown)
+		ON_COMMAND(ID_POPUP_TOGGLECHANNEL, OnTrackerToggleChannel)
+		ON_COMMAND(ID_POPUP_SOLOCHANNEL, OnTrackerSoloChannel)
+		ON_COMMAND(ID_POPUP_UNMUTEALLCHANNELS, OnTrackerUnmuteAllChannels)
+		//	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
+		//	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
+		ON_UPDATE_COMMAND_UI(ID_EDIT_INSTRUMENTMASK, OnUpdateEditInstrumentMask)
+		ON_UPDATE_COMMAND_UI(ID_EDIT_VOLUMEMASK, OnUpdateEditVolumeMask)
+		ON_UPDATE_COMMAND_UI(ID_TRACKER_EDIT, OnUpdateTrackerEdit)
+		ON_UPDATE_COMMAND_UI(ID_TRACKER_PAL, OnUpdateTrackerPal)
+		ON_UPDATE_COMMAND_UI(ID_TRACKER_NTSC, OnUpdateTrackerNtsc)
+		ON_UPDATE_COMMAND_UI(ID_SPEED_DEFAULT, OnUpdateSpeedDefault)
+		ON_UPDATE_COMMAND_UI(ID_SPEED_CUSTOM, OnUpdateSpeedCustom)
+		ON_UPDATE_COMMAND_UI(ID_EDIT_PASTEMIX, OnUpdateEditPaste)
+		ON_WM_NCMOUSEMOVE()
+		ON_COMMAND(ID_BLOCK_START, OnBlockStart)
+		ON_COMMAND(ID_BLOCK_END, OnBlockEnd)
+		ON_COMMAND(ID_POPUP_PICKUPROW, OnPickupRow)
+		ON_MESSAGE(WM_USER_MIDI_EVENT, OnUserMidiEvent)
+		ON_MESSAGE(WM_USER_PLAYER, OnUserPlayerEvent)
+		ON_MESSAGE(WM_USER_NOTE_EVENT, OnUserNoteEvent)
+		ON_WM_CLOSE()
+		ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // Convert keys 0-F to numbers, -1 = invalid key
-static int ConvertKeyToHex(int Key) {
+static int ConvertKeyToHex(int Key)
+{
+	switch (Key)
+	{
+	case 48: case VK_NUMPAD0: return 0x00;
+	case 49: case VK_NUMPAD1: return 0x01;
+	case 50: case VK_NUMPAD2: return 0x02;
+	case 51: case VK_NUMPAD3: return 0x03;
+	case 52: case VK_NUMPAD4: return 0x04;
+	case 53: case VK_NUMPAD5: return 0x05;
+	case 54: case VK_NUMPAD6: return 0x06;
+	case 55: case VK_NUMPAD7: return 0x07;
+	case 56: case VK_NUMPAD8: return 0x08;
+	case 57: case VK_NUMPAD9: return 0x09;
+	case 65: return 0x0A;
+	case 66: return 0x0B;
+	case 67: return 0x0C;
+	case 68: return 0x0D;
+	case 69: return 0x0E;
+	case 70: return 0x0F;
 
-	switch (Key) {
-		case 48: case VK_NUMPAD0: return 0x00;
-		case 49: case VK_NUMPAD1: return 0x01;
-		case 50: case VK_NUMPAD2: return 0x02;
-		case 51: case VK_NUMPAD3: return 0x03;
-		case 52: case VK_NUMPAD4: return 0x04;
-		case 53: case VK_NUMPAD5: return 0x05;
-		case 54: case VK_NUMPAD6: return 0x06;
-		case 55: case VK_NUMPAD7: return 0x07;
-		case 56: case VK_NUMPAD8: return 0x08;
-		case 57: case VK_NUMPAD9: return 0x09;
-		case 65: return 0x0A;
-		case 66: return 0x0B;
-		case 67: return 0x0C;
-		case 68: return 0x0D;
-		case 69: return 0x0E;
-		case 70: return 0x0F;
-
-		case KEY_DOT:
-		case KEY_DASH:
-			return 0x80;
+	case KEY_DOT:
+	case KEY_DASH:
+		return 0x80;
 	}
 
 	return -1;
@@ -191,7 +193,7 @@ static int ConvertKeyToHex(int Key) {
 
 // CFamiTrackerView construction/destruction
 
-CFamiTrackerView::CFamiTrackerView() : 
+CFamiTrackerView::CFamiTrackerView() :
 	m_iClipboard(0),
 	m_iMoveKeyStepping(1),
 	m_iInsertKeyStepping(1),
@@ -219,7 +221,7 @@ CFamiTrackerView::CFamiTrackerView() :
 	memset(m_iArpeggiate, 0, sizeof(int) * MAX_CHANNELS);
 
 	// Register this object in the sound generator
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 	ASSERT_VALID(pSoundGen);
 
 	pSoundGen->AssignView(this);
@@ -230,7 +232,6 @@ CFamiTrackerView::~CFamiTrackerView()
 	// Release allocated objects
 	SAFE_RELEASE(m_pPatternEditor);
 }
-
 
 
 // CFamiTrackerView diagnostics
@@ -258,12 +259,12 @@ CFamiTrackerDoc* CFamiTrackerView::GetDocument() const // non-debug version is i
 // Static functions
 //
 
-CFamiTrackerView *CFamiTrackerView::GetView()
+CFamiTrackerView* CFamiTrackerView::GetView()
 {
-	CFrameWnd *pFrame = static_cast<CFrameWnd*>(AfxGetApp()->m_pMainWnd);
+	CFrameWnd* pFrame = static_cast<CFrameWnd*>(AfxGetApp()->m_pMainWnd);
 	ASSERT_VALID(pFrame);
 
-	CView *pView = pFrame->GetActiveView();
+	CView* pView = pFrame->GetActiveView();
 
 	if (!pView)
 		return NULL;
@@ -325,7 +326,8 @@ void CFamiTrackerView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 
 	// Check document
-	if (!pDoc->IsFileLoaded()) {
+	if (!pDoc->IsFileLoaded())
+	{
 		LPCTSTR str = _T("No module loaded.");
 		pDC->FillSolidRect(0, 0, m_iWindowWidth, m_iWindowHeight, 0x000000);
 		pDC->SetTextColor(0xFFFFFF);
@@ -335,7 +337,7 @@ void CFamiTrackerView::OnDraw(CDC* pDC)
 	}
 
 	// Don't draw when rendering to wave file
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 	if (pSoundGen == NULL || pSoundGen->IsBackgroundTask())
 		return;
 
@@ -360,7 +362,7 @@ BOOL CFamiTrackerView::OnEraseBkgnd(CDC* pDC)
 void CFamiTrackerView::SetupColors()
 {
 	// Color scheme has changed
-	CMainFrame *pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
 	m_pPatternEditor->ApplyColorScheme();
 
 	m_pPatternEditor->InvalidatePatternData();
@@ -368,7 +370,7 @@ void CFamiTrackerView::SetupColors()
 	RedrawPatternEditor();
 
 	// Frame editor
-	CFrameEditor *pFrameEditor = GetFrameEditor();
+	CFrameEditor* pFrameEditor = GetFrameEditor();
 	pFrameEditor->SetupColors();
 	pFrameEditor->RedrawFrameEditor();
 
@@ -380,8 +382,9 @@ void CFamiTrackerView::UpdateMeters()
 	// TODO: Change this to use the ordinary drawing routines
 	m_csDrawLock.Lock();
 
-	CDC *pDC = GetDC();
-	if (pDC && pDC->m_hDC) {
+	CDC* pDC = GetDC();
+	if (pDC && pDC->m_hDC)
+	{
 		m_pPatternEditor->DrawMeters(pDC);
 		ReleaseDC(pDC);
 	}
@@ -416,7 +419,7 @@ void CFamiTrackerView::InvalidateFrameEditor()
 {
 	// Frame data has changed, redraw frame editor
 
-	CFrameEditor *pFrameEditor = GetFrameEditor();
+	CFrameEditor* pFrameEditor = GetFrameEditor();
 	pFrameEditor->InvalidateFrameData();
 
 	RedrawFrameEditor();
@@ -438,15 +441,15 @@ void CFamiTrackerView::RedrawPatternEditor()
 void CFamiTrackerView::RedrawFrameEditor()
 {
 	// Redraw the frame editor	
-	CFrameEditor *pFrameEditor = GetFrameEditor();
+	CFrameEditor* pFrameEditor = GetFrameEditor();
 	pFrameEditor->RedrawFrameEditor();
 }
 
-CFrameEditor *CFamiTrackerView::GetFrameEditor() const
+CFrameEditor* CFamiTrackerView::GetFrameEditor() const
 {
-	CMainFrame *pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrame);
-	CFrameEditor *pFrameEditor = pMainFrame->GetFrameEditor();
+	CFrameEditor* pFrameEditor = pMainFrame->GetFrameEditor();
 	ASSERT_VALID(pFrameEditor);
 	return pFrameEditor;
 }
@@ -489,17 +492,17 @@ LRESULT CFamiTrackerView::OnUserNoteEvent(WPARAM wParam, LPARAM lParam)
 void CFamiTrackerView::CalcWindowRect(LPRECT lpClientRect, UINT nAdjustType)
 {
 	// Window size has changed
-	m_iWindowWidth	= lpClientRect->right - lpClientRect->left;
-	m_iWindowHeight	= lpClientRect->bottom - lpClientRect->top;
+	m_iWindowWidth = lpClientRect->right - lpClientRect->left;
+	m_iWindowHeight = lpClientRect->bottom - lpClientRect->top;
 
-	m_iWindowWidth  -= ::GetSystemMetrics(SM_CXEDGE) * 2;
+	m_iWindowWidth -= ::GetSystemMetrics(SM_CXEDGE) * 2;
 	m_iWindowHeight -= ::GetSystemMetrics(SM_CYEDGE) * 2;
 
 	m_pPatternEditor->SetWindowSize(m_iWindowWidth, m_iWindowHeight);
 	m_pPatternEditor->InvalidateBackground();
 	// Update cursor since first visible channel might change
 	m_pPatternEditor->CursorUpdated();
-	
+
 	CView::CalcWindowRect(lpClientRect, nAdjustType);
 }
 
@@ -534,8 +537,9 @@ void CFamiTrackerView::OnRButtonUp(UINT nFlags, CPoint point)
 	// Popup menu
 	CRect WinRect;
 	CMenu *pPopupMenu, PopupMenuBar;
-	
-	if (m_pPatternEditor->CancelDragging()) {
+
+	if (m_pPatternEditor->CancelDragging())
+	{
 		InvalidateCursor();
 		CView::OnRButtonUp(nFlags, point);
 		return;
@@ -545,14 +549,16 @@ void CFamiTrackerView::OnRButtonUp(UINT nFlags, CPoint point)
 
 	GetWindowRect(WinRect);
 
-	if (m_pPatternEditor->IsOverHeader(point)) {
+	if (m_pPatternEditor->IsOverHeader(point))
+	{
 		// Pattern header
 		m_iMenuChannel = m_pPatternEditor->GetChannelAtPoint(point.x);
 		PopupMenuBar.LoadMenu(IDR_PATTERN_HEADER_POPUP);
 		pPopupMenu = PopupMenuBar.GetSubMenu(0);
 		pPopupMenu->TrackPopupMenu(TPM_RIGHTBUTTON, point.x + WinRect.left, point.y + WinRect.top, this);
 	}
-	else {
+	else
+	{
 		// Pattern area
 		m_iMenuChannel = -1;
 		PopupMenuBar.LoadMenu(IDR_PATTERN_POPUP);
@@ -560,7 +566,7 @@ void CFamiTrackerView::OnRButtonUp(UINT nFlags, CPoint point)
 		// Send messages to parent in order to get the menu options working
 		pPopupMenu->TrackPopupMenu(TPM_RIGHTBUTTON, point.x + WinRect.left, point.y + WinRect.top, GetParentFrame());
 	}
-	
+
 	CView::OnRButtonUp(nFlags, point);
 }
 
@@ -569,7 +575,7 @@ void CFamiTrackerView::OnLButtonDown(UINT nFlags, CPoint point)
 	SetTimer(TMR_SCROLL, 10, NULL);
 
 	m_pPatternEditor->OnMouseDown(point);
-	SetCapture();	// Capture mouse 
+	SetCapture(); // Capture mouse 
 	InvalidateCursor();
 
 	if (m_pPatternEditor->IsOverHeader(point))
@@ -583,7 +589,7 @@ void CFamiTrackerView::OnLButtonUp(UINT nFlags, CPoint point)
 	KillTimer(TMR_SCROLL);
 
 	m_pPatternEditor->OnMouseUp(point);
-	ReleaseCapture();	// Release mouse
+	ReleaseCapture(); // Release mouse
 
 	InvalidateCursor();
 	InvalidateHeader();
@@ -613,49 +619,58 @@ void CFamiTrackerView::OnMouseMove(UINT nFlags, CPoint point)
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	if (nFlags & MK_LBUTTON) {
+	if (nFlags & MK_LBUTTON)
+	{
 		// Left button down
 		m_pPatternEditor->OnMouseMove(nFlags, point);
 		InvalidateCursor();
 	}
-	else {
+	else
+	{
 		// Left button up
 		if (m_pPatternEditor->OnMouseHover(nFlags, point))
 			InvalidateHeader();
 	}
-	
+
 	CView::OnMouseMove(nFlags, point);
 }
 
 BOOL CFamiTrackerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	CPatternAction *pAction = NULL;
+	CPatternAction* pAction = NULL;
 
 	bool bShiftPressed = IsShiftPressed();
 	bool bControlPressed = IsControlPressed();
 
-	if (bControlPressed && bShiftPressed) {
+	if (bControlPressed && bShiftPressed)
+	{
 		if (zDelta < 0)
 			m_pPatternEditor->NextFrame();
 		else
 			m_pPatternEditor->PreviousFrame();
 	}
-	if (bControlPressed) {
-		if (zDelta > 0) {
+	if (bControlPressed)
+	{
+		if (zDelta > 0)
+		{
 			pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 			pAction->SetTranspose(TRANSPOSE_INC_NOTES);
 		}
-		else {
+		else
+		{
 			pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 			pAction->SetTranspose(TRANSPOSE_DEC_NOTES);
 		}
 	}
-	else if (bShiftPressed) {
-		if (zDelta > 0) {
+	else if (bShiftPressed)
+	{
+		if (zDelta > 0)
+		{
 			pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
 			pAction->SetScroll(1);
 		}
-		else {
+		else
+		{
 			pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
 			pAction->SetScroll(-1);
 		}
@@ -663,12 +678,13 @@ BOOL CFamiTrackerView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	else
 		m_pPatternEditor->OnMouseScroll(zDelta);
 
-	if (pAction != NULL) {
+	if (pAction != NULL)
+	{
 		AddAction(pAction);
 	}
 	else
 		InvalidateCursor();
-	
+
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -693,19 +709,21 @@ void CFamiTrackerView::OnSetFocus(CWnd* pOldWnd)
 void CFamiTrackerView::OnTimer(UINT_PTR nIDEvent)
 {
 	// Timer callback function
-	switch (nIDEvent) {
+	switch (nIDEvent)
+	{
 		// Drawing updates when playing
-		case TMR_UPDATE: 
-			PeriodicUpdate();
-			break;
+	case TMR_UPDATE:
+		PeriodicUpdate();
+		break;
 
 		// Auto-scroll timer
-		case TMR_SCROLL:
-			if (m_pPatternEditor->ScrollTimerCallback()) {
-				// Redraw entire since pattern layout might change
-				RedrawPatternEditor();
-			}
-			break;
+	case TMR_SCROLL:
+		if (m_pPatternEditor->ScrollTimerCallback())
+		{
+			// Redraw entire since pattern layout might change
+			RedrawPatternEditor();
+		}
+		break;
 	}
 
 	CView::OnTimer(nIDEvent);
@@ -718,13 +736,13 @@ void CFamiTrackerView::PeriodicUpdate()
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrm);
 
-	CSoundGen *pSoundGen = theApp.GetSoundGenerator();
+	CSoundGen* pSoundGen = theApp.GetSoundGenerator();
 
-	if (pSoundGen != NULL) {
-
+	if (pSoundGen != NULL)
+	{
 #ifdef EXPORT_TEST
 		if (pSoundGen->IsTestingExport()) {
 			DrawExportTestProgress();			
@@ -732,8 +750,8 @@ void CFamiTrackerView::PeriodicUpdate()
 #endif /* EXPORT_TEST */
 
 		// Skip updates when doing background tasks (WAV render for example)
-		if (!pSoundGen->IsBackgroundTask()) {
-
+		if (!pSoundGen->IsBackgroundTask())
+		{
 			int PlayTicks = pSoundGen->GetPlayerTicks();
 			int PlayTime = (PlayTicks * 10) / pDoc->GetFrameRate();
 
@@ -767,7 +785,8 @@ void CFamiTrackerView::PeriodicUpdate()
 	LastNoteState = m_iKeyboardNote;
 
 	// Switch instrument
-	if (m_iSwitchToInstrument != -1) {
+	if (m_iSwitchToInstrument != -1)
+	{
 		SetInstrument(m_iSwitchToInstrument);
 		m_iSwitchToInstrument = -1;
 	}
@@ -812,24 +831,27 @@ void CFamiTrackerView::OnEditCopy()
 
 	CClipboard Clipboard(this, m_iClipboard);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
-	
+
 	boost::scoped_ptr<CPatternClipData> pClipData(m_pPatternEditor->Copy());
 
 	SIZE_T Size = pClipData->GetAllocSize();
 	HGLOBAL hMem = Clipboard.AllocMem(Size);
 
-	if (hMem != NULL) {
+	if (hMem != NULL)
+	{
 		pClipData->ToMem(hMem);
 		// Set clipboard for internal data, hMem may not be used after this point
 		Clipboard.SetData(hMem);
 	}
 
 	// Copy volume values
-	if (bShiftPressed) {
+	if (bShiftPressed)
+	{
 		CopyVolumeColumn();
 	}
 }
@@ -844,23 +866,26 @@ void CFamiTrackerView::OnEditPaste()
 {
 	CClipboard Clipboard(this, m_iClipboard);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
 
-	if (!Clipboard.IsDataAvailable()) {
+	if (!Clipboard.IsDataAvailable())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_NOT_AVALIABLE);
 		::CloseClipboard();
 		return;
 	}
 
 	HGLOBAL hMem = Clipboard.GetData();
-	if (hMem != NULL) {
-		CPatternClipData *pClipData = new CPatternClipData();
+	if (hMem != NULL)
+	{
+		CPatternClipData* pClipData = new CPatternClipData();
 		pClipData->FromMem(hMem);
 		// Create an undo point
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_EDIT_PASTE);
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_EDIT_PASTE);
 		pAction->SetPaste(pClipData);
 		AddAction(pAction);
 	}
@@ -870,12 +895,14 @@ void CFamiTrackerView::OnEditPastemix()
 {
 	CClipboard Clipboard(this, m_iClipboard);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
 
-	if (!Clipboard.IsDataAvailable()) {
+	if (!Clipboard.IsDataAvailable())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_NOT_AVALIABLE);
 		::CloseClipboard();
 		return;
@@ -883,12 +910,13 @@ void CFamiTrackerView::OnEditPastemix()
 
 	HGLOBAL hMem = Clipboard.GetData();
 
-	if (hMem != NULL) {
-		CPatternClipData *pClipData = new CPatternClipData();
+	if (hMem != NULL)
+	{
+		CPatternClipData* pClipData = new CPatternClipData();
 		pClipData->FromMem(hMem);
 
 		// Add an undo point
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_EDIT_PASTE_MIX);
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_EDIT_PASTE_MIX);
 		pAction->SetPaste(pClipData);
 		AddAction(pAction);
 	}
@@ -907,7 +935,7 @@ void CFamiTrackerView::OnTrackerEdit()
 		GetParentFrame()->SetMessageText(IDS_EDIT_MODE);
 	else
 		GetParentFrame()->SetMessageText(IDS_NORMAL_MODE);
-	
+
 	m_pPatternEditor->InvalidateBackground();
 	m_pPatternEditor->InvalidateHeader();
 	m_pPatternEditor->InvalidateCursor();
@@ -966,42 +994,42 @@ void CFamiTrackerView::OnSpeedDefault()
 
 void CFamiTrackerView::OnTransposeDecreasenote()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 	pAction->SetTranspose(TRANSPOSE_DEC_NOTES);
 	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnTransposeDecreaseoctave()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 	pAction->SetTranspose(TRANSPOSE_DEC_OCTAVES);
 	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnTransposeIncreasenote()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 	pAction->SetTranspose(TRANSPOSE_INC_NOTES);
 	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnTransposeIncreaseoctave()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_TRANSPOSE);
 	pAction->SetTranspose(TRANSPOSE_INC_OCTAVES);
 	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnDecreaseValues()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
 	pAction->SetScroll(-1);
 	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnIncreaseValues()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_SCROLL_VALUES);
 	pAction->SetScroll(1);
 	AddAction(pAction);
 }
@@ -1032,7 +1060,8 @@ void CFamiTrackerView::OnTrackerPlayrow()
 	const int Row = m_pPatternEditor->GetRow();
 	const int Channels = pDoc->GetAvailableChannels();
 
-	for (int i = 0; i < Channels; ++i) {
+	for (int i = 0; i < Channels; ++i)
+	{
 		stChanNote Note;
 		pDoc->GetNoteData(Track, Frame, i, Row, &Note);
 		if (!m_bMuteChannels[i])
@@ -1050,12 +1079,14 @@ void CFamiTrackerView::CopyVolumeColumn()
 
 	CClipboard Clipboard(this, CF_TEXT);
 
-	if (!Clipboard.IsOpened()) {
+	if (!Clipboard.IsOpened())
+	{
 		AfxMessageBox(IDS_CLIPBOARD_OPEN_ERROR);
 		return;
 	}
 
-	if (!Clipboard.SetDataPointer(str.GetBuffer(), str.GetLength() + 1)) {
+	if (!Clipboard.SetDataPointer(str.GetBuffer(), str.GetLength() + 1))
+	{
 		AfxMessageBox(IDS_CLIPBOARD_COPY_ERROR);
 	}
 }
@@ -1075,10 +1106,10 @@ void CFamiTrackerView::OnInitialUpdate()
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	CMainFrame *pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrame = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrame);
 
-	CFrameEditor *pFrameEditor = GetFrameEditor();
+	CFrameEditor* pFrameEditor = GetFrameEditor();
 
 	TRACE1("View: OnInitialUpdate (%s)\n", pDoc->GetTitle());
 
@@ -1121,7 +1152,8 @@ void CFamiTrackerView::OnInitialUpdate()
 	SetInstrument(0);
 
 	// Unmute all channels
-	for (int i = 0; i < MAX_CHANNELS; ++i) {
+	for (int i = 0; i < MAX_CHANNELS; ++i)
+	{
 		SetChannelMute(i, false);
 	}
 
@@ -1148,12 +1180,13 @@ void CFamiTrackerView::OnInitialUpdate()
 void CFamiTrackerView::OnUpdate(CView* /*pSender*/, LPARAM lHint, CObject* /*pHint*/)
 {
 	// Called when the document has changed
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrm);
 
 	// Handle new flags
-	switch (lHint) {
-	// Track has been added, removed or changed
+	switch (lHint)
+	{
+		// Track has been added, removed or changed
 	case UPDATE_TRACK:
 		if (theApp.IsPlaying())
 			theApp.StopPlayer();
@@ -1163,25 +1196,25 @@ void CFamiTrackerView::OnUpdate(CView* /*pSender*/, LPARAM lHint, CObject* /*pHi
 		m_pPatternEditor->InvalidateHeader();
 		RedrawPatternEditor();
 		break;
-	// Pattern data has been edited
+		// Pattern data has been edited
 	case UPDATE_PATTERN:
 		m_pPatternEditor->InvalidatePatternData();
 		RedrawPatternEditor();
 		break;
-	// Frame data has been edited
+		// Frame data has been edited
 	case UPDATE_FRAME:
 		InvalidateFrameEditor();
 
 		m_pPatternEditor->InvalidatePatternData();
 		RedrawPatternEditor();
 		break;
-	// Instrument has been added / removed
+		// Instrument has been added / removed
 	case UPDATE_INSTRUMENT:
 		pMainFrm->UpdateInstrumentList();
 		m_pPatternEditor->InvalidatePatternData();
 		RedrawPatternEditor();
 		break;
-	// Module properties has changed (including channel count)
+		// Module properties has changed (including channel count)
 	case UPDATE_PROPERTIES:
 		// Old
 		m_pPatternEditor->ResetCursor();
@@ -1189,25 +1222,25 @@ void CFamiTrackerView::OnUpdate(CView* /*pSender*/, LPARAM lHint, CObject* /*pHi
 		pMainFrm->ResetUndo();
 		pMainFrm->ResizeFrameWindow();
 
-		m_pPatternEditor->InvalidateBackground();	// Channel count might have changed, recalculated pattern layout
+		m_pPatternEditor->InvalidateBackground(); // Channel count might have changed, recalculated pattern layout
 		m_pPatternEditor->InvalidatePatternData();
 		m_pPatternEditor->InvalidateHeader();
 		RedrawPatternEditor();
 		break;
-	// Row highlight option has changed
+		// Row highlight option has changed
 	case UPDATE_HIGHLIGHT:
 		m_pPatternEditor->SetHighlight(GetDocument()->GetFirstHighlight(), GetDocument()->GetSecondHighlight());
 		m_pPatternEditor->InvalidatePatternData();
 		RedrawPatternEditor();
 		break;
-	// Effect columns has changed
+		// Effect columns has changed
 	case UPDATE_COLUMNS:
-		m_pPatternEditor->InvalidateBackground();	// Recalculate pattern layout
+		m_pPatternEditor->InvalidateBackground(); // Recalculate pattern layout
 		m_pPatternEditor->InvalidateHeader();
 		m_pPatternEditor->InvalidatePatternData();
 		RedrawPatternEditor();
 		break;
-	// Document is closing
+		// Document is closing
 	case UPDATE_CLOSE:
 		// Old
 		pMainFrm->CloseInstrumentEditor();
@@ -1218,7 +1251,7 @@ void CFamiTrackerView::OnUpdate(CView* /*pSender*/, LPARAM lHint, CObject* /*pHi
 void CFamiTrackerView::TrackChanged(unsigned int Track)
 {
 	// Called when the selected track has changed
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrm);
 
 	if (theApp.IsPlaying())
@@ -1243,42 +1276,42 @@ void CFamiTrackerView::TrackChanged(unsigned int Track)
 
 // GUI elements updates
 
-void CFamiTrackerView::OnUpdateEditInstrumentMask(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditInstrumentMask(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_bMaskInstrument ? 1 : 0);
 }
 
-void CFamiTrackerView::OnUpdateEditVolumeMask(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditVolumeMask(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_bMaskVolume ? 1 : 0);
 }
 
-void CFamiTrackerView::OnUpdateEditCopy(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditCopy(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(!m_pPatternEditor->IsSelecting() ? 0 : 1);
 }
 
-void CFamiTrackerView::OnUpdateEditCut(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditCut(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(!m_pPatternEditor->IsSelecting() ? 0 : 1);
 }
 
-void CFamiTrackerView::OnUpdateEditPaste(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditPaste(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(IsClipboardAvailable() ? 1 : 0);
 }
 
-void CFamiTrackerView::OnUpdateEditDelete(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateEditDelete(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(!m_pPatternEditor->IsSelecting() ? 0 : 1);
 }
 
-void CFamiTrackerView::OnUpdateTrackerEdit(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateTrackerEdit(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_bEditEnable ? 1 : 0);
 }
 
-void CFamiTrackerView::OnUpdateTrackerPal(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateTrackerPal(CCmdUI* pCmdUI)
 {
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -1289,7 +1322,7 @@ void CFamiTrackerView::OnUpdateTrackerPal(CCmdUI *pCmdUI)
 		pCmdUI->m_pMenu->CheckMenuRadioItem(ID_TRACKER_NTSC, ID_TRACKER_PAL, item, MF_BYCOMMAND);
 }
 
-void CFamiTrackerView::OnUpdateTrackerNtsc(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateTrackerNtsc(CCmdUI* pCmdUI)
 {
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -1299,7 +1332,7 @@ void CFamiTrackerView::OnUpdateTrackerNtsc(CCmdUI *pCmdUI)
 		pCmdUI->m_pMenu->CheckMenuRadioItem(ID_TRACKER_NTSC, ID_TRACKER_PAL, item, MF_BYCOMMAND);
 }
 
-void CFamiTrackerView::OnUpdateSpeedDefault(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateSpeedDefault(CCmdUI* pCmdUI)
 {
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -1307,10 +1340,10 @@ void CFamiTrackerView::OnUpdateSpeedDefault(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(pDoc->GetEngineSpeed() == 0);
 }
 
-void CFamiTrackerView::OnUpdateSpeedCustom(CCmdUI *pCmdUI)
+void CFamiTrackerView::OnUpdateSpeedCustom(CCmdUI* pCmdUI)
 {
 	CFamiTrackerDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);	
+	ASSERT_VALID(pDoc);
 
 	pCmdUI->SetCheck(pDoc->GetEngineSpeed() != 0);
 }
@@ -1328,45 +1361,53 @@ void CFamiTrackerView::PlayerTick()
 
 	// auto arpeggio
 	int OldPtr = m_iAutoArpPtr;
-	do {
-		m_iAutoArpPtr = (m_iAutoArpPtr + 1) & 127;				
-		if (m_iAutoArpNotes[m_iAutoArpPtr] == 1) {
+	do
+	{
+		m_iAutoArpPtr = (m_iAutoArpPtr + 1) & 127;
+		if (m_iAutoArpNotes[m_iAutoArpPtr] == 1)
+		{
 			m_iLastAutoArpPtr = m_iAutoArpPtr;
 			m_iArpeggiate[m_pPatternEditor->GetChannel()] = m_iAutoArpPtr;
 			break;
 		}
-		else if (m_iAutoArpNotes[m_iAutoArpPtr] == 2) {
+		else if (m_iAutoArpNotes[m_iAutoArpPtr] == 2)
+		{
 			m_iAutoArpNotes[m_iAutoArpPtr] = 0;
 		}
 	}
 	while (m_iAutoArpPtr != OldPtr);
 }
 
-bool CFamiTrackerView::PlayerGetNote(int Track, int Frame, int Channel, int Row, stChanNote &NoteData)
+bool CFamiTrackerView::PlayerGetNote(int Track, int Frame, int Channel, int Row, stChanNote& NoteData)
 {
-	CFamiTrackerDoc *pDoc = GetDocument();
+	CFamiTrackerDoc* pDoc = GetDocument();
 	bool ValidCommand = false;
 
 	pDoc->GetNoteData(Track, Frame, Channel, Row, &NoteData);
-	
-	if (!IsChannelMuted(Channel)) {
+
+	if (!IsChannelMuted(Channel))
+	{
 		// Let view know what is about to play
 		PlayerPlayNote(Channel, &NoteData);
 		ValidCommand = true;
 	}
-	else {
+	else
+	{
 		// These effects will pass even if the channel is muted
 		const int PASS_EFFECTS[] = {EF_HALT, EF_JUMP, EF_SPEED, EF_SKIP};
 		int Columns = pDoc->GetEffColumns(Track, Channel) + 1;
-		
-		NoteData.Note		= HALT;
-		NoteData.Octave		= 0;
+
+		NoteData.Note = HALT;
+		NoteData.Octave = 0;
 		NoteData.Instrument = 0;
 
-		for (int j = 0; j < Columns; ++j) {
+		for (int j = 0; j < Columns; ++j)
+		{
 			bool Clear = true;
-			for (int k = 0; k < 4; ++k) {
-				if (NoteData.EffNumber[j] == PASS_EFFECTS[k]) {
+			for (int k = 0; k < 4; ++k)
+			{
+				if (NoteData.EffNumber[j] == PASS_EFFECTS[k])
+				{
 					ValidCommand = true;
 					Clear = false;
 				}
@@ -1379,22 +1420,24 @@ bool CFamiTrackerView::PlayerGetNote(int Track, int Frame, int Channel, int Row,
 	return ValidCommand;
 }
 
-void CFamiTrackerView::PlayerPlayNote(int Channel, stChanNote *pNote)
+void CFamiTrackerView::PlayerPlayNote(int Channel, stChanNote* pNote)
 {
 	// Callback from sound thread
 
-	if (pNote->Instrument < MAX_INSTRUMENTS && pNote->Note > 0 && Channel == m_pPatternEditor->GetChannel() && m_bSwitchToInstrument) {
+	if (pNote->Instrument < MAX_INSTRUMENTS && pNote->Note > 0 && Channel == m_pPatternEditor->GetChannel() &&
+		m_bSwitchToInstrument)
+	{
 		m_iSwitchToInstrument = pNote->Instrument;
 	}
 }
 
-unsigned int CFamiTrackerView::GetSelectedFrame() const 
-{ 
-	return m_pPatternEditor->GetFrame(); 
+unsigned int CFamiTrackerView::GetSelectedFrame() const
+{
+	return m_pPatternEditor->GetFrame();
 }
 
-unsigned int CFamiTrackerView::GetSelectedChannel() const 
-{ 
+unsigned int CFamiTrackerView::GetSelectedChannel() const
+{
 	return m_pPatternEditor->GetChannel();
 }
 
@@ -1410,11 +1453,11 @@ void CFamiTrackerView::SetFollowMode(bool Mode)
 }
 
 bool CFamiTrackerView::GetFollowMode() const
-{ 
-	return m_bFollowMode; 
+{
+	return m_bFollowMode;
 }
 
-int	CFamiTrackerView::GetAutoArpeggio(unsigned int Channel)
+int CFamiTrackerView::GetAutoArpeggio(unsigned int Channel)
 {
 	// Return and reset next arpeggio note
 	int ret = m_iArpeggiate[Channel];
@@ -1428,8 +1471,8 @@ int	CFamiTrackerView::GetAutoArpeggio(unsigned int Channel)
 
 void CFamiTrackerView::RegisterKeyState(int Channel, int Note)
 {
-	CFamiTrackerDoc *pDoc = GetDocument();
-	CTrackerChannel *pChannel = pDoc->GetChannel(m_pPatternEditor->GetChannel());
+	CFamiTrackerDoc* pDoc = GetDocument();
+	CTrackerChannel* pChannel = pDoc->GetChannel(m_pPatternEditor->GetChannel());
 
 	if (pChannel->GetID() == Channel)
 		m_iKeyboardNote = Note;
@@ -1526,16 +1569,21 @@ void CFamiTrackerView::SoloChannel(unsigned int Channel)
 	if (Channel >= unsigned(channels))
 		return;
 
-	if (IsChannelSolo(Channel)) {
+	if (IsChannelSolo(Channel))
+	{
 		// Revert channels
-		for (int i = 0; i < channels; ++i) {
+		for (int i = 0; i < channels; ++i)
+		{
 			SetChannelMute(i, false);
 		}
 	}
-	else {
+	else
+	{
 		// Solo selected channel
-		for (int i = 0; i < channels; ++i) {
-			if (i != Channel) {
+		for (int i = 0; i < channels; ++i)
+		{
+			if (i != Channel)
+			{
 				SetChannelMute(i, true);
 				HaltNote(i);
 			}
@@ -1553,7 +1601,8 @@ void CFamiTrackerView::UnmuteAllChannels()
 
 	int channels = pDoc->GetAvailableChannels();
 
-	for (int i = 0; i < channels; ++i) {
+	for (int i = 0; i < channels; ++i)
+	{
 		SetChannelMute(i, false);
 	}
 
@@ -1568,7 +1617,8 @@ bool CFamiTrackerView::IsChannelSolo(unsigned int Channel) const
 
 	int channels = pDoc->GetAvailableChannels();
 
-	for (int i = 0; i < channels; ++i) {
+	for (int i = 0; i < channels; ++i)
+	{
 		if (m_bMuteChannels[i] == false && i != Channel)
 			return false;
 	}
@@ -1592,7 +1642,7 @@ void CFamiTrackerView::SetInstrument(int Instrument)
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrm);
 	ASSERT(Instrument >= 0 && Instrument < MAX_INSTRUMENTS);
 
@@ -1603,9 +1653,9 @@ void CFamiTrackerView::SetInstrument(int Instrument)
 	m_iLastInstrument = GetInstrument(); // Gets actual selected instrument //  Instrument;
 }
 
-unsigned int CFamiTrackerView::GetInstrument() const 
+unsigned int CFamiTrackerView::GetInstrument() const
 {
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	ASSERT_VALID(pMainFrm);
 	return pMainFrm->GetSelectedInstrument();
 }
@@ -1633,41 +1683,48 @@ void CFamiTrackerView::InsertNote(int Note, int Octave, int Channel, int Velocit
 
 	Cell.Note = Note;
 
-	if (Note != HALT && Note != RELEASE) {
-		Cell.Octave	= Octave;
+	if (Note != HALT && Note != RELEASE)
+	{
+		Cell.Octave = Octave;
 
 		if (!m_bMaskInstrument)
 			Cell.Instrument = GetInstrument();
 
-		if (!m_bMaskVolume) 
+		if (!m_bMaskVolume)
 			Cell.Vol = m_iLastVolume;
 
 		if (Velocity < 128)
 			Cell.Vol = (Velocity / 8);
-	}	
+	}
 
 	// Quantization
-	if (theApp.GetSettings()->Midi.bMidiMasterSync) {
+	if (theApp.GetSettings()->Midi.bMidiMasterSync)
+	{
 		int Delay = theApp.GetMIDI()->GetQuantization();
-		if (Delay > 0) {
+		if (Delay > 0)
+		{
 			Cell.EffNumber[0] = EF_DELAY;
 			Cell.EffParam[0] = Delay;
 		}
 	}
-	
-	if (m_bEditEnable) {
+
+	if (m_bEditEnable)
+	{
 		if (Note == HALT)
 			m_iLastNote = NOTE_HALT;
 		else if (Note == RELEASE)
 			m_iLastNote = NOTE_RELEASE;
 		else
 			m_iLastNote = (Note - 1) + Octave * 12;
-		
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_EDIT_NOTE);
+
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_EDIT_NOTE);
 		pAction->SetNote(Cell);
-		if (AddAction(pAction)) {
-			const CSettings *pSettings = theApp.GetSettings();
-			if ((m_pPatternEditor->GetColumn() == 0) && !theApp.IsPlaying() && (m_iInsertKeyStepping > 0) && !pSettings->Midi.bMidiMasterSync)
+		if (AddAction(pAction))
+		{
+			const CSettings* pSettings = theApp.GetSettings();
+			if ((m_pPatternEditor->GetColumn() == 0) && !theApp.IsPlaying() && (m_iInsertKeyStepping > 0) && !pSettings->Midi.
+			                                                                                                             bMidiMasterSync
+			)
 				StepDown();
 		}
 	}
@@ -1684,32 +1741,34 @@ void CFamiTrackerView::PlayNote(unsigned int Channel, unsigned int Note, unsigne
 
 	memset(&NoteData, 0, sizeof(stChanNote));
 
-	NoteData.Note		= Note;
-	NoteData.Octave		= Octave;
-	NoteData.Vol		= Velocity / 8;
-	NoteData.Instrument	= GetInstrument();
-/*	
-	if (theApp.GetSettings()->General.iEditStyle == EDIT_STYLE3)
-		NoteData.Instrument	= m_iLastInstrument;
-	else
-		NoteData.Instrument	= GetInstrument();
-*/
+	NoteData.Note = Note;
+	NoteData.Octave = Octave;
+	NoteData.Vol = Velocity / 8;
+	NoteData.Instrument = GetInstrument();
+	/*	
+		if (theApp.GetSettings()->General.iEditStyle == EDIT_STYLE3)
+			NoteData.Instrument	= m_iLastInstrument;
+		else
+			NoteData.Instrument	= GetInstrument();
+	*/
 
 	theApp.GetSoundGenerator()->QueueNote(Channel, NoteData, NOTE_PRIO_2);
 
-	if (theApp.GetSettings()->General.bPreviewFullRow) {
-		CFamiTrackerDoc *pDoc = GetDocument();
+	if (theApp.GetSettings()->General.bPreviewFullRow)
+	{
+		CFamiTrackerDoc* pDoc = GetDocument();
 		stChanNote ChanNote;
 		int Track = static_cast<CMainFrame*>(GetParentFrame())->GetSelectedTrack();
 		int Frame = m_pPatternEditor->GetFrame();
 		int Row = m_pPatternEditor->GetRow();
 		int Channels = pDoc->GetAvailableChannels();
 
-		for (int i = 0; i < Channels; ++i) {
+		for (int i = 0; i < Channels; ++i)
+		{
 			pDoc->GetNoteData(Track, Frame, i, Row, &ChanNote);
 			if (!m_bMuteChannels[i] && i != Channel)
 				theApp.GetSoundGenerator()->QueueNote(i, ChanNote, (i == Channel) ? NOTE_PRIO_2 : NOTE_PRIO_1);
-		}	
+		}
 	}
 }
 
@@ -1725,11 +1784,13 @@ void CFamiTrackerView::ReleaseNote(unsigned int Channel)
 
 	theApp.GetSoundGenerator()->QueueNote(Channel, NoteData, NOTE_PRIO_2);
 
-	if (theApp.GetSettings()->General.bPreviewFullRow) {
-		CFamiTrackerDoc *pDoc = GetDocument();
+	if (theApp.GetSettings()->General.bPreviewFullRow)
+	{
+		CFamiTrackerDoc* pDoc = GetDocument();
 		int Channels = pDoc->GetChannelCount();
 		NoteData.Note = HALT;
-		for (int i = 0; i < Channels; ++i) {
+		for (int i = 0; i < Channels; ++i)
+		{
 			if (i != Channel)
 				theApp.GetSoundGenerator()->QueueNote(i, NoteData, NOTE_PRIO_1);
 		}
@@ -1748,10 +1809,12 @@ void CFamiTrackerView::HaltNote(unsigned int Channel)
 
 	theApp.GetSoundGenerator()->QueueNote(Channel, NoteData, NOTE_PRIO_2);
 
-	if (theApp.GetSettings()->General.bPreviewFullRow) {
-		CFamiTrackerDoc *pDoc = GetDocument();
+	if (theApp.GetSettings()->General.bPreviewFullRow)
+	{
+		CFamiTrackerDoc* pDoc = GetDocument();
 		int Channels = pDoc->GetChannelCount();
-		for (int i = 0; i < Channels; ++i) {
+		for (int i = 0; i < Channels; ++i)
+		{
 			if (i != Channel)
 				theApp.GetSoundGenerator()->QueueNote(i, NoteData, NOTE_PRIO_1);
 		}
@@ -1775,7 +1838,7 @@ void CFamiTrackerView::HaltNoteSingle(unsigned int Channel)
 /// MIDI note handling functions
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void FixNoise(unsigned int &MidiNote, unsigned int &Octave, unsigned int &Note)
+static void FixNoise(unsigned int& MidiNote, unsigned int& Octave, unsigned int& Note)
 {
 	// NES noise channel
 	MidiNote = (MidiNote % 16) + 16;
@@ -1790,20 +1853,22 @@ void CFamiTrackerView::TriggerMIDINote(unsigned int Channel, unsigned int MidiNo
 	unsigned int Octave = GET_OCTAVE(MidiNote);
 	unsigned int Note = GET_NOTE(MidiNote);
 
-	if (Octave > 7)	// ?
+	if (Octave > 7) // ?
 		return;
 
-	CFamiTrackerDoc *pDoc = GetDocument();
+	CFamiTrackerDoc* pDoc = GetDocument();
 
 	if (pDoc->GetChannel(Channel)->GetID() == CHANID_NOISE)
 		FixNoise(MidiNote, Octave, Note);
 
 	m_iActiveNotes[Channel] = MidiNote;
 
-	if (!theApp.GetSettings()->Midi.bMidiVelocity) {
+	if (!theApp.GetSettings()->Midi.bMidiVelocity)
+	{
 		if (theApp.GetSettings()->General.iEditStyle != EDIT_STYLE3)
 			Velocity = 127;
-		else {
+		else
+		{
 			Velocity = m_iLastVolume * 8;
 		}
 	}
@@ -1823,7 +1888,8 @@ void CFamiTrackerView::TriggerMIDINote(unsigned int Channel, unsigned int MidiNo
 
 	m_iAutoArpKeyCount = 0;
 
-	for (int i = 0; i < 128; ++i) {
+	for (int i = 0; i < 128; ++i)
+	{
 		if (m_iAutoArpNotes[i] == 1)
 			++m_iAutoArpKeyCount;
 	}
@@ -1898,12 +1964,15 @@ void CFamiTrackerView::ReleaseMIDINote(unsigned int Channel, unsigned int MidiNo
 
 void CFamiTrackerView::UpdateArpDisplay()
 {
-	if (theApp.GetSettings()->Midi.bMidiArpeggio == true) {
+	if (theApp.GetSettings()->Midi.bMidiArpeggio == true)
+	{
 		int Base = -1;
 		CString str = _T("Auto-arpeggio: ");
 
-		for (int i = 0; i < 128; ++i) {
-			if (m_iAutoArpNotes[i] == 1) {
+		for (int i = 0; i < 128; ++i)
+		{
+			if (m_iAutoArpNotes[i] == 1)
+			{
 				if (Base == -1)
 					Base = i;
 				str.AppendFormat(_T("%i "), i - Base);
@@ -1934,78 +2003,89 @@ bool CFamiTrackerView::IsControlPressed() const
 }
 
 void CFamiTrackerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{	
+{
 	// Called when a key is pressed
 	if (GetFocus() != this)
 		return;
 
-	if (nChar >= VK_NUMPAD0 && nChar <= VK_NUMPAD9) {
+	if (nChar >= VK_NUMPAD0 && nChar <= VK_NUMPAD9)
+	{
 		// Switch instrument
-		if (m_pPatternEditor->GetColumn() == C_NOTE) {
+		if (m_pPatternEditor->GetColumn() == C_NOTE)
+		{
 			SetInstrument(nChar - VK_NUMPAD0);
 			return;
 		}
 	}
-	
-	switch (nChar) {
-		case VK_UP:
-			OnKeyDirUp();
-			break;
-		case VK_DOWN:
-			OnKeyDirDown();
-			break;
-		case VK_LEFT:
-			OnKeyDirLeft();
-			break;
-		case VK_RIGHT:
-			OnKeyDirRight();
-			break;
-		case VK_HOME:
-			OnKeyHome();
-			break;
-		case VK_END:
-			OnKeyEnd();
-			break;
-		case VK_PRIOR:
-			OnKeyPageUp();
-			break;
-		case VK_NEXT:
-			OnKeyPageDown();
-			break;
-		case VK_TAB:
-			OnKeyTab();
-			break;
-		case VK_ADD:
-			KeyIncreaseAction();
-			break;
-		case VK_SUBTRACT:
-			KeyDecreaseAction();
-			break;
-		case VK_DELETE:
-			OnKeyDelete();
-			break;
-		case VK_INSERT:
-			OnKeyInsert();
-			break;
-		case VK_BACK:
-			OnKeyBackspace();
-			break;
-		case VK_ESCAPE:
-			OnKeyEscape();
-			break;
+
+	switch (nChar)
+	{
+	case VK_UP:
+		OnKeyDirUp();
+		break;
+	case VK_DOWN:
+		OnKeyDirDown();
+		break;
+	case VK_LEFT:
+		OnKeyDirLeft();
+		break;
+	case VK_RIGHT:
+		OnKeyDirRight();
+		break;
+	case VK_HOME:
+		OnKeyHome();
+		break;
+	case VK_END:
+		OnKeyEnd();
+		break;
+	case VK_PRIOR:
+		OnKeyPageUp();
+		break;
+	case VK_NEXT:
+		OnKeyPageDown();
+		break;
+	case VK_TAB:
+		OnKeyTab();
+		break;
+	case VK_ADD:
+		KeyIncreaseAction();
+		break;
+	case VK_SUBTRACT:
+		KeyDecreaseAction();
+		break;
+	case VK_DELETE:
+		OnKeyDelete();
+		break;
+	case VK_INSERT:
+		OnKeyInsert();
+		break;
+	case VK_BACK:
+		OnKeyBackspace();
+		break;
+	case VK_ESCAPE:
+		OnKeyEscape();
+		break;
 
 		// Octaves, unless overridden
-		case VK_F2: SetOctave(0); break;
-		case VK_F3: SetOctave(1); break;
-		case VK_F4: SetOctave(2); break;
-		case VK_F5: SetOctave(3); break;
-		case VK_F6: SetOctave(4); break;
-		case VK_F7: SetOctave(5); break;
-		case VK_F8: SetOctave(6); break;
-		case VK_F9: SetOctave(7); break;
+	case VK_F2: SetOctave(0);
+		break;
+	case VK_F3: SetOctave(1);
+		break;
+	case VK_F4: SetOctave(2);
+		break;
+	case VK_F5: SetOctave(3);
+		break;
+	case VK_F6: SetOctave(4);
+		break;
+	case VK_F7: SetOctave(5);
+		break;
+	case VK_F8: SetOctave(6);
+		break;
+	case VK_F9: SetOctave(7);
+		break;
 
-		default:
-			HandleKeyboardInput(nChar);
+	default:
+		HandleKeyboardInput(nChar);
 	}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -2014,20 +2094,22 @@ void CFamiTrackerView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CFamiTrackerView::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// This is called when a key + ALT is pressed
-	if (nChar >= VK_NUMPAD0 && nChar <= VK_NUMPAD9) {
+	if (nChar >= VK_NUMPAD0 && nChar <= VK_NUMPAD9)
+	{
 		SetStepping(nChar - VK_NUMPAD0);
 		return;
 	}
 
-	switch (nChar) {
-		case VK_LEFT:
-			m_pPatternEditor->MoveChannelLeft();
-			InvalidateCursor();
-			break;
-		case VK_RIGHT:
-			m_pPatternEditor->MoveChannelRight();
-			InvalidateCursor();
-			break;
+	switch (nChar)
+	{
+	case VK_LEFT:
+		m_pPatternEditor->MoveChannelLeft();
+		InvalidateCursor();
+		break;
+	case VK_RIGHT:
+		m_pPatternEditor->MoveChannelRight();
+		InvalidateCursor();
+		break;
 	}
 
 	CView::OnSysKeyDown(nChar, nRepCnt, nFlags);
@@ -2133,10 +2215,12 @@ void CFamiTrackerView::OnKeyInsert()
 	if (PreventRepeat(VK_INSERT, true))
 		return;
 
-	if (m_pPatternEditor->IsSelecting()) {
+	if (m_pPatternEditor->IsSelecting())
+	{
 		AddAction(new CPatternAction(CPatternAction::ACT_INSERT_SEL_ROWS));
 	}
-	else {
+	else
+	{
 		AddAction(new CPatternAction(CPatternAction::ACT_INSERT_ROW));
 	}
 }
@@ -2147,15 +2231,18 @@ void CFamiTrackerView::OnKeyBackspace()
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	if (m_pPatternEditor->IsSelecting()) {
+	if (m_pPatternEditor->IsSelecting())
+	{
 		AddAction(new CPatternAction(CPatternAction::ACT_EDIT_DELETE_ROWS));
 	}
-	else {
+	else
+	{
 		if (PreventRepeat(VK_BACK, true))
 			return;
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_DELETE_ROW);
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_DELETE_ROW);
 		pAction->SetDelete(true, true);
-		if (AddAction(pAction)) {
+		if (AddAction(pAction))
+		{
 			m_pPatternEditor->MoveUp(1);
 			InvalidateCursor();
 		}
@@ -2173,11 +2260,13 @@ void CFamiTrackerView::OnKeyDelete()
 	if (PreventRepeat(VK_DELETE, true))
 		return;
 
-	if (m_pPatternEditor->IsSelecting()) {
+	if (m_pPatternEditor->IsSelecting())
+	{
 		OnEditDelete();
 	}
-	else {
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_DELETE_ROW);
+	else
+	{
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_DELETE_ROW);
 		bool bPullUp = theApp.GetSettings()->General.bPullUpDelete || bShiftPressed;
 		pAction->SetDelete(bPullUp, false);
 		AddAction(pAction);
@@ -2196,7 +2285,7 @@ void CFamiTrackerView::KeyDecreaseAction()
 	AddAction(new CPatternAction(CPatternAction::ACT_DECREASE));
 }
 
-bool CFamiTrackerView::EditInstrumentColumn(stChanNote &Note, int Key, bool &StepDown, bool &MoveRight, bool &MoveLeft)
+bool CFamiTrackerView::EditInstrumentColumn(stChanNote& Note, int Key, bool& StepDown, bool& MoveRight, bool& MoveLeft)
 {
 	int EditStyle = theApp.GetSettings()->General.iEditStyle;
 	int Column = m_pPatternEditor->GetColumn();
@@ -2204,14 +2293,16 @@ bool CFamiTrackerView::EditInstrumentColumn(stChanNote &Note, int Key, bool &Ste
 	if (!m_bEditEnable)
 		return false;
 
-	if (CheckClearKey(Key)) {
-		Note.Instrument = MAX_INSTRUMENTS;	// Indicate no instrument selected
+	if (CheckClearKey(Key))
+	{
+		Note.Instrument = MAX_INSTRUMENTS; // Indicate no instrument selected
 		if (EditStyle != EDIT_STYLE2)
 			StepDown = true;
 		m_iLastInstrument = MAX_INSTRUMENTS;
 		return true;
 	}
-	else if (CheckRepeatKey(Key)) {
+	else if (CheckRepeatKey(Key))
+	{
 		Note.Instrument = m_iLastInstrument;
 		SetInstrument(m_iLastInstrument);
 		if (EditStyle != EDIT_STYLE2)
@@ -2225,11 +2316,13 @@ bool CFamiTrackerView::EditInstrumentColumn(stChanNote &Note, int Key, bool &Ste
 	if (Value == -1)
 		return false;
 
-	if (Column == C_INSTRUMENT1) {
+	if (Column == C_INSTRUMENT1)
+	{
 		Mask = 0x0F;
 		Shift = 4;
 	}
-	else {
+	else
+	{
 		Mask = 0xF0;
 		Shift = 0;
 	}
@@ -2237,25 +2330,27 @@ bool CFamiTrackerView::EditInstrumentColumn(stChanNote &Note, int Key, bool &Ste
 	if (Note.Instrument == MAX_INSTRUMENTS)
 		Note.Instrument = 0;
 
-	switch (EditStyle) {
-		case EDIT_STYLE1: // FT2
-			Note.Instrument = (Note.Instrument & Mask) | (Value << Shift);
+	switch (EditStyle)
+	{
+	case EDIT_STYLE1: // FT2
+		Note.Instrument = (Note.Instrument & Mask) | (Value << Shift);
+		StepDown = true;
+		break;
+	case EDIT_STYLE2: // MPT
+		if (Note.Instrument == (MAX_INSTRUMENTS - 1))
+			Note.Instrument = 0;
+		Note.Instrument = ((Note.Instrument & 0x0F) << 4) | Value & 0x0F;
+		break;
+	case EDIT_STYLE3: // IT
+		Note.Instrument = (Note.Instrument & Mask) | (Value << Shift);
+		if (Column == C_INSTRUMENT1)
+			MoveRight = true;
+		else if (Column == C_INSTRUMENT2)
+		{
+			MoveLeft = true;
 			StepDown = true;
-			break;
-		case EDIT_STYLE2: // MPT
-			if (Note.Instrument == (MAX_INSTRUMENTS - 1))
-				Note.Instrument = 0;
-			Note.Instrument = ((Note.Instrument & 0x0F) << 4) | Value & 0x0F;
-			break;
-		case EDIT_STYLE3: // IT
-			Note.Instrument = (Note.Instrument & Mask) | (Value << Shift);
-			if (Column == C_INSTRUMENT1)
-				MoveRight = true;
-			else if (Column == C_INSTRUMENT2) {
-				MoveLeft = true;
-				StepDown = true;
-			}
-			break;
+		}
+		break;
 	}
 
 	if (Note.Instrument > (MAX_INSTRUMENTS - 1))
@@ -2269,21 +2364,23 @@ bool CFamiTrackerView::EditInstrumentColumn(stChanNote &Note, int Key, bool &Ste
 	return true;
 }
 
-bool CFamiTrackerView::EditVolumeColumn(stChanNote &Note, int Key, bool &bStepDown)
+bool CFamiTrackerView::EditVolumeColumn(stChanNote& Note, int Key, bool& bStepDown)
 {
 	int EditStyle = theApp.GetSettings()->General.iEditStyle;
 
 	if (!m_bEditEnable)
 		return false;
 
-	if (CheckClearKey(Key)) {
+	if (CheckClearKey(Key))
+	{
 		Note.Vol = MAX_VOLUME;
 		if (EditStyle != EDIT_STYLE2)
 			bStepDown = true;
 		m_iLastVolume = MAX_VOLUME;
 		return true;
 	}
-	else if (CheckRepeatKey(Key)) {
+	else if (CheckRepeatKey(Key))
+	{
 		Note.Vol = m_iLastVolume;
 		if (EditStyle != EDIT_STYLE2)
 			bStepDown = true;
@@ -2308,20 +2405,22 @@ bool CFamiTrackerView::EditVolumeColumn(stChanNote &Note, int Key, bool &bStepDo
 	return true;
 }
 
-bool CFamiTrackerView::EditEffNumberColumn(stChanNote &Note, unsigned char nChar, int EffectIndex, bool &bStepDown)
+bool CFamiTrackerView::EditEffNumberColumn(stChanNote& Note, unsigned char nChar, int EffectIndex, bool& bStepDown)
 {
 	int EditStyle = theApp.GetSettings()->General.iEditStyle;
 
 	if (!m_bEditEnable)
 		return false;
 
-	if (CheckRepeatKey(nChar)) {
+	if (CheckRepeatKey(nChar))
+	{
 		Note.EffNumber[EffectIndex] = m_iLastEffect;
 		Note.EffParam[EffectIndex] = m_iLastEffectParam;
 		return true;
 	}
 
-	if (CheckClearKey(nChar)) {
+	if (CheckClearKey(nChar))
+	{
 		Note.EffNumber[EffectIndex] = EF_NONE;
 		if (EditStyle != EDIT_STYLE2)
 			bStepDown = true;
@@ -2339,17 +2438,21 @@ bool CFamiTrackerView::EditEffNumberColumn(stChanNote &Note, unsigned char nChar
 	if (nChar >= VK_NUMPAD0 && nChar <= VK_NUMPAD9)
 		nChar = '0' + nChar - VK_NUMPAD0;
 
-	if (Chip == SNDCHIP_FDS) {
+	if (Chip == SNDCHIP_FDS)
+	{
 		// FDS effects
 		const char FDS_EFFECTS[] = {EF_FDS_MOD_DEPTH, EF_FDS_MOD_SPEED_HI, EF_FDS_MOD_SPEED_LO};
-		for (int i = 0; i < sizeof(FDS_EFFECTS) && !bValidEffect; ++i) {
-			if (nChar == EFF_CHAR[FDS_EFFECTS[i] - 1]) {
+		for (int i = 0; i < sizeof(FDS_EFFECTS) && !bValidEffect; ++i)
+		{
+			if (nChar == EFF_CHAR[FDS_EFFECTS[i] - 1])
+			{
 				bValidEffect = true;
 				Effect = FDS_EFFECTS[i];
 			}
 		}
 	}
-	else if (Chip == SNDCHIP_VRC7) {
+	else if (Chip == SNDCHIP_VRC7)
+	{
 		// VRC7 effects
 		/*
 		const char VRC7_EFFECTS[] = {EF_VRC7_MODULATOR, EF_VRC7_CARRIER, EF_VRC7_LEVELS};
@@ -2361,11 +2464,14 @@ bool CFamiTrackerView::EditEffNumberColumn(stChanNote &Note, unsigned char nChar
 		}
 		*/
 	}
-	else if (Chip == SNDCHIP_S5B) {
+	else if (Chip == SNDCHIP_S5B)
+	{
 		// Sunsoft effects
 		const char SUNSOFT_EFFECTS[] = {EF_SUNSOFT_ENV_LO, EF_SUNSOFT_ENV_HI, EF_SUNSOFT_ENV_TYPE};
-		for (int i = 0; i < sizeof(SUNSOFT_EFFECTS) && !bValidEffect; ++i) {
-			if (nChar == EFF_CHAR[SUNSOFT_EFFECTS[i] - 1]) {
+		for (int i = 0; i < sizeof(SUNSOFT_EFFECTS) && !bValidEffect; ++i)
+		{
+			if (nChar == EFF_CHAR[SUNSOFT_EFFECTS[i] - 1])
+			{
 				bValidEffect = true;
 				Effect = SUNSOFT_EFFECTS[i];
 			}
@@ -2373,22 +2479,26 @@ bool CFamiTrackerView::EditEffNumberColumn(stChanNote &Note, unsigned char nChar
 	}
 
 	// Common effects
-	for (int i = 0; i < EF_COUNT && !bValidEffect; ++i) {
-		if (nChar == EFF_CHAR[i]) {
+	for (int i = 0; i < EF_COUNT && !bValidEffect; ++i)
+	{
+		if (nChar == EFF_CHAR[i])
+		{
 			bValidEffect = true;
 			Effect = i + 1;
 		}
 	}
 
-	if (bValidEffect) {
+	if (bValidEffect)
+	{
 		Note.EffNumber[EffectIndex] = Effect;
-		switch (EditStyle) {
-			case EDIT_STYLE2:	// Modplug
-				if (Effect == m_iLastEffect)
-					Note.EffParam[EffectIndex] = m_iLastEffectParam;
-				break;
-			default:
-				bStepDown = true;
+		switch (EditStyle)
+		{
+		case EDIT_STYLE2: // Modplug
+			if (Effect == m_iLastEffect)
+				Note.EffParam[EffectIndex] = m_iLastEffectParam;
+			break;
+		default:
+			bStepDown = true;
 		}
 		m_iLastEffect = Effect;
 		return true;
@@ -2397,7 +2507,8 @@ bool CFamiTrackerView::EditEffNumberColumn(stChanNote &Note, unsigned char nChar
 	return false;
 }
 
-bool CFamiTrackerView::EditEffParamColumn(stChanNote &Note, int Key, int EffectIndex, bool &bStepDown, bool &bMoveRight, bool &bMoveLeft)
+bool CFamiTrackerView::EditEffParamColumn(stChanNote& Note, int Key, int EffectIndex, bool& bStepDown, bool& bMoveRight,
+                                          bool& bMoveLeft)
 {
 	int EditStyle = theApp.GetSettings()->General.iEditStyle;
 	int Column = m_pPatternEditor->GetColumn();
@@ -2406,13 +2517,15 @@ bool CFamiTrackerView::EditEffParamColumn(stChanNote &Note, int Key, int EffectI
 	if (!m_bEditEnable)
 		return false;
 
-	if (CheckRepeatKey(Key)) {
+	if (CheckRepeatKey(Key))
+	{
 		Note.EffNumber[EffectIndex] = m_iLastEffect;
 		Note.EffParam[EffectIndex] = m_iLastEffectParam;
 		return true;
 	}
 
-	if (CheckClearKey(Key)) {
+	if (CheckClearKey(Key))
+	{
 		Note.EffParam[EffectIndex] = 0;
 		if (EditStyle != EDIT_STYLE2)
 			bStepDown = true;
@@ -2423,32 +2536,36 @@ bool CFamiTrackerView::EditEffParamColumn(stChanNote &Note, int Key, int EffectI
 		return false;
 
 	unsigned char Mask, Shift;
-	if (Column == C_EFF_PARAM1 || Column == C_EFF2_PARAM1 || Column == C_EFF3_PARAM1 || Column == C_EFF4_PARAM1) {
+	if (Column == C_EFF_PARAM1 || Column == C_EFF2_PARAM1 || Column == C_EFF3_PARAM1 || Column == C_EFF4_PARAM1)
+	{
 		Mask = 0x0F;
 		Shift = 4;
 	}
-	else {
+	else
+	{
 		Mask = 0xF0;
 		Shift = 0;
 	}
-	
-	switch (EditStyle) {
-		case EDIT_STYLE1:	// FT2
-			Note.EffParam[EffectIndex] = (Note.EffParam[EffectIndex] & Mask) | Value << Shift;
+
+	switch (EditStyle)
+	{
+	case EDIT_STYLE1: // FT2
+		Note.EffParam[EffectIndex] = (Note.EffParam[EffectIndex] & Mask) | Value << Shift;
+		bStepDown = true;
+		break;
+	case EDIT_STYLE2: // Modplug
+		Note.EffParam[EffectIndex] = ((Note.EffParam[EffectIndex] & 0x0F) << 4) | Value & 0x0F;
+		break;
+	case EDIT_STYLE3: // IT
+		Note.EffParam[EffectIndex] = (Note.EffParam[EffectIndex] & Mask) | Value << Shift;
+		if (Mask == 0x0F)
+			bMoveRight = true;
+		else
+		{
+			bMoveLeft = true;
 			bStepDown = true;
-			break;
-		case EDIT_STYLE2:	// Modplug
-			Note.EffParam[EffectIndex] = ((Note.EffParam[EffectIndex] & 0x0F) << 4) | Value & 0x0F;
-			break;
-		case EDIT_STYLE3:	// IT
-			Note.EffParam[EffectIndex] = (Note.EffParam[EffectIndex] & Mask) | Value << Shift;
-			if (Mask == 0x0F)
-				bMoveRight = true;
-			else {
-				bMoveLeft = true;
-				bStepDown = true;
-			}
-			break;
+		}
+		break;
 	}
 
 	m_iLastEffectParam = Note.EffParam[EffectIndex];
@@ -2484,82 +2601,117 @@ void CFamiTrackerView::HandleKeyboardInput(char nChar)
 	pDoc->GetNoteData(Track, Frame, Channel, Row, &Note);
 
 	// Make all effect columns look the same, save an index instead
-	switch (Column) {
-		case C_EFF_NUM:		Column = C_EFF_NUM;	Index = 0; break;
-		case C_EFF2_NUM:	Column = C_EFF_NUM;	Index = 1; break;
-		case C_EFF3_NUM:	Column = C_EFF_NUM;	Index = 2; break;
-		case C_EFF4_NUM:	Column = C_EFF_NUM;	Index = 3; break;
-		case C_EFF_PARAM1:	Column = C_EFF_PARAM1; Index = 0; break;
-		case C_EFF2_PARAM1:	Column = C_EFF_PARAM1; Index = 1; break;
-		case C_EFF3_PARAM1:	Column = C_EFF_PARAM1; Index = 2; break;
-		case C_EFF4_PARAM1:	Column = C_EFF_PARAM1; Index = 3; break;
-		case C_EFF_PARAM2:	Column = C_EFF_PARAM2; Index = 0; break;
-		case C_EFF2_PARAM2:	Column = C_EFF_PARAM2; Index = 1; break;
-		case C_EFF3_PARAM2:	Column = C_EFF_PARAM2; Index = 2; break;
-		case C_EFF4_PARAM2:	Column = C_EFF_PARAM2; Index = 3; break;			
+	switch (Column)
+	{
+	case C_EFF_NUM: Column = C_EFF_NUM;
+		Index = 0;
+		break;
+	case C_EFF2_NUM: Column = C_EFF_NUM;
+		Index = 1;
+		break;
+	case C_EFF3_NUM: Column = C_EFF_NUM;
+		Index = 2;
+		break;
+	case C_EFF4_NUM: Column = C_EFF_NUM;
+		Index = 3;
+		break;
+	case C_EFF_PARAM1: Column = C_EFF_PARAM1;
+		Index = 0;
+		break;
+	case C_EFF2_PARAM1: Column = C_EFF_PARAM1;
+		Index = 1;
+		break;
+	case C_EFF3_PARAM1: Column = C_EFF_PARAM1;
+		Index = 2;
+		break;
+	case C_EFF4_PARAM1: Column = C_EFF_PARAM1;
+		Index = 3;
+		break;
+	case C_EFF_PARAM2: Column = C_EFF_PARAM2;
+		Index = 0;
+		break;
+	case C_EFF2_PARAM2: Column = C_EFF_PARAM2;
+		Index = 1;
+		break;
+	case C_EFF3_PARAM2: Column = C_EFF_PARAM2;
+		Index = 2;
+		break;
+	case C_EFF4_PARAM2: Column = C_EFF_PARAM2;
+		Index = 3;
+		break;
 	}
 
-	switch (Column) {
+	switch (Column)
+	{
 		// Note & octave column
-		case C_NOTE:
-			if (CheckRepeatKey(nChar)) {
-				if (m_iLastNote == 0) {
-					Note.Note = 0;
-				}
-				else if (m_iLastNote == NOTE_HALT) {
-					Note.Note = HALT;
-				}
-				else if (m_iLastNote == NOTE_RELEASE) {
-					Note.Note = RELEASE;
-				}
-				else {
-					Note.Note = GET_NOTE(m_iLastNote);
-					Note.Octave = GET_OCTAVE(m_iLastNote);
-				}
-			}
-			else if (CheckClearKey(nChar)) {
-				// Remove note
+	case C_NOTE:
+		if (CheckRepeatKey(nChar))
+		{
+			if (m_iLastNote == 0)
+			{
 				Note.Note = 0;
-				Note.Octave = 0;
-				m_iLastNote = 0;
-				if (EditStyle != EDIT_STYLE2)
-					bStepDown = true;
 			}
-			else {
-				// This is special
-				HandleKeyboardNote(nChar, true);
-				return;
+			else if (m_iLastNote == NOTE_HALT)
+			{
+				Note.Note = HALT;
 			}
-			break;
+			else if (m_iLastNote == NOTE_RELEASE)
+			{
+				Note.Note = RELEASE;
+			}
+			else
+			{
+				Note.Note = GET_NOTE(m_iLastNote);
+				Note.Octave = GET_OCTAVE(m_iLastNote);
+			}
+		}
+		else if (CheckClearKey(nChar))
+		{
+			// Remove note
+			Note.Note = 0;
+			Note.Octave = 0;
+			m_iLastNote = 0;
+			if (EditStyle != EDIT_STYLE2)
+				bStepDown = true;
+		}
+		else
+		{
+			// This is special
+			HandleKeyboardNote(nChar, true);
+			return;
+		}
+		break;
 		// Instrument column
-		case C_INSTRUMENT1:
-		case C_INSTRUMENT2:
-			if (!EditInstrumentColumn(Note, nChar, bStepDown, bMoveRight, bMoveLeft))
-				return;
-			break;
+	case C_INSTRUMENT1:
+	case C_INSTRUMENT2:
+		if (!EditInstrumentColumn(Note, nChar, bStepDown, bMoveRight, bMoveLeft))
+			return;
+		break;
 		// Volume column
-		case C_VOLUME:
-			if (!EditVolumeColumn(Note, nChar, bStepDown))
-				return;
-			break;
+	case C_VOLUME:
+		if (!EditVolumeColumn(Note, nChar, bStepDown))
+			return;
+		break;
 		// Effect number
-		case C_EFF_NUM:
-			if (!EditEffNumberColumn(Note, nChar, Index, bStepDown))
-				return;
-			break;
+	case C_EFF_NUM:
+		if (!EditEffNumberColumn(Note, nChar, Index, bStepDown))
+			return;
+		break;
 		// Effect parameter
-		case C_EFF_PARAM1:
-		case C_EFF_PARAM2:
-			if (!EditEffParamColumn(Note, nChar, Index, bStepDown, bMoveRight, bMoveLeft))
-				return;
-			break;
+	case C_EFF_PARAM1:
+	case C_EFF_PARAM2:
+		if (!EditEffParamColumn(Note, nChar, Index, bStepDown, bMoveRight, bMoveLeft))
+			return;
+		break;
 	}
 
 	// Something changed, store pattern data in document and update screen
-	if (m_bEditEnable) {
-		CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_EDIT_NOTE);
+	if (m_bEditEnable)
+	{
+		CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_EDIT_NOTE);
 		pAction->SetNote(Note);
-		if (AddAction(pAction)) {
+		if (AddAction(pAction))
+		{
 			if (bMoveLeft)
 				m_pPatternEditor->MoveLeft();
 			if (bMoveRight)
@@ -2575,28 +2727,30 @@ bool CFamiTrackerView::DoRelease() const
 {
 	// Return true if there are a valid release sequence for selected instrument
 	CInstrumentContainer<CInstrument> instContainer(GetDocument(), GetInstrument());
-	CInstrument *pInstrument = instContainer();
+	CInstrument* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return false;
-	
+
 	return pInstrument->CanRelease();
 }
 
-void CFamiTrackerView::HandleKeyboardNote(char nChar, bool Pressed) 
+void CFamiTrackerView::HandleKeyboardNote(char nChar, bool Pressed)
 {
 	// Play a note from the keyboard
 	int Note = TranslateKey(nChar);
 	int Channel = m_pPatternEditor->GetChannel();
-	
-	if (Pressed) {	
+
+	if (Pressed)
+	{
 		static int LastNote;
 
 		if (CheckHaltKey(nChar))
 			CutMIDINote(Channel, LastNote, true);
 		else if (CheckReleaseKey(nChar))
 			ReleaseMIDINote(Channel, LastNote, true);
-		else {
+		else
+		{
 			// Invalid key
 			if (Note == -1)
 				return;
@@ -2604,19 +2758,22 @@ void CFamiTrackerView::HandleKeyboardNote(char nChar, bool Pressed)
 			LastNote = Note;
 		}
 	}
-	else {
+	else
+	{
 		if (Note == -1)
 			return;
 		// IT doesn't cut the note when key is released
-		if (theApp.GetSettings()->General.iEditStyle != EDIT_STYLE3) {
+		if (theApp.GetSettings()->General.iEditStyle != EDIT_STYLE3)
+		{
 			// Find if note release should be used
 			// TODO: make this an option instead?
 			if (DoRelease())
-				ReleaseMIDINote(Channel, Note, false);	
+				ReleaseMIDINote(Channel, Note, false);
 			else
 				CutMIDINote(Channel, Note, false);
 		}
-		else {
+		else
+		{
 			m_iActiveNotes[Channel] = 0;
 			m_iAutoArpNotes[Note] = 2;
 		}
@@ -2646,47 +2803,120 @@ bool CFamiTrackerView::CheckRepeatKey(unsigned char Key) const
 int CFamiTrackerView::TranslateKeyAzerty(unsigned char Key) const
 {
 	// Azerty conversion (TODO)
-	int	KeyNote = 0, KeyOctave = 0;
+	int KeyNote = 0, KeyOctave = 0;
 
 	// Convert key to a note
-	switch (Key) {
-		case 50:	KeyNote = Cs;	KeyOctave = m_iOctave + 1;	break;	// 2
-		case 51:	KeyNote = Ds;	KeyOctave = m_iOctave + 1;	break;	// 3
-		case 53:	KeyNote = Fs;	KeyOctave = m_iOctave + 1;	break;	// 5
-		case 54:	KeyNote = Gs;	KeyOctave = m_iOctave + 1;	break;	// 6
-		case 55:	KeyNote = As;	KeyOctave = m_iOctave + 1;	break;	// 7
-		case 57:	KeyNote = Cs;	KeyOctave = m_iOctave + 2;	break;	// 9
-		case 48:	KeyNote = Ds;	KeyOctave = m_iOctave + 2;	break;	// 0
-		case 81:	KeyNote = C;	KeyOctave = m_iOctave + 1;	break;	// Q
-		case 87:	KeyNote = D;	KeyOctave = m_iOctave + 1;	break;	// W
-		case 69:	KeyNote = E;	KeyOctave = m_iOctave + 1;	break;	// E
-		case 82:	KeyNote = F;	KeyOctave = m_iOctave + 1;	break;	// R
-		case 84:	KeyNote = G;	KeyOctave = m_iOctave + 1;	break;	// T
-		case 89:	KeyNote = A;	KeyOctave = m_iOctave + 1;	break;	// Y
-		case 85:	KeyNote = B;	KeyOctave = m_iOctave + 1;	break;	// U
-		case 73:	KeyNote = C;	KeyOctave = m_iOctave + 2;	break;	// I
-		case 79:	KeyNote = D;	KeyOctave = m_iOctave + 2;	break;	// O
-		case 80:	KeyNote = E;	KeyOctave = m_iOctave + 2;	break;	// P
-		case 221:	KeyNote = F;	KeyOctave = m_iOctave + 2;	break;	// Å
-		case 219:	KeyNote = Fs;	KeyOctave = m_iOctave + 2;	break;	// ´
+	switch (Key)
+	{
+	case 50: KeyNote = Cs;
+		KeyOctave = m_iOctave + 1;
+		break; // 2
+	case 51: KeyNote = Ds;
+		KeyOctave = m_iOctave + 1;
+		break; // 3
+	case 53: KeyNote = Fs;
+		KeyOctave = m_iOctave + 1;
+		break; // 5
+	case 54: KeyNote = Gs;
+		KeyOctave = m_iOctave + 1;
+		break; // 6
+	case 55: KeyNote = As;
+		KeyOctave = m_iOctave + 1;
+		break; // 7
+	case 57: KeyNote = Cs;
+		KeyOctave = m_iOctave + 2;
+		break; // 9
+	case 48: KeyNote = Ds;
+		KeyOctave = m_iOctave + 2;
+		break; // 0
+	case 81: KeyNote = C;
+		KeyOctave = m_iOctave + 1;
+		break; // Q
+	case 87: KeyNote = D;
+		KeyOctave = m_iOctave + 1;
+		break; // W
+	case 69: KeyNote = E;
+		KeyOctave = m_iOctave + 1;
+		break; // E
+	case 82: KeyNote = F;
+		KeyOctave = m_iOctave + 1;
+		break; // R
+	case 84: KeyNote = G;
+		KeyOctave = m_iOctave + 1;
+		break; // T
+	case 89: KeyNote = A;
+		KeyOctave = m_iOctave + 1;
+		break; // Y
+	case 85: KeyNote = B;
+		KeyOctave = m_iOctave + 1;
+		break; // U
+	case 73: KeyNote = C;
+		KeyOctave = m_iOctave + 2;
+		break; // I
+	case 79: KeyNote = D;
+		KeyOctave = m_iOctave + 2;
+		break; // O
+	case 80: KeyNote = E;
+		KeyOctave = m_iOctave + 2;
+		break; // P
+	case 221: KeyNote = F;
+		KeyOctave = m_iOctave + 2;
+		break; // Å
+	case 219: KeyNote = Fs;
+		KeyOctave = m_iOctave + 2;
+		break; // ´
 		//case 186:	KeyNote = G;	KeyOctave = m_iOctave + 2;	break;	// ¨
-		case 83:	KeyNote = Cs;	KeyOctave = m_iOctave;		break;	// S
-		case 68:	KeyNote = Ds;	KeyOctave = m_iOctave;		break;	// D
-		case 71:	KeyNote = Fs;	KeyOctave = m_iOctave;		break;	// G
-		case 72:	KeyNote = Gs;	KeyOctave = m_iOctave;		break;	// H
-		case 74:	KeyNote = As;	KeyOctave = m_iOctave;		break;	// J
-		case 76:	KeyNote = Cs;	KeyOctave = m_iOctave + 1;	break;	// L
-		case 192:	KeyNote = Ds;	KeyOctave = m_iOctave + 1;	break;	// Ö
-		case 90:	KeyNote = C;	KeyOctave = m_iOctave;		break;	// Z
-		case 88:	KeyNote = D;	KeyOctave = m_iOctave;		break;	// X
-		case 67:	KeyNote = E;	KeyOctave = m_iOctave;		break;	// C
-		case 86:	KeyNote = F;	KeyOctave = m_iOctave;		break;	// V
-		case 66:	KeyNote = G;	KeyOctave = m_iOctave;		break;	// B
-		case 78:	KeyNote = A;	KeyOctave = m_iOctave;		break;	// N
-		case 77:	KeyNote = B;	KeyOctave = m_iOctave;		break;	// M
-		case 188:	KeyNote = C;	KeyOctave = m_iOctave + 1;	break;	// ,
-		case 190:	KeyNote = D;	KeyOctave = m_iOctave + 1;	break;	// .
-		case 189:	KeyNote = E;	KeyOctave = m_iOctave + 1;	break;	// -
+	case 83: KeyNote = Cs;
+		KeyOctave = m_iOctave;
+		break; // S
+	case 68: KeyNote = Ds;
+		KeyOctave = m_iOctave;
+		break; // D
+	case 71: KeyNote = Fs;
+		KeyOctave = m_iOctave;
+		break; // G
+	case 72: KeyNote = Gs;
+		KeyOctave = m_iOctave;
+		break; // H
+	case 74: KeyNote = As;
+		KeyOctave = m_iOctave;
+		break; // J
+	case 76: KeyNote = Cs;
+		KeyOctave = m_iOctave + 1;
+		break; // L
+	case 192: KeyNote = Ds;
+		KeyOctave = m_iOctave + 1;
+		break; // Ö
+	case 90: KeyNote = C;
+		KeyOctave = m_iOctave;
+		break; // Z
+	case 88: KeyNote = D;
+		KeyOctave = m_iOctave;
+		break; // X
+	case 67: KeyNote = E;
+		KeyOctave = m_iOctave;
+		break; // C
+	case 86: KeyNote = F;
+		KeyOctave = m_iOctave;
+		break; // V
+	case 66: KeyNote = G;
+		KeyOctave = m_iOctave;
+		break; // B
+	case 78: KeyNote = A;
+		KeyOctave = m_iOctave;
+		break; // N
+	case 77: KeyNote = B;
+		KeyOctave = m_iOctave;
+		break; // M
+	case 188: KeyNote = C;
+		KeyOctave = m_iOctave + 1;
+		break; // ,
+	case 190: KeyNote = D;
+		KeyOctave = m_iOctave + 1;
+		break; // .
+	case 189: KeyNote = E;
+		KeyOctave = m_iOctave + 1;
+		break; // -
 	}
 
 	// Invalid
@@ -2694,7 +2924,7 @@ int CFamiTrackerView::TranslateKeyAzerty(unsigned char Key) const
 		return -1;
 
 	// Return a MIDI note
-	return MIDI_NOTE(KeyOctave, KeyNote);		
+	return MIDI_NOTE(KeyOctave, KeyNote);
 }
 
 int CFamiTrackerView::TranslateKeyModplug(unsigned char Key) const
@@ -2703,61 +2933,151 @@ int CFamiTrackerView::TranslateKeyModplug(unsigned char Key) const
 	CFamiTrackerDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
-	int	KeyNote = 0, KeyOctave = 0;
+	int KeyNote = 0, KeyOctave = 0;
 	int Track = static_cast<CMainFrame*>(GetParentFrame())->GetSelectedTrack();
 
 	stChanNote NoteData;
-	pDoc->GetNoteData(Track, m_pPatternEditor->GetFrame(), m_pPatternEditor->GetChannel(), m_pPatternEditor->GetRow(), &NoteData);
+	pDoc->GetNoteData(Track, m_pPatternEditor->GetFrame(), m_pPatternEditor->GetChannel(), m_pPatternEditor->GetRow(),
+	                  &NoteData);
 
 	// Convert key to a note, Modplug style
-	switch (Key) {
-		case 49:	KeyNote = NoteData.Note;	KeyOctave = 0;	break;	// 1
-		case 50:	KeyNote = NoteData.Note;	KeyOctave = 1;	break;	// 2
-		case 51:	KeyNote = NoteData.Note;	KeyOctave = 2;	break;	// 3
-		case 52:	KeyNote = NoteData.Note;	KeyOctave = 3;	break;	// 4
-		case 53:	KeyNote = NoteData.Note;	KeyOctave = 4;	break;	// 5
-		case 54:	KeyNote = NoteData.Note;	KeyOctave = 5;	break;	// 6
-		case 55:	KeyNote = NoteData.Note;	KeyOctave = 6;	break;	// 7
-		case 56:	KeyNote = NoteData.Note;	KeyOctave = 7;	break;	// 8
-		case 57:	KeyNote = NoteData.Note;	KeyOctave = 7;	break;	// 9
-		case 48:	KeyNote = NoteData.Note;	KeyOctave = 7;	break;	// 0
+	switch (Key)
+	{
+	case 49: KeyNote = NoteData.Note;
+		KeyOctave = 0;
+		break; // 1
+	case 50: KeyNote = NoteData.Note;
+		KeyOctave = 1;
+		break; // 2
+	case 51: KeyNote = NoteData.Note;
+		KeyOctave = 2;
+		break; // 3
+	case 52: KeyNote = NoteData.Note;
+		KeyOctave = 3;
+		break; // 4
+	case 53: KeyNote = NoteData.Note;
+		KeyOctave = 4;
+		break; // 5
+	case 54: KeyNote = NoteData.Note;
+		KeyOctave = 5;
+		break; // 6
+	case 55: KeyNote = NoteData.Note;
+		KeyOctave = 6;
+		break; // 7
+	case 56: KeyNote = NoteData.Note;
+		KeyOctave = 7;
+		break; // 8
+	case 57: KeyNote = NoteData.Note;
+		KeyOctave = 7;
+		break; // 9
+	case 48: KeyNote = NoteData.Note;
+		KeyOctave = 7;
+		break; // 0
 
-		case 81:	KeyNote = C;	KeyOctave = m_iOctave;	break;	// Q
-		case 87:	KeyNote = Cs;	KeyOctave = m_iOctave;	break;	// W
-		case 69:	KeyNote = D;	KeyOctave = m_iOctave;	break;	// E
-		case 82:	KeyNote = Ds;	KeyOctave = m_iOctave;	break;	// R
-		case 84:	KeyNote = E;	KeyOctave = m_iOctave;	break;	// T
-		case 89:	KeyNote = F;	KeyOctave = m_iOctave;	break;	// Y
-		case 85:	KeyNote = Fs;	KeyOctave = m_iOctave;	break;	// U
-		case 73:	KeyNote = G;	KeyOctave = m_iOctave;	break;	// I
-		case 79:	KeyNote = Gs;	KeyOctave = m_iOctave;	break;	// O
-		case 80:	KeyNote = A;	KeyOctave = m_iOctave;	break;	// P
-		case 221:	KeyNote = As;	KeyOctave = m_iOctave;	break;	// Å
-		case 219:	KeyNote = B;	KeyOctave = m_iOctave;	break;	// ´
+	case 81: KeyNote = C;
+		KeyOctave = m_iOctave;
+		break; // Q
+	case 87: KeyNote = Cs;
+		KeyOctave = m_iOctave;
+		break; // W
+	case 69: KeyNote = D;
+		KeyOctave = m_iOctave;
+		break; // E
+	case 82: KeyNote = Ds;
+		KeyOctave = m_iOctave;
+		break; // R
+	case 84: KeyNote = E;
+		KeyOctave = m_iOctave;
+		break; // T
+	case 89: KeyNote = F;
+		KeyOctave = m_iOctave;
+		break; // Y
+	case 85: KeyNote = Fs;
+		KeyOctave = m_iOctave;
+		break; // U
+	case 73: KeyNote = G;
+		KeyOctave = m_iOctave;
+		break; // I
+	case 79: KeyNote = Gs;
+		KeyOctave = m_iOctave;
+		break; // O
+	case 80: KeyNote = A;
+		KeyOctave = m_iOctave;
+		break; // P
+	case 221: KeyNote = As;
+		KeyOctave = m_iOctave;
+		break; // Å
+	case 219: KeyNote = B;
+		KeyOctave = m_iOctave;
+		break; // ´
 
-		case 65:	KeyNote = C;	KeyOctave = m_iOctave + 1;	break;	// A
-		case 83:	KeyNote = Cs;	KeyOctave = m_iOctave + 1;	break;	// S
-		case 68:	KeyNote = D;	KeyOctave = m_iOctave + 1;	break;	// D
-		case 70:	KeyNote = Ds;	KeyOctave = m_iOctave + 1;	break;	// F
-		case 71:	KeyNote = E;	KeyOctave = m_iOctave + 1;	break;	// G
-		case 72:	KeyNote = F;	KeyOctave = m_iOctave + 1;	break;	// H
-		case 74:	KeyNote = Fs;	KeyOctave = m_iOctave + 1;	break;	// J
-		case 75:	KeyNote = G;	KeyOctave = m_iOctave + 1;	break;	// K
-		case 76:	KeyNote = Gs;	KeyOctave = m_iOctave + 1;	break;	// L
-		case 192:	KeyNote = A;	KeyOctave = m_iOctave + 1;	break;	// Ö
-		case 222:	KeyNote = As;	KeyOctave = m_iOctave + 1;	break;	// Ä
-		case 191:	KeyNote = B;	KeyOctave = m_iOctave + 1;	break;	// '
+	case 65: KeyNote = C;
+		KeyOctave = m_iOctave + 1;
+		break; // A
+	case 83: KeyNote = Cs;
+		KeyOctave = m_iOctave + 1;
+		break; // S
+	case 68: KeyNote = D;
+		KeyOctave = m_iOctave + 1;
+		break; // D
+	case 70: KeyNote = Ds;
+		KeyOctave = m_iOctave + 1;
+		break; // F
+	case 71: KeyNote = E;
+		KeyOctave = m_iOctave + 1;
+		break; // G
+	case 72: KeyNote = F;
+		KeyOctave = m_iOctave + 1;
+		break; // H
+	case 74: KeyNote = Fs;
+		KeyOctave = m_iOctave + 1;
+		break; // J
+	case 75: KeyNote = G;
+		KeyOctave = m_iOctave + 1;
+		break; // K
+	case 76: KeyNote = Gs;
+		KeyOctave = m_iOctave + 1;
+		break; // L
+	case 192: KeyNote = A;
+		KeyOctave = m_iOctave + 1;
+		break; // Ö
+	case 222: KeyNote = As;
+		KeyOctave = m_iOctave + 1;
+		break; // Ä
+	case 191: KeyNote = B;
+		KeyOctave = m_iOctave + 1;
+		break; // '
 
-		case 90:	KeyNote = C;	KeyOctave = m_iOctave + 2;	break;	// Z
-		case 88:	KeyNote = Cs;	KeyOctave = m_iOctave + 2;	break;	// X
-		case 67:	KeyNote = D;	KeyOctave = m_iOctave + 2;	break;	// C
-		case 86:	KeyNote = Ds;	KeyOctave = m_iOctave + 2;	break;	// V
-		case 66:	KeyNote = E;	KeyOctave = m_iOctave + 2;	break;	// B
-		case 78:	KeyNote = F;	KeyOctave = m_iOctave + 2;	break;	// N
-		case 77:	KeyNote = Fs;	KeyOctave = m_iOctave + 2;	break;	// M
-		case 188:	KeyNote = G;	KeyOctave = m_iOctave + 2;	break;	// ,
-		case 190:	KeyNote = Gs;	KeyOctave = m_iOctave + 2;	break;	// .
-		case 189:	KeyNote = A;	KeyOctave = m_iOctave + 2;	break;	// -
+	case 90: KeyNote = C;
+		KeyOctave = m_iOctave + 2;
+		break; // Z
+	case 88: KeyNote = Cs;
+		KeyOctave = m_iOctave + 2;
+		break; // X
+	case 67: KeyNote = D;
+		KeyOctave = m_iOctave + 2;
+		break; // C
+	case 86: KeyNote = Ds;
+		KeyOctave = m_iOctave + 2;
+		break; // V
+	case 66: KeyNote = E;
+		KeyOctave = m_iOctave + 2;
+		break; // B
+	case 78: KeyNote = F;
+		KeyOctave = m_iOctave + 2;
+		break; // N
+	case 77: KeyNote = Fs;
+		KeyOctave = m_iOctave + 2;
+		break; // M
+	case 188: KeyNote = G;
+		KeyOctave = m_iOctave + 2;
+		break; // ,
+	case 190: KeyNote = Gs;
+		KeyOctave = m_iOctave + 2;
+		break; // .
+	case 189: KeyNote = A;
+		KeyOctave = m_iOctave + 2;
+		break; // -
 	}
 
 	// Invalid
@@ -2771,47 +3091,120 @@ int CFamiTrackerView::TranslateKeyModplug(unsigned char Key) const
 int CFamiTrackerView::TranslateKeyDefault(unsigned char Key) const
 {
 	// Default conversion
-	int	KeyNote = 0, KeyOctave = 0;
+	int KeyNote = 0, KeyOctave = 0;
 
 	// Convert key to a note
-	switch (Key) {
-		case 50:	KeyNote = Cs;	KeyOctave = m_iOctave + 1;	break;	// 2
-		case 51:	KeyNote = Ds;	KeyOctave = m_iOctave + 1;	break;	// 3
-		case 53:	KeyNote = Fs;	KeyOctave = m_iOctave + 1;	break;	// 5
-		case 54:	KeyNote = Gs;	KeyOctave = m_iOctave + 1;	break;	// 6
-		case 55:	KeyNote = As;	KeyOctave = m_iOctave + 1;	break;	// 7
-		case 57:	KeyNote = Cs;	KeyOctave = m_iOctave + 2;	break;	// 9
-		case 48:	KeyNote = Ds;	KeyOctave = m_iOctave + 2;	break;	// 0
-		case 81:	KeyNote = C;	KeyOctave = m_iOctave + 1;	break;	// Q
-		case 87:	KeyNote = D;	KeyOctave = m_iOctave + 1;	break;	// W
-		case 69:	KeyNote = E;	KeyOctave = m_iOctave + 1;	break;	// E
-		case 82:	KeyNote = F;	KeyOctave = m_iOctave + 1;	break;	// R
-		case 84:	KeyNote = G;	KeyOctave = m_iOctave + 1;	break;	// T
-		case 89:	KeyNote = A;	KeyOctave = m_iOctave + 1;	break;	// Y
-		case 85:	KeyNote = B;	KeyOctave = m_iOctave + 1;	break;	// U
-		case 73:	KeyNote = C;	KeyOctave = m_iOctave + 2;	break;	// I
-		case 79:	KeyNote = D;	KeyOctave = m_iOctave + 2;	break;	// O
-		case 80:	KeyNote = E;	KeyOctave = m_iOctave + 2;	break;	// P
-		case 221:	KeyNote = F;	KeyOctave = m_iOctave + 2;	break;	// Å
-		case 219:	KeyNote = Fs;	KeyOctave = m_iOctave + 2;	break;	// ´
+	switch (Key)
+	{
+	case 50: KeyNote = Cs;
+		KeyOctave = m_iOctave + 1;
+		break; // 2
+	case 51: KeyNote = Ds;
+		KeyOctave = m_iOctave + 1;
+		break; // 3
+	case 53: KeyNote = Fs;
+		KeyOctave = m_iOctave + 1;
+		break; // 5
+	case 54: KeyNote = Gs;
+		KeyOctave = m_iOctave + 1;
+		break; // 6
+	case 55: KeyNote = As;
+		KeyOctave = m_iOctave + 1;
+		break; // 7
+	case 57: KeyNote = Cs;
+		KeyOctave = m_iOctave + 2;
+		break; // 9
+	case 48: KeyNote = Ds;
+		KeyOctave = m_iOctave + 2;
+		break; // 0
+	case 81: KeyNote = C;
+		KeyOctave = m_iOctave + 1;
+		break; // Q
+	case 87: KeyNote = D;
+		KeyOctave = m_iOctave + 1;
+		break; // W
+	case 69: KeyNote = E;
+		KeyOctave = m_iOctave + 1;
+		break; // E
+	case 82: KeyNote = F;
+		KeyOctave = m_iOctave + 1;
+		break; // R
+	case 84: KeyNote = G;
+		KeyOctave = m_iOctave + 1;
+		break; // T
+	case 89: KeyNote = A;
+		KeyOctave = m_iOctave + 1;
+		break; // Y
+	case 85: KeyNote = B;
+		KeyOctave = m_iOctave + 1;
+		break; // U
+	case 73: KeyNote = C;
+		KeyOctave = m_iOctave + 2;
+		break; // I
+	case 79: KeyNote = D;
+		KeyOctave = m_iOctave + 2;
+		break; // O
+	case 80: KeyNote = E;
+		KeyOctave = m_iOctave + 2;
+		break; // P
+	case 221: KeyNote = F;
+		KeyOctave = m_iOctave + 2;
+		break; // Å
+	case 219: KeyNote = Fs;
+		KeyOctave = m_iOctave + 2;
+		break; // ´
 		//case 186:	KeyNote = G;	KeyOctave = m_iOctave + 2;	break;	// ¨
-		case 83:	KeyNote = Cs;	KeyOctave = m_iOctave;		break;	// S
-		case 68:	KeyNote = Ds;	KeyOctave = m_iOctave;		break;	// D
-		case 71:	KeyNote = Fs;	KeyOctave = m_iOctave;		break;	// G
-		case 72:	KeyNote = Gs;	KeyOctave = m_iOctave;		break;	// H
-		case 74:	KeyNote = As;	KeyOctave = m_iOctave;		break;	// J
-		case 76:	KeyNote = Cs;	KeyOctave = m_iOctave + 1;	break;	// L
-		case 192:	KeyNote = Ds;	KeyOctave = m_iOctave + 1;	break;	// Ö
-		case 90:	KeyNote = C;	KeyOctave = m_iOctave;		break;	// Z
-		case 88:	KeyNote = D;	KeyOctave = m_iOctave;		break;	// X
-		case 67:	KeyNote = E;	KeyOctave = m_iOctave;		break;	// C
-		case 86:	KeyNote = F;	KeyOctave = m_iOctave;		break;	// V
-		case 66:	KeyNote = G;	KeyOctave = m_iOctave;		break;	// B
-		case 78:	KeyNote = A;	KeyOctave = m_iOctave;		break;	// N
-		case 77:	KeyNote = B;	KeyOctave = m_iOctave;		break;	// M
-		case 188:	KeyNote = C;	KeyOctave = m_iOctave + 1;	break;	// ,
-		case 190:	KeyNote = D;	KeyOctave = m_iOctave + 1;	break;	// .
-		case 189:	KeyNote = E;	KeyOctave = m_iOctave + 1;	break;	// -
+	case 83: KeyNote = Cs;
+		KeyOctave = m_iOctave;
+		break; // S
+	case 68: KeyNote = Ds;
+		KeyOctave = m_iOctave;
+		break; // D
+	case 71: KeyNote = Fs;
+		KeyOctave = m_iOctave;
+		break; // G
+	case 72: KeyNote = Gs;
+		KeyOctave = m_iOctave;
+		break; // H
+	case 74: KeyNote = As;
+		KeyOctave = m_iOctave;
+		break; // J
+	case 76: KeyNote = Cs;
+		KeyOctave = m_iOctave + 1;
+		break; // L
+	case 192: KeyNote = Ds;
+		KeyOctave = m_iOctave + 1;
+		break; // Ö
+	case 90: KeyNote = C;
+		KeyOctave = m_iOctave;
+		break; // Z
+	case 88: KeyNote = D;
+		KeyOctave = m_iOctave;
+		break; // X
+	case 67: KeyNote = E;
+		KeyOctave = m_iOctave;
+		break; // C
+	case 86: KeyNote = F;
+		KeyOctave = m_iOctave;
+		break; // V
+	case 66: KeyNote = G;
+		KeyOctave = m_iOctave;
+		break; // B
+	case 78: KeyNote = A;
+		KeyOctave = m_iOctave;
+		break; // N
+	case 77: KeyNote = B;
+		KeyOctave = m_iOctave;
+		break; // M
+	case 188: KeyNote = C;
+		KeyOctave = m_iOctave + 1;
+		break; // ,
+	case 190: KeyNote = D;
+		KeyOctave = m_iOctave + 1;
+		break; // .
+	case 189: KeyNote = E;
+		KeyOctave = m_iOctave + 1;
+		break; // -
 	}
 
 	// Invalid
@@ -2838,7 +3231,8 @@ bool CFamiTrackerView::PreventRepeat(unsigned char Key, bool Insert)
 {
 	if (m_cKeyList[Key] == 0)
 		m_cKeyList[Key] = 1;
-	else {
+	else
+	{
 		if ((!theApp.GetSettings()->General.bKeyRepeat || !Insert))
 			return true;
 	}
@@ -2864,8 +3258,9 @@ bool CFamiTrackerView::PreviewNote(unsigned char Key)
 
 	TRACE0("View: Note preview\n");
 
-	if (Note > 0) {
-		TriggerMIDINote(m_pPatternEditor->GetChannel(), Note, 0x7F, false); 
+	if (Note > 0)
+	{
+		TriggerMIDINote(m_pPatternEditor->GetChannel(), Note, 0x7F, false);
 		return true;
 	}
 
@@ -2878,10 +3273,11 @@ void CFamiTrackerView::PreviewRelease(unsigned char Key)
 
 	int Note = TranslateKey(Key);
 
-	if (Note > 0) {
+	if (Note > 0)
+	{
 		if (DoRelease())
 			ReleaseMIDINote(m_pPatternEditor->GetChannel(), Note, false);
-		else 
+		else
 			CutMIDINote(m_pPatternEditor->GetChannel(), Note, false);
 	}
 }
@@ -2894,7 +3290,7 @@ void CFamiTrackerView::TranslateMidiMessage()
 {
 	// Check and handle MIDI messages
 
-	CMIDI *pMIDI = theApp.GetMIDI();
+	CMIDI* pMIDI = theApp.GetMIDI();
 	CFamiTrackerDoc* pDoc = GetDocument();
 	CString Status;
 
@@ -2902,9 +3298,10 @@ void CFamiTrackerView::TranslateMidiMessage()
 		return;
 
 	unsigned char Message, Channel, Data1, Data2;
-	while (pMIDI->ReadMessage(Message, Channel, Data1, Data2)) {
-
-		if (Message != 0x0F) {
+	while (pMIDI->ReadMessage(Message, Channel, Data1, Data2))
+	{
+		if (Message != 0x0F)
+		{
 			if (!theApp.GetSettings()->Midi.bMidiChannelMap)
 				Channel = m_pPatternEditor->GetChannel();
 			if (Channel > pDoc->GetAvailableChannels() - 1)
@@ -2912,49 +3309,53 @@ void CFamiTrackerView::TranslateMidiMessage()
 		}
 
 		// Translate key releases to note off messages
-		if (Message == MIDI_MSG_NOTE_ON && Data2 == 0) {
+		if (Message == MIDI_MSG_NOTE_ON && Data2 == 0)
+		{
 			Message = MIDI_MSG_NOTE_OFF;
 		}
 
-		if (Message == MIDI_MSG_NOTE_ON || Message == MIDI_MSG_NOTE_OFF) {
+		if (Message == MIDI_MSG_NOTE_ON || Message == MIDI_MSG_NOTE_OFF)
+		{
 			// Remove two octaves from MIDI notes
 			Data1 -= 24;
 			if (Data1 > 127)
 				return;
 		}
 
-		switch (Message) {
-			case MIDI_MSG_NOTE_ON:
-				TriggerMIDINote(Channel, Data1, Data2, true);
-				AfxFormatString3(Status, IDS_MIDI_MESSAGE_ON_FORMAT, 
-					MakeIntString(Data1 % 12), 
-					MakeIntString(Data1 / 12),
-					MakeIntString(Data2));
-				break;
+		switch (Message)
+		{
+		case MIDI_MSG_NOTE_ON:
+			TriggerMIDINote(Channel, Data1, Data2, true);
+			AfxFormatString3(Status, IDS_MIDI_MESSAGE_ON_FORMAT,
+			                 MakeIntString(Data1 % 12),
+			                 MakeIntString(Data1 / 12),
+			                 MakeIntString(Data2));
+			break;
 
-			case MIDI_MSG_NOTE_OFF:
-				// MIDI key is released, don't input note break into pattern
-				if (DoRelease())
-					ReleaseMIDINote(Channel, Data1, false);
-				else
-					CutMIDINote(Channel, Data1, false);
-				Status.Format(IDS_MIDI_MESSAGE_OFF);
-				break;
-			
-			case MIDI_MSG_PITCH_WHEEL: 
-				{
-					CTrackerChannel *pChannel = pDoc->GetChannel(Channel);
-					int PitchValue = 0x2000 - ((Data1 & 0x7F) | ((Data2 & 0x7F) << 7));
-					pChannel->SetPitch(-PitchValue / 0x10);
-				}
-				break;
+		case MIDI_MSG_NOTE_OFF:
+			// MIDI key is released, don't input note break into pattern
+			if (DoRelease())
+				ReleaseMIDINote(Channel, Data1, false);
+			else
+				CutMIDINote(Channel, Data1, false);
+			Status.Format(IDS_MIDI_MESSAGE_OFF);
+			break;
 
-			case 0x0F:
-				if (Channel == 0x08) {
-					m_pPatternEditor->MoveDown(m_iInsertKeyStepping);
-					InvalidateCursor();
-				}
-				break;
+		case MIDI_MSG_PITCH_WHEEL:
+			{
+				CTrackerChannel* pChannel = pDoc->GetChannel(Channel);
+				int PitchValue = 0x2000 - ((Data1 & 0x7F) | ((Data2 & 0x7F) << 7));
+				pChannel->SetPitch(-PitchValue / 0x10);
+			}
+			break;
+
+		case 0x0F:
+			if (Channel == 0x08)
+			{
+				m_pPatternEditor->MoveDown(m_iInsertKeyStepping);
+				InvalidateCursor();
+			}
+			break;
 		}
 	}
 
@@ -3029,13 +3430,13 @@ void CFamiTrackerView::OnDecreaseStepSize()
 		SetStepping(m_iInsertKeyStepping - 1);
 }
 
-void CFamiTrackerView::SetStepping(int Step) 
-{ 
+void CFamiTrackerView::SetStepping(int Step)
+{
 	m_iInsertKeyStepping = Step;
 
 	if (Step > 0 && !theApp.GetSettings()->General.bNoStepMove)
 		m_iMoveKeyStepping = Step;
-	else 
+	else
 		m_iMoveKeyStepping = 1;
 
 	static_cast<CMainFrame*>(GetParentFrame())->UpdateControls();
@@ -3053,9 +3454,9 @@ void CFamiTrackerView::OnEditReverse()
 
 void CFamiTrackerView::OnEditReplaceInstrument()
 {
-	CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_REPLACE_INSTRUMENT);
+	CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_REPLACE_INSTRUMENT);
 	pAction->SetInstrument(GetInstrument());
-	AddAction(pAction);	
+	AddAction(pAction);
 }
 
 void CFamiTrackerView::OnNcMouseMove(UINT nHitTest, CPoint point)
@@ -3080,9 +3481,9 @@ void CFamiTrackerView::OnOneStepDown()
 
 void CFamiTrackerView::MakeSilent()
 {
-	m_iAutoArpPtr		= 0; 
-	m_iLastAutoArpPtr	= 0;
-	m_iAutoArpKeyCount	= 0;
+	m_iAutoArpPtr = 0;
+	m_iLastAutoArpPtr = 0;
+	m_iAutoArpKeyCount = 0;
 
 	memset(m_iActiveNotes, 0, sizeof(int) * MAX_CHANNELS);
 	memset(m_cKeyList, 0, sizeof(char) * 256);
@@ -3122,7 +3523,7 @@ void CFamiTrackerView::OnPickupRow()
 	int Frame = m_pPatternEditor->GetFrame();
 	int Row = m_pPatternEditor->GetRow();
 	int Channel = m_pPatternEditor->GetChannel();
-	
+
 	stChanNote Note;
 
 	pDoc->GetNoteData(Track, Frame, Channel, Row, &Note);
@@ -3132,10 +3533,10 @@ void CFamiTrackerView::OnPickupRow()
 	SetInstrument(Note.Instrument);
 }
 
-bool CFamiTrackerView::AddAction(CAction *pAction) const
+bool CFamiTrackerView::AddAction(CAction* pAction) const
 {
 	// Performs an action and adds it to the undo queue
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(GetParentFrame());
 	return (pMainFrm != NULL) ? pMainFrm->AddAction(pAction) : false;
 }
 
@@ -3145,15 +3546,18 @@ DROPEFFECT CFamiTrackerView::OnDragEnter(COleDataObject* pDataObject, DWORD dwKe
 {
 	TRACE0("OLE: OnDragEnter\n");
 
-	if (pDataObject->IsDataAvailable(m_iClipboard)) {
-		if (dwKeyState & (MK_CONTROL | MK_SHIFT)) {
+	if (pDataObject->IsDataAvailable(m_iClipboard))
+	{
+		if (dwKeyState & (MK_CONTROL | MK_SHIFT))
+		{
 			m_nDropEffect = DROPEFFECT_COPY;
 			if (dwKeyState & MK_SHIFT)
 				m_bDropMix = true;
 			else
 				m_bDropMix = false;
 		}
-		else {
+		else
+		{
 			m_nDropEffect = DROPEFFECT_MOVE;
 		}
 
@@ -3177,11 +3581,12 @@ void CFamiTrackerView::OnDragLeave()
 {
 	TRACE0("OLE: OnDragLeave\n");
 
-	if (m_nDropEffect != DROPEFFECT_NONE) {
+	if (m_nDropEffect != DROPEFFECT_NONE)
+	{
 		m_pPatternEditor->EndDrag();
 		InvalidateCursor();
 	}
-	
+
 	m_nDropEffect = DROPEFFECT_NONE;
 
 	CView::OnDragLeave();
@@ -3192,7 +3597,8 @@ DROPEFFECT CFamiTrackerView::OnDragOver(COleDataObject* pDataObject, DWORD dwKey
 	TRACE0("OLE: OnDragOver\n");
 
 	// Update drag'n'drop cursor
-	if (m_nDropEffect != DROPEFFECT_NONE) {
+	if (m_nDropEffect != DROPEFFECT_NONE)
+	{
 		m_pPatternEditor->UpdateDrag(point);
 		InvalidateCursor();
 	}
@@ -3207,19 +3613,20 @@ BOOL CFamiTrackerView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect
 	BOOL Result = FALSE;
 
 	// Perform drop
-	if (m_nDropEffect != DROPEFFECT_NONE) {
-
+	if (m_nDropEffect != DROPEFFECT_NONE)
+	{
 		bool bCopy = (dropEffect == DROPEFFECT_COPY) || (m_bDragSource == false);
 
 		m_pPatternEditor->UpdateDrag(point);
 
 		// Get clipboard data
-		CPatternClipData *pClipData = new CPatternClipData();
+		CPatternClipData* pClipData = new CPatternClipData();
 		HGLOBAL hMem = pDataObject->GetGlobalData(m_iClipboard);
 		pClipData->FromMem(hMem);
-				
+
 		// Paste into pattern
-		if (!m_pPatternEditor->PerformDrop(pClipData, bCopy, m_bDropMix)) {
+		if (!m_pPatternEditor->PerformDrop(pClipData, bCopy, m_bDropMix))
+		{
 			SAFE_RELEASE(pClipData);
 		}
 
@@ -3230,7 +3637,7 @@ BOOL CFamiTrackerView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect
 	}
 
 	m_nDropEffect = DROPEFFECT_NONE;
-	
+
 	return Result;
 }
 
@@ -3247,7 +3654,8 @@ void CFamiTrackerView::BeginDragData(int ChanOffset, int RowOffset)
 
 	HGLOBAL hMem = ::GlobalAlloc(GMEM_MOVEABLE, Size);
 
-	if (hMem != NULL) {
+	if (hMem != NULL)
+	{
 		// Copy data
 		pClipData->ToMem(hMem);
 
@@ -3257,14 +3665,16 @@ void CFamiTrackerView::BeginDragData(int ChanOffset, int RowOffset)
 		pSrc->CacheGlobalData(m_iClipboard, hMem);
 		DROPEFFECT res = pSrc->DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE);
 
-		if (m_bDropped == false) {
+		if (m_bDropped == false)
+		{
 			// Target was another window
-			switch (res) {
-				case DROPEFFECT_MOVE:
-					// Delete data
-					CPatternAction *pAction = new CPatternAction(CPatternAction::ACT_EDIT_DELETE);
-					AddAction(pAction);
-					break;
+			switch (res)
+			{
+			case DROPEFFECT_MOVE:
+				// Delete data
+				CPatternAction* pAction = new CPatternAction(CPatternAction::ACT_EDIT_DELETE);
+				AddAction(pAction);
+				break;
 			}
 
 			m_pPatternEditor->CancelSelection();
@@ -3276,7 +3686,7 @@ void CFamiTrackerView::BeginDragData(int ChanOffset, int RowOffset)
 	::GlobalFree(hMem);
 }
 
-bool CFamiTrackerView::IsDragging() const 
+bool CFamiTrackerView::IsDragging() const
 {
 	return m_bDragSource;
 }

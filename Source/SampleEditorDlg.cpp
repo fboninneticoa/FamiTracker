@@ -29,8 +29,9 @@
 // The DPCM sample editor
 //
 
-enum {
-	TMR_PLAY_CURSOR, 
+enum
+{
+	TMR_PLAY_CURSOR,
 	TMR_START_CURSOR
 };
 
@@ -38,7 +39,7 @@ enum {
 
 IMPLEMENT_DYNAMIC(CSampleEditorDlg, CDialog)
 
-CSampleEditorDlg::CSampleEditorDlg(CWnd* pParent /*=NULL*/, CDSample *pSample)
+CSampleEditorDlg::CSampleEditorDlg(CWnd* pParent /*=NULL*/, CDSample* pSample)
 	: CDialog(CSampleEditorDlg::IDD, pParent), m_pSampleEditorView(NULL)
 {
 	// Create a copy of the sample
@@ -59,15 +60,15 @@ void CSampleEditorDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CSampleEditorDlg, CDialog)
-	ON_WM_SIZE()
-	ON_BN_CLICKED(IDC_PLAY, &CSampleEditorDlg::OnBnClickedPlay)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_DELETE, &CSampleEditorDlg::OnBnClickedDelete)
-	ON_BN_CLICKED(IDC_DELTASTART, &CSampleEditorDlg::OnBnClickedDeltastart)
-	ON_WM_KEYDOWN()
-	ON_BN_CLICKED(IDC_TILT, &CSampleEditorDlg::OnBnClickedTilt)
-	ON_WM_HSCROLL()
-	ON_WM_GETMINMAXINFO()
+		ON_WM_SIZE()
+		ON_BN_CLICKED(IDC_PLAY, &CSampleEditorDlg::OnBnClickedPlay)
+		ON_WM_TIMER()
+		ON_BN_CLICKED(IDC_DELETE, &CSampleEditorDlg::OnBnClickedDelete)
+		ON_BN_CLICKED(IDC_DELTASTART, &CSampleEditorDlg::OnBnClickedDeltastart)
+		ON_WM_KEYDOWN()
+		ON_BN_CLICKED(IDC_TILT, &CSampleEditorDlg::OnBnClickedTilt)
+		ON_WM_HSCROLL()
+		ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 
@@ -80,7 +81,7 @@ BOOL CSampleEditorDlg::OnInitDialog()
 	m_pSampleEditorView = new CSampleEditorView();
 	m_pSampleEditorView->SubclassDlgItem(IDC_SAMPLE, this);
 
-	CSliderCtrl *pitch = static_cast<CSliderCtrl*>(GetDlgItem(IDC_PITCH));
+	CSliderCtrl* pitch = static_cast<CSliderCtrl*>(GetDlgItem(IDC_PITCH));
 	pitch->SetRange(0, 15);
 	pitch->SetPos(15);
 
@@ -97,7 +98,7 @@ BOOL CSampleEditorDlg::OnInitDialog()
 	UpdateSampleView();
 	SelectionChanged();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -112,7 +113,8 @@ void CSampleEditorDlg::MoveControls()
 	CRect rect;
 	GetClientRect(&rect);
 
-	if (m_pSampleEditorView) {
+	if (m_pSampleEditorView)
+	{
 		rect.top++;
 		rect.left++;
 		rect.bottom -= 60;
@@ -121,25 +123,28 @@ void CSampleEditorDlg::MoveControls()
 		m_pSampleEditorView->Invalidate();
 	}
 
-	CWnd *control;
+	CWnd* control;
 	CRect controlRect;
 
 	GetClientRect(&rect);
 
-	if (control = GetDlgItem(IDC_PLAY)) {
+	if (control = GetDlgItem(IDC_PLAY))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(10, rect.bottom - 30);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_POS)) {
+	if (control = GetDlgItem(IDC_POS))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(5, rect.bottom - 53);
 		controlRect.InflateRect(0, 0, 2, 2);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_INFO)) {
+	if (control = GetDlgItem(IDC_INFO))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(170, rect.bottom - 53);
 		controlRect.InflateRect(0, 0, 2, 2);
@@ -148,49 +153,57 @@ void CSampleEditorDlg::MoveControls()
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_ZOOM)) {
+	if (control = GetDlgItem(IDC_ZOOM))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(rect.right - 180, rect.bottom - 53);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_STATIC_PITCH)) {
+	if (control = GetDlgItem(IDC_STATIC_PITCH))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(93, rect.bottom - 27);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_PITCH)) {
+	if (control = GetDlgItem(IDC_PITCH))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(145, rect.bottom - 30);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_DELETE)) {
+	if (control = GetDlgItem(IDC_DELETE))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(270, rect.bottom - 30);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_TILT)) {
+	if (control = GetDlgItem(IDC_TILT))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(350, rect.bottom - 30);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDC_DELTASTART)) {
+	if (control = GetDlgItem(IDC_DELTASTART))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(440, rect.bottom - 25);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDCANCEL)) {
+	if (control = GetDlgItem(IDCANCEL))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(rect.right - controlRect.right - 10, rect.bottom - 30);
 		control->MoveWindow(controlRect);
 	}
 
-	if (control = GetDlgItem(IDOK)) {
+	if (control = GetDlgItem(IDOK))
+	{
 		control->GetClientRect(&controlRect);
 		controlRect.MoveToXY(rect.right - controlRect.right - 10, rect.bottom - 55);
 		control->MoveWindow(controlRect);
@@ -219,24 +232,29 @@ void CSampleEditorDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// Update play cursor
 
-	switch (nIDEvent) {
-		case TMR_PLAY_CURSOR: {
+	switch (nIDEvent)
+	{
+	case TMR_PLAY_CURSOR:
+		{
 			// Play cursor
 			stDPCMState state = m_pSoundGen->GetDPCMState();
 
 			// Pos is in bytes
 			int Pos = state.SamplePos /*<< 6*/;
 
-			if (m_pSoundGen->PreviewDone()) {
+			if (m_pSoundGen->PreviewDone())
+			{
 				KillTimer(0);
 				Pos = -1;
 			}
 
 			m_pSampleEditorView->DrawPlayCursor(Pos);
 		}
-		case TMR_START_CURSOR: {
+	case TMR_START_CURSOR:
+		{
 			// Start cursor
-			if (m_pSoundGen->PreviewDone()) {
+			if (m_pSoundGen->PreviewDone())
+			{
 				static bool bDraw = false;
 				if (!bDraw)
 					m_pSampleEditorView->DrawStartCursor();
@@ -267,14 +285,15 @@ void CSampleEditorDlg::OnBnClickedDelete()
 	if (EndSample >= m_pSample->GetSize())
 		EndSample = m_pSample->GetSize() - 1;
 
-	TRACE(_T("Removing selected part from sample, start: %i, end %i (diff: %i)\n"), StartSample, EndSample, EndSample - StartSample);
+	TRACE(_T("Removing selected part from sample, start: %i, end %i (diff: %i)\n"), StartSample, EndSample,
+	      EndSample - StartSample);
 
 	// Remove the selected part
 	memcpy(m_pSample->GetData() + StartSample, m_pSample->GetData() + EndSample, m_pSample->GetSize() - EndSample);
 	int NewSize = m_pSample->GetSize() - (EndSample - StartSample);
 
 	// Reallocate
-	char *pData = new char[NewSize];
+	char* pData = new char[NewSize];
 	memcpy(pData, m_pSample->GetData(), NewSize);
 	m_pSample->SetData(NewSize, pData);
 
@@ -295,11 +314,14 @@ void CSampleEditorDlg::OnBnClickedTilt()
 	int Nr = 10;
 	int Step = (Diff * 8) / Nr;
 	int Cntr = rand() % Step;
-	char *pData = m_pSample->GetData();
+	char* pData = m_pSample->GetData();
 
-	for (int i = StartSample; i < EndSample; ++i) {
-		for (int j = 0; j < 8; ++j) {
-			if (++Cntr == Step) {
+	for (int i = StartSample; i < EndSample; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			if (++Cntr == Step)
+			{
 				pData[i] &= (0xFF ^ (1 << j));
 				Cntr = 0;
 			}
@@ -322,37 +344,38 @@ void CSampleEditorDlg::UpdateSampleView()
 	m_pSampleEditorView->Invalidate();
 	m_pSampleEditorView->RedrawWindow();
 
-	CSliderCtrl *pZoom = static_cast<CSliderCtrl*>(GetDlgItem(IDC_ZOOM));
+	CSliderCtrl* pZoom = static_cast<CSliderCtrl*>(GetDlgItem(IDC_ZOOM));
 	pZoom->SetRange(0, 10);
 }
 
 void CSampleEditorDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	switch (nChar) {
-		case VK_DELETE:
-			OnBnClickedDelete();
-			break;
-		case VK_HOME:
-			m_pSampleEditorView->OnHome();
-			break;
-		case VK_END:
-			m_pSampleEditorView->OnEnd();
-			break;
-		case VK_RIGHT:
-			m_pSampleEditorView->OnRight();
-			break;
-		case VK_LEFT:
-			m_pSampleEditorView->OnLeft();
-			break;
-		case 0x50:
-			OnBnClickedPlay();
-			break;
+	switch (nChar)
+	{
+	case VK_DELETE:
+		OnBnClickedDelete();
+		break;
+	case VK_HOME:
+		m_pSampleEditorView->OnHome();
+		break;
+	case VK_END:
+		m_pSampleEditorView->OnEnd();
+		break;
+	case VK_RIGHT:
+		m_pSampleEditorView->OnRight();
+		break;
+	case VK_LEFT:
+		m_pSampleEditorView->OnLeft();
+		break;
+	case 0x50:
+		OnBnClickedPlay();
+		break;
 	}
 
 	CDialog::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CSampleEditorDlg::CopySample(CDSample *pTarget)
+void CSampleEditorDlg::CopySample(CDSample* pTarget)
 {
 	pTarget->Allocate(m_pSample->GetSize(), m_pSample->GetData());
 }
@@ -374,7 +397,8 @@ void CSampleEditorDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 
 BOOL CSampleEditorDlg::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message == WM_KEYDOWN) {
+	if (pMsg->message == WM_KEYDOWN)
+	{
 		OnKeyDown(pMsg->wParam, 0, 0);
 		return TRUE;
 	}
@@ -384,11 +408,13 @@ BOOL CSampleEditorDlg::PreTranslateMessage(MSG* pMsg)
 
 void CSampleEditorDlg::SelectionChanged()
 {
-	if (m_pSampleEditorView->HasSelection()) {
+	if (m_pSampleEditorView->HasSelection())
+	{
 		GetDlgItem(IDC_DELETE)->EnableWindow(TRUE);
 		GetDlgItem(IDC_TILT)->EnableWindow(TRUE);
 	}
-	else {
+	else
+	{
 		GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_TILT)->EnableWindow(FALSE);
 	}

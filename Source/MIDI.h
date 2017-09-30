@@ -23,13 +23,13 @@
 #include <mmsystem.h>
 #include <afxmt.h>
 
-const int MIDI_MSG_NOTE_OFF			= 0x08;
-const int MIDI_MSG_NOTE_ON			= 0x09;
-const int MIDI_MSG_AFTER_TOUCH		= 0x0A;
-const int MIDI_MSG_CONTROL_CHANGE	= 0x0B;
-const int MIDI_MSG_PROGRAM_CHANGE	= 0x0C;
+const int MIDI_MSG_NOTE_OFF = 0x08;
+const int MIDI_MSG_NOTE_ON = 0x09;
+const int MIDI_MSG_AFTER_TOUCH = 0x0A;
+const int MIDI_MSG_CONTROL_CHANGE = 0x0B;
+const int MIDI_MSG_PROGRAM_CHANGE = 0x0C;
 const int MIDI_MSG_CHANNEL_PRESSURE = 0x0D;
-const int MIDI_MSG_PITCH_WHEEL		= 0x0E;
+const int MIDI_MSG_PITCH_WHEEL = 0x0E;
 
 // CMIDI command target
 
@@ -39,39 +39,39 @@ public:
 	CMIDI();
 	virtual ~CMIDI();
 
-	bool	Init(void);
-	void	Shutdown(void);
+	bool Init(void);
+	void Shutdown(void);
 
-	bool	OpenDevices(void);
-	bool	CloseDevices(void);
+	bool OpenDevices(void);
+	bool CloseDevices(void);
 
-	bool	ReadMessage(unsigned char & Message, unsigned char & Channel, unsigned char & Data1, unsigned char & Data2);
-	void	WriteNote(unsigned char Channel, unsigned char Note, unsigned char Octave, unsigned char Velocity);
-	void	ResetOutput();
-	void	ToggleInput();
+	bool ReadMessage(unsigned char& Message, unsigned char& Channel, unsigned char& Data1, unsigned char& Data2);
+	void WriteNote(unsigned char Channel, unsigned char Note, unsigned char Octave, unsigned char Velocity);
+	void ResetOutput();
+	void ToggleInput();
 
-	int		GetQuantization() const;
+	int GetQuantization() const;
 
-	bool	IsOpened() const;
-	bool	IsAvailable() const;
+	bool IsOpened() const;
+	bool IsAvailable() const;
 
-	void	SetInputDevice(int Device, bool MasterSync);
-	void	SetOutputDevice(int Device);
+	void SetInputDevice(int Device, bool MasterSync);
+	void SetOutputDevice(int Device);
 
-	int		GetInputDevice() const;
-	int		GetOutputDevice() const;
+	int GetInputDevice() const;
+	int GetOutputDevice() const;
 
 	// Device enumeration
-	int		GetNumInputDevices() const;
-	int		GetNumOutputDevices() const;
+	int GetNumInputDevices() const;
+	int GetNumOutputDevices() const;
 
-	void	GetInputDeviceString(int Num, CString &Text) const;
-	void	GetOutputDeviceString(int Num, CString &Text) const;
+	void GetInputDeviceString(int Num, CString& Text) const;
+	void GetOutputDeviceString(int Num, CString& Text) const;
 
 	// Private methods
 private:
-	void	Event(unsigned char Status, unsigned char Data1, unsigned char Data2);
-	void	Enqueue(unsigned char MsgType, unsigned char MsgChannel, unsigned char Data1, unsigned char Data2);
+	void Event(unsigned char Status, unsigned char Data1, unsigned char Data2);
+	void Enqueue(unsigned char MsgType, unsigned char MsgChannel, unsigned char Data1, unsigned char Data2);
 
 	// Constants
 private:
@@ -80,32 +80,32 @@ private:
 	// Static functions & variables
 private:
 	static void CALLBACK MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2);
-	static CMIDI *m_pInstance;
+	static CMIDI* m_pInstance;
 
 	// Private variables
 private:
 	// Devices
-	int		m_iInDevice;
-	int		m_iOutDevice;
+	int m_iInDevice;
+	int m_iOutDevice;
 
-	bool	m_bMasterSync;
-	bool	m_bInStarted;
+	bool m_bMasterSync;
+	bool m_bInStarted;
 
 	// MIDI queue
-	int		m_iQueueHead;
-	int		m_iQueueTail;
+	int m_iQueueHead;
+	int m_iQueueTail;
 
-	char	m_iMsgTypeQueue[MAX_QUEUE];
-	char	m_iMsgChanQueue[MAX_QUEUE];
-	char	m_iData1Queue[MAX_QUEUE];
-	char	m_iData2Queue[MAX_QUEUE];
-	char	m_iQuantization[MAX_QUEUE];
+	char m_iMsgTypeQueue[MAX_QUEUE];
+	char m_iMsgChanQueue[MAX_QUEUE];
+	char m_iData1Queue[MAX_QUEUE];
+	char m_iData2Queue[MAX_QUEUE];
+	char m_iQuantization[MAX_QUEUE];
 
-	int		m_iQuant;
-	int		m_iTimingCounter;
+	int m_iQuant;
+	int m_iTimingCounter;
 
 	// Device handles
-	HMIDIIN	 m_hMIDIIn;
+	HMIDIIN m_hMIDIIn;
 	HMIDIOUT m_hMIDIOut;
 
 	// Thread sync

@@ -37,11 +37,11 @@
 // Namco 163 (previously called N106)
 //
 
-CN163::CN163(CMixer *pMixer) : 
-	m_iChansInUse(0), 
-	m_iExpandAddr(0), 
-	m_iLastValue(0), 
-	m_iGlobalTime(0), 
+CN163::CN163(CMixer* pMixer) :
+	m_iChansInUse(0),
+	m_iExpandAddr(0),
+	m_iLastValue(0),
+	m_iGlobalTime(0),
 	m_iChannelCntr(0),
 	m_iActiveChan(0),
 	m_iCycle(0)
@@ -85,12 +85,12 @@ void CN163::Reset()
 
 void CN163::Process(uint32 Time)
 {
-	const uint32 CHAN_PERIOD = 15;		// 15 cycles/channel
+	const uint32 CHAN_PERIOD = 15; // 15 cycles/channel
 
 	m_pMixer->SetNamcoVolume((m_iChansInUse == 0) ? 1.3f : (1.5f + float(m_iChansInUse - 1) / 1.5f));
 
-	while (Time > 0) {
-
+	while (Time > 0)
+	{
 		uint32 TimeToRun = CHAN_PERIOD - m_iChannelCntr;
 
 		if (TimeToRun > Time)
@@ -102,7 +102,8 @@ void CN163::Process(uint32 Time)
 		m_iGlobalTime += TimeToRun;
 		m_iChannelCntr += TimeToRun;
 
-		if (m_iChannelCntr >= CHAN_PERIOD) {
+		if (m_iChannelCntr >= CHAN_PERIOD)
+		{
 			if (m_iActiveChan + m_iChansInUse < 8)
 				m_iActiveChan = 8;
 			m_iActiveChan--;
@@ -138,41 +139,43 @@ void CN163::Write(uint16 Address, uint8 Value)
 {
 	int Area = m_iExpandAddr & 0x7F;
 
-	switch (Address) {
-		case 0x4800:
-			if (Area < 0x80)
-				m_pWaveData[Area] = Value;
+	switch (Address)
+	{
+	case 0x4800:
+		if (Area < 0x80)
+			m_pWaveData[Area] = Value;
 
-			if (Area >= 0x40) {
-				int Channel = (Area & 0x3F) >> 3;
-				m_pChannels[Channel]->Write(Area & 0x07, Value);
+		if (Area >= 0x40)
+		{
+			int Channel = (Area & 0x3F) >> 3;
+			m_pChannels[Channel]->Write(Area & 0x07, Value);
 
-				if (Area == 0x7F)
-					m_iChansInUse = (Value >> 4) & 0x07;
-			}
+			if (Area == 0x7F)
+				m_iChansInUse = (Value >> 4) & 0x07;
+		}
 
-			if (m_iExpandAddr & 0x80)
-				m_iExpandAddr = (m_iExpandAddr + 1) | 0x80;
-			break;
+		if (m_iExpandAddr & 0x80)
+			m_iExpandAddr = (m_iExpandAddr + 1) | 0x80;
+		break;
 
-		case 0xF800:
-			m_iExpandAddr = Value;
-			break;
+	case 0xF800:
+		m_iExpandAddr = Value;
+		break;
 	}
-
 }
 
-uint8 CN163::Read(uint16 Address, bool &Mapped)
+uint8 CN163::Read(uint16 Address, bool& Mapped)
 {
 	uint16 ReadAddr;
 
-	switch (Address) {
-		case 0x4800:
-			Mapped = true;
-			ReadAddr = m_iExpandAddr & 0x7F;
-			if (m_iExpandAddr & 0x80)
-				m_iExpandAddr = ((m_iExpandAddr + 1) & 0x7F) | 0x80;
-			return m_pWaveData[ReadAddr];
+	switch (Address)
+	{
+	case 0x4800:
+		Mapped = true;
+		ReadAddr = m_iExpandAddr & 0x7F;
+		if (m_iExpandAddr & 0x80)
+			m_iExpandAddr = ((m_iExpandAddr + 1) & 0x7F) | 0x80;
+		return m_pWaveData[ReadAddr];
 	}
 
 	return 0;
@@ -182,7 +185,7 @@ uint8 CN163::ReadMem(uint8 Reg)
 {
 	int ChanArea = 0x80 - ((m_iChansInUse + 1) << 3);
 	int Chan = (Reg & 0x3F) >> 3;
-	
+
 	if (Reg < ChanArea)
 		return m_pWaveData[Reg & 0x7F];
 
@@ -196,7 +199,7 @@ uint8 CN163::ReadMem(uint8 Reg)
 // N163 channels
 //
 
-CN163Chan::CN163Chan(CMixer *pMixer, int ID, uint8 *pWaveData) : 
+CN163Chan::CN163Chan(CMixer* pMixer, int ID, uint8* pWaveData) :
 	CExChannel(pMixer, SNDCHIP_N163, ID),
 	m_pWaveData(pWaveData)
 {
@@ -209,13 +212,13 @@ CN163Chan::~CN163Chan()
 
 void CN163Chan::Reset()
 {
-	m_iCounter	  = 0;
+	m_iCounter = 0;
 	m_iWaveOffset = 0;
 	m_iWaveLength = 0;
-	m_iVolume	  = 0;
+	m_iVolume = 0;
 	m_iLastSample = 0;
-	m_iPhase	  = 0;
-	m_iFrequency  = 0;
+	m_iPhase = 0;
+	m_iFrequency = 0;
 
 	EndFrame();
 }
@@ -227,49 +230,52 @@ void CN163Chan::EndFrame()
 
 void CN163Chan::Write(uint16 Address, uint8 Value)
 {
-	switch (Address) {
-		case 0x00:
-			m_iFrequency = (m_iFrequency & 0xFFFF00) | Value;
-			break;
-		case 0x01:
-			m_iPhase = (m_iPhase & 0xFFFF00) | Value;
-			break;
-		case 0x02:
-			m_iFrequency = (m_iFrequency & 0xFF00FF) | (Value << 8);
-			break;
-		case 0x03:
-			m_iPhase = (m_iPhase & 0xFF00FF) | (Value << 8);
-			break;
-		case 0x04:
-			m_iFrequency = (m_iFrequency & 0x00FFFF) | ((Value & 3) << 16);
-			m_iWaveLength = (256 - (Value & 0xFC)) << 16;
-			break;
-		case 0x05:
-			m_iPhase = (m_iPhase & 0x00FFFF) | (Value << 16);
-			break;
-		case 0x06:
-			m_iWaveOffset = Value;
-			break;
-		case 0x07:
-			m_iVolume = Value & 0x0F;
-			break;
+	switch (Address)
+	{
+	case 0x00:
+		m_iFrequency = (m_iFrequency & 0xFFFF00) | Value;
+		break;
+	case 0x01:
+		m_iPhase = (m_iPhase & 0xFFFF00) | Value;
+		break;
+	case 0x02:
+		m_iFrequency = (m_iFrequency & 0xFF00FF) | (Value << 8);
+		break;
+	case 0x03:
+		m_iPhase = (m_iPhase & 0xFF00FF) | (Value << 8);
+		break;
+	case 0x04:
+		m_iFrequency = (m_iFrequency & 0x00FFFF) | ((Value & 3) << 16);
+		m_iWaveLength = (256 - (Value & 0xFC)) << 16;
+		break;
+	case 0x05:
+		m_iPhase = (m_iPhase & 0x00FFFF) | (Value << 16);
+		break;
+	case 0x06:
+		m_iWaveOffset = Value;
+		break;
+	case 0x07:
+		m_iVolume = Value & 0x0F;
+		break;
 	}
 }
 
-void CN163Chan::Process(uint32 Time, uint8 ChannelsActive, CN163 *pParent)
+void CN163Chan::Process(uint32 Time, uint8 ChannelsActive, CN163* pParent)
 {
 	uint32 TimeStamp = 0;
 
 	pParent->Mix(m_iLastSample, TimeStamp, m_iChanId);
 
-	if (!m_iFrequency || !m_iWaveLength) {
+	if (!m_iFrequency || !m_iWaveLength)
+	{
 		m_iLastSample = 0;
 		m_iTime += Time;
 		return;
 	}
 
-	while (Time >= m_iCounter) {
-		Time	-= m_iCounter;
+	while (Time >= m_iCounter)
+	{
+		Time -= m_iCounter;
 		m_iTime += m_iCounter;
 		TimeStamp += m_iCounter;
 		m_iCounter = 15;
@@ -293,23 +299,24 @@ void CN163Chan::Process(uint32 Time, uint8 ChannelsActive, CN163 *pParent)
 
 uint8 CN163Chan::ReadMem(uint8 Reg)
 {
-	switch (Reg & 7) {
-		case 0:
-			return m_iFrequency & 0xFF;
-		case 1:
-			return m_iPhase & 0xFF;
-		case 2:
-			return (m_iFrequency >> 8) & 0xFF;
-		case 3:
-			return (m_iPhase >> 8) & 0xFF;
-		case 4:
-			return (uint8)(((m_iFrequency >> 16) & 0x03) | (256 - (m_iWaveLength >> 16)));
-		case 5:
-			return (m_iPhase >> 16) & 0xFF;
-		case 6:
-			return m_iWaveOffset;
-		case 7:
-			return m_iVolume;
+	switch (Reg & 7)
+	{
+	case 0:
+		return m_iFrequency & 0xFF;
+	case 1:
+		return m_iPhase & 0xFF;
+	case 2:
+		return (m_iFrequency >> 8) & 0xFF;
+	case 3:
+		return (m_iPhase >> 8) & 0xFF;
+	case 4:
+		return (uint8)(((m_iFrequency >> 16) & 0x03) | (256 - (m_iWaveLength >> 16)));
+	case 5:
+		return (m_iPhase >> 16) & 0xFF;
+	case 6:
+		return m_iWaveOffset;
+	case 7:
+		return m_iVolume;
 	}
 
 	return 0;

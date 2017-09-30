@@ -24,14 +24,15 @@
 // Derived channels, 2A03
 //
 
-class CChannelHandler2A03 : public CChannelHandler {
+class CChannelHandler2A03 : public CChannelHandler
+{
 public:
 	CChannelHandler2A03();
 	virtual void ProcessChannel();
 	virtual void ResetChannel();
 
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -40,18 +41,19 @@ protected:
 	virtual void HandleNote(int Note, int Octave);
 
 protected:
-	unsigned char m_cSweep;			// Sweep, used by pulse channels
+	unsigned char m_cSweep; // Sweep, used by pulse channels
 
-	bool	m_bManualVolume;		// Flag for Exx
-	int		m_iInitVolume;			// Initial volume
-	bool	m_bSweeping;			// Flag for HW sweep
-	int		m_iSweep;
-	int		m_iPostEffect;
-	int		m_iPostEffectParam;
+	bool m_bManualVolume; // Flag for Exx
+	int m_iInitVolume; // Initial volume
+	bool m_bSweeping; // Flag for HW sweep
+	int m_iSweep;
+	int m_iPostEffect;
+	int m_iPostEffectParam;
 };
 
 // Square 1
-class CSquare1Chan : public CChannelHandler2A03 {
+class CSquare1Chan : public CChannelHandler2A03
+{
 public:
 	CSquare1Chan() : CChannelHandler2A03() { m_iDefaultDuty = 0; };
 	virtual void RefreshChannel();
@@ -60,7 +62,8 @@ protected:
 };
 
 // Square 2
-class CSquare2Chan : public CChannelHandler2A03 {
+class CSquare2Chan : public CChannelHandler2A03
+{
 public:
 	CSquare2Chan() : CChannelHandler2A03() { m_iDefaultDuty = 0; };
 	virtual void RefreshChannel();
@@ -69,16 +72,20 @@ protected:
 };
 
 // Triangle
-class CTriangleChan : public CChannelHandler2A03 {
+class CTriangleChan : public CChannelHandler2A03
+{
 public:
-	CTriangleChan() : CChannelHandler2A03() {};
+	CTriangleChan() : CChannelHandler2A03()
+	{
+	};
 	virtual void RefreshChannel();
 protected:
 	virtual void ClearRegisters();
 };
 
 // Noise
-class CNoiseChan : public CChannelHandler2A03 {
+class CNoiseChan : public CChannelHandler2A03
+{
 public:
 	CNoiseChan();
 	virtual void RefreshChannel();
@@ -91,12 +98,13 @@ protected:
 };
 
 // DPCM
-class CDPCMChan : public CChannelHandler2A03 {
+class CDPCMChan : public CChannelHandler2A03
+{
 public:
-	CDPCMChan(CSampleMem *pSampleMem);
+	CDPCMChan(CSampleMem* pSampleMem);
 	virtual void RefreshChannel();
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -107,7 +115,7 @@ protected:
 	virtual void ClearRegisters();
 private:
 	// DPCM variables
-	CSampleMem *m_pSampleMem;
+	CSampleMem* m_pSampleMem;
 
 	unsigned char m_cDAC;
 	unsigned char m_iLoop;

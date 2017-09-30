@@ -10,13 +10,13 @@
 
 // Used to handle channels in a future version. Not finished.
 
-const TCHAR *ROOT_ITEMS[] = {
-	_T("2A03/2A07"), 
-	_T("Konami VRC6"), 
-	_T("Konami VRC7"), 
-	_T("Nintendo FDS"), 
-	_T("Nintendo MMC5"), 
-	_T("Namco 106"), 
+const TCHAR* ROOT_ITEMS[] = {
+	_T("2A03/2A07"),
+	_T("Konami VRC6"),
+	_T("Konami VRC7"),
+	_T("Nintendo FDS"),
+	_T("Nintendo MMC5"),
+	_T("Namco 106"),
 	_T("Sunsoft 5B")
 };
 
@@ -32,12 +32,15 @@ const int CHILD_ITEMS_ID[ROOT_ITEM_COUNT][9] = {
 	// MMC5
 	{CHANID_MMC5_SQUARE1, CHANID_MMC5_SQUARE2},
 	// N163
-	{CHANID_N163_CHAN1, CHANID_N163_CHAN2, CHANID_N163_CHAN3, CHANID_N163_CHAN4, CHANID_N163_CHAN5, CHANID_N163_CHAN6, CHANID_N163_CHAN7, CHANID_N163_CHAN8}, 
-	 // S5B
+	{
+		CHANID_N163_CHAN1, CHANID_N163_CHAN2, CHANID_N163_CHAN3, CHANID_N163_CHAN4, CHANID_N163_CHAN5, CHANID_N163_CHAN6,
+		CHANID_N163_CHAN7, CHANID_N163_CHAN8
+	},
+	// S5B
 	{CHANID_S5B_CH1, CHANID_S5B_CH2, CHANID_S5B_CH3}
 };
 
-const TCHAR *CHILD_ITEMS[ROOT_ITEM_COUNT][9] = {
+const TCHAR* CHILD_ITEMS[ROOT_ITEM_COUNT][9] = {
 	// 2A03
 	{_T("Square 1"), _T("Square 2"), _T("Triangle"), _T("Noise"), _T("DPCM")},
 	// VRC 6
@@ -49,8 +52,11 @@ const TCHAR *CHILD_ITEMS[ROOT_ITEM_COUNT][9] = {
 	// MMC5
 	{_T("Square 1"), _T("Square 2")},
 	// N163
-	{_T("Channel 1"), _T("Channel 2"), _T("Channel 3"), _T("Channel 4"), _T("Channel 5"), _T("Channel 6"), _T("Channel 7"), _T("Channel 8")},
-	 // S5B
+	{
+		_T("Channel 1"), _T("Channel 2"), _T("Channel 3"), _T("Channel 4"), _T("Channel 5"), _T("Channel 6"), _T("Channel 7"),
+		_T("Channel 8")
+	},
+	// S5B
 	{_T("Square 1"), _T("Square 2"), _T("Square 3")}
 };
 
@@ -61,7 +67,6 @@ IMPLEMENT_DYNAMIC(CChannelsDlg, CDialog)
 CChannelsDlg::CChannelsDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CChannelsDlg::IDD, pParent)
 {
-
 }
 
 CChannelsDlg::~CChannelsDlg()
@@ -75,12 +80,12 @@ void CChannelsDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CChannelsDlg, CDialog)
-	ON_NOTIFY(NM_CLICK, IDC_AVAILABLE_TREE, OnClickAvailable)
-	ON_NOTIFY(NM_DBLCLK, IDC_AVAILABLE_TREE, OnDblClickAvailable)
-	ON_NOTIFY(NM_DBLCLK, IDC_ADDED_LIST, OnDblClickAdded)
-	ON_BN_CLICKED(IDC_MOVE_DOWN, &CChannelsDlg::OnBnClickedMoveDown)
-	ON_NOTIFY(NM_RCLICK, IDC_AVAILABLE_TREE, &CChannelsDlg::OnNMRClickAvailableTree)
-	ON_BN_CLICKED(IDC_MOVE_UP, &CChannelsDlg::OnBnClickedMoveUp)
+		ON_NOTIFY(NM_CLICK, IDC_AVAILABLE_TREE, OnClickAvailable)
+		ON_NOTIFY(NM_DBLCLK, IDC_AVAILABLE_TREE, OnDblClickAvailable)
+		ON_NOTIFY(NM_DBLCLK, IDC_ADDED_LIST, OnDblClickAdded)
+		ON_BN_CLICKED(IDC_MOVE_DOWN, &CChannelsDlg::OnBnClickedMoveDown)
+		ON_NOTIFY(NM_RCLICK, IDC_AVAILABLE_TREE, &CChannelsDlg::OnNMRClickAvailableTree)
+		ON_BN_CLICKED(IDC_MOVE_UP, &CChannelsDlg::OnBnClickedMoveUp)
 END_MESSAGE_MAP()
 
 // CChannelsDlg message handlers
@@ -94,14 +99,16 @@ BOOL CChannelsDlg::OnInitDialog()
 
 	int RootItems = sizeof(ROOT_ITEMS) / sizeof(TCHAR);
 
-//	m_pAddedChannels->GetWIndowLon
+	//	m_pAddedChannels->GetWIndowLon
 
 	m_pAddedChannels->InsertColumn(0, _T("Name"), 0, 150);
 
-	for (int i = 0; i < ROOT_ITEM_COUNT; ++i) {
+	for (int i = 0; i < ROOT_ITEM_COUNT; ++i)
+	{
 		HTREEITEM hItem = m_pAvailableTree->InsertItem(ROOT_ITEMS[i]);
 		m_hRootItems[i] = hItem;
-		for (int j = 0; CHILD_ITEMS[i][j] != NULL; ++j) {
+		for (int j = 0; CHILD_ITEMS[i][j] != NULL; ++j)
+		{
 			CString str;
 			str.Format(_T("%i: %s"), j + 1, CHILD_ITEMS[i][j]);
 			HTREEITEM hChild = m_pAvailableTree->InsertItem(str, hItem);
@@ -110,58 +117,62 @@ BOOL CChannelsDlg::OnInitDialog()
 		m_pAvailableTree->SortChildren(hItem);
 	}
 
-	CChannelMap *map = theApp.GetChannelMap();
+	CChannelMap* map = theApp.GetChannelMap();
 
-	CFamiTrackerDoc *pDoc = CFamiTrackerDoc::GetDoc();
+	CFamiTrackerDoc* pDoc = CFamiTrackerDoc::GetDoc();
 
-	for (unsigned i = 0; i < pDoc->GetAvailableChannels(); ++i) {
-		CTrackerChannel *pChannel = pDoc->GetChannel(i);
+	for (unsigned i = 0; i < pDoc->GetAvailableChannels(); ++i)
+	{
+		CTrackerChannel* pChannel = pDoc->GetChannel(i);
 		AddChannel(pChannel->GetID());
 	}
-/*
-	AddChannel(CHANID_SQUARE1);
-	AddChannel(CHANID_SQUARE2);
-	AddChannel(CHANID_TRIANGLE);
-	AddChannel(CHANID_NOISE);
-	AddChannel(CHANID_DPCM);
-*/
-	return TRUE;  // return TRUE unless you set the focus to a control
+	/*
+		AddChannel(CHANID_SQUARE1);
+		AddChannel(CHANID_SQUARE2);
+		AddChannel(CHANID_TRIANGLE);
+		AddChannel(CHANID_NOISE);
+		AddChannel(CHANID_DPCM);
+	*/
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CChannelsDlg::OnClickAvailable(NMHDR *pNMHDR, LRESULT *result)
+void CChannelsDlg::OnClickAvailable(NMHDR* pNMHDR, LRESULT* result)
 {
-	
 }
 
-void CChannelsDlg::OnDblClickAvailable(NMHDR *pNMHDR, LRESULT *result)
+void CChannelsDlg::OnDblClickAvailable(NMHDR* pNMHDR, LRESULT* result)
 {
 	// Add channel
 
 	HTREEITEM hItem = m_pAvailableTree->GetSelectedItem();
 
-	if ((hItem != NULL) && !m_pAvailableTree->ItemHasChildren(hItem)) {
+	if ((hItem != NULL) && !m_pAvailableTree->ItemHasChildren(hItem))
+	{
 		InsertChannel(hItem);
 	}
 }
 
-void CChannelsDlg::OnDblClickAdded(NMHDR *pNMHDR, LRESULT *result)
+void CChannelsDlg::OnDblClickAdded(NMHDR* pNMHDR, LRESULT* result)
 {
 	int Index = m_pAddedChannels->GetSelectionMark();
 	int Count = m_pAddedChannels->GetItemCount();
 
-	if (Index != -1 && Count > 1) {
-
+	if (Index != -1 && Count > 1)
+	{
 		int ChanID = m_pAddedChannels->GetItemData(Index);
 
 		m_pAvailableTree->GetRootItem();
 
 		// Put back in available list
-		for (int i = 0; i < ROOT_ITEM_COUNT; ++i) {
+		for (int i = 0; i < ROOT_ITEM_COUNT; ++i)
+		{
 			HTREEITEM hParent = m_hRootItems[i];
 			HTREEITEM hItem = m_pAvailableTree->GetNextItem(hParent, TVGN_CHILD);
-			for (int j = 0; CHILD_ITEMS[i][j] != NULL; ++j) {
-				if (CHILD_ITEMS_ID[i][j] == ChanID) {
+			for (int j = 0; CHILD_ITEMS[i][j] != NULL; ++j)
+			{
+				if (CHILD_ITEMS_ID[i][j] == ChanID)
+				{
 					CString str;
 					str.Format(_T("%i: %s"), j, CHILD_ITEMS[i][j]);
 					HTREEITEM hChild = m_pAvailableTree->InsertItem(str, hParent, hParent);
@@ -179,13 +190,15 @@ void CChannelsDlg::OnDblClickAdded(NMHDR *pNMHDR, LRESULT *result)
 
 void CChannelsDlg::AddChannel(int ChanID)
 {
-	for (int i = 0; i < ROOT_ITEM_COUNT; ++i) {
+	for (int i = 0; i < ROOT_ITEM_COUNT; ++i)
+	{
 		HTREEITEM hItem = m_pAvailableTree->GetNextItem(m_hRootItems[i], TVGN_CHILD);
-		for (int j = 0; hItem != NULL; ++j) {
-
+		for (int j = 0; hItem != NULL; ++j)
+		{
 			int ID = m_pAvailableTree->GetItemData(hItem);
 
-			if (ID == ChanID) {
+			if (ID == ChanID)
+			{
 				InsertChannel(hItem);
 				return;
 			}
@@ -199,8 +212,8 @@ void CChannelsDlg::InsertChannel(HTREEITEM hItem)
 {
 	HTREEITEM hParentItem = m_pAvailableTree->GetParentItem(hItem);
 
-	if (hParentItem != NULL) {
-
+	if (hParentItem != NULL)
+	{
 		CString ChanName = m_pAvailableTree->GetItemText(hItem);
 		CString ChipName = m_pAvailableTree->GetItemText(hParentItem);
 
@@ -261,7 +274,7 @@ void CChannelsDlg::OnBnClickedMoveUp()
 	m_pAddedChannels->EnsureVisible(Index - 1, FALSE);
 }
 
-void CChannelsDlg::OnNMRClickAvailableTree(NMHDR *pNMHDR, LRESULT *pResult)
+void CChannelsDlg::OnNMRClickAvailableTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// TODO: Add your control notification handler code here
 	*pResult = 0;

@@ -28,26 +28,26 @@ class CFamiTrackerDoc;
 
 class CModuleImportDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CModuleImportDlg)
+DECLARE_DYNAMIC(CModuleImportDlg)
 
 public:
-	CModuleImportDlg(CFamiTrackerDoc *pDoc);
+	CModuleImportDlg(CFamiTrackerDoc* pDoc);
 	virtual ~CModuleImportDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_IMPORT };
 
 public:
-	bool LoadFile(CString Path, CFamiTrackerDoc *pDoc);
+	bool LoadFile(CString Path, CFamiTrackerDoc* pDoc);
 
 private:
-	CFamiTrackerDoc *m_pDocument;
-	CFamiTrackerDoc *m_pImportedDoc;
+	CFamiTrackerDoc* m_pDocument;
+	CFamiTrackerDoc* m_pImportedDoc;
 
 	int m_iInstrumentTable[MAX_INSTRUMENTS];
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	bool ImportInstruments();
 	bool ImportTracks();
@@ -55,7 +55,7 @@ protected:
 protected:
 	CCheckListBox m_ctlTrackList;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();

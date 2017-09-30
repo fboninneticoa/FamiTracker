@@ -25,15 +25,15 @@
 
 class CWavProgressDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CWavProgressDlg)
+DECLARE_DYNAMIC(CWavProgressDlg)
 
 public:
-	CWavProgressDlg(CWnd* pParent = NULL);   // standard constructor
+	CWavProgressDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CWavProgressDlg();
 
-	void BeginRender(CString &File, render_end_t LengthType, int LengthParam, int Track);
+	void BeginRender(CString& File, render_end_t LengthType, int LengthParam, int Track);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_WAVE_PROGRESS };
 
 protected:
@@ -41,13 +41,13 @@ protected:
 	render_end_t m_iSongEndType;
 	int m_iSongEndParam;
 	int m_iTrack;
-	
+
 	CString m_sFile;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedCancel();
 	virtual BOOL OnInitDialog();

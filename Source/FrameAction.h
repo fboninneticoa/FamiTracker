@@ -53,28 +53,28 @@ public:
 	CFrameAction(int iAction);
 	virtual ~CFrameAction();
 
-	bool SaveState(CMainFrame *pMainFrm);
-	void Undo(CMainFrame *pMainFrm);
-	void Redo(CMainFrame *pMainFrm);
+	bool SaveState(CMainFrame* pMainFrm);
+	void Undo(CMainFrame* pMainFrm);
+	void Redo(CMainFrame* pMainFrm);
 
 public:
 	void SetFrameCount(unsigned int FrameCount);
 	void SetPattern(unsigned int Pattern);
 	void SetPatternDelta(int Delta, bool ChangeAll);
-	void Update(CMainFrame *pMainFrm);
-	void SetPasteData(CFrameClipData *pClipData);
-	void SetDragInfo(int DragTarget, CFrameClipData *pClipData, bool Remove);
+	void Update(CMainFrame* pMainFrm);
+	void SetPasteData(CFrameClipData* pClipData);
+	void SetDragInfo(int DragTarget, CFrameClipData* pClipData, bool Remove);
 
 private:
-	void SaveFrame(CFamiTrackerDoc *pDoc);
-	void RestoreFrame(CFamiTrackerDoc *pDoc);
+	void SaveFrame(CFamiTrackerDoc* pDoc);
+	void RestoreFrame(CFamiTrackerDoc* pDoc);
 
-	void SaveAllFrames(CFamiTrackerDoc *pDoc);
-	void RestoreAllFrames(CFamiTrackerDoc *pDoc);
+	void SaveAllFrames(CFamiTrackerDoc* pDoc);
+	void RestoreAllFrames(CFamiTrackerDoc* pDoc);
 
 	int ClipPattern(int Pattern) const;
 
-	void ClearPatterns(CFamiTrackerDoc *pDoc, int Target);
+	void ClearPatterns(CFamiTrackerDoc* pDoc, int Target);
 
 private:
 	unsigned int m_iUndoTrack;
@@ -87,7 +87,7 @@ private:
 	unsigned int m_iUndoFrameCount;
 	unsigned int m_iNewPattern;
 	unsigned int m_iOldPattern;
-	
+
 	int m_iPatternDelta;
 	bool m_bChangeAll;
 
@@ -96,9 +96,9 @@ private:
 	bool m_bDragRemove;
 	unsigned int m_iDragTarget;
 
-	unsigned int *m_pAllPatterns;
+	unsigned int* m_pAllPatterns;
 
-	CFrameClipData *m_pClipData;
+	CFrameClipData* m_pClipData;
 
 	stSelectInfo m_oSelInfo;
 };

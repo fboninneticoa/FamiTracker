@@ -24,15 +24,16 @@
 #include "External.h"
 #include "Channel.h"
 
-class CFDS : public CExternal, CExChannel {
+class CFDS : public CExternal, CExChannel
+{
 public:
-	CFDS(CMixer *pMixer);
+	CFDS(CMixer* pMixer);
 	virtual ~CFDS();
-	void	Reset();
-	void	Write(uint16 Address, uint8 Value);
-	uint8	Read(uint16 Address, bool &Mapped);
-	void	EndFrame();
-	void	Process(uint32 Time);
+	void Reset();
+	void Write(uint16 Address, uint8 Value);
+	uint8 Read(uint16 Address, bool& Mapped);
+	void EndFrame();
+	void Process(uint32 Time);
 };
 
 #endif /* FDS_H */
