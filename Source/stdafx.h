@@ -43,7 +43,7 @@
 
 #ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
 #define _WIN32_WINNT 0x0501		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
-#endif						
+#endif
 
 #ifndef _WIN32_WINDOWS		// Allow use of features specific to Windows 98 or later.
 #define _WIN32_WINDOWS 0x0410 // Change this to the appropriate value to target Windows Me or later.
@@ -76,12 +76,10 @@
 	if (p != NULL) { \
 		delete p;	\
 		p = NULL;	\
-	}	\
-
+	}
 #define SAFE_RELEASE_ARRAY(p) \
 	if (p != NULL) { \
 		delete [] p;	\
 		p = NULL;	\
-	}	\
-
+	}
 #define new DEBUG_NEW

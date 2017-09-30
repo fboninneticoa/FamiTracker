@@ -33,14 +33,11 @@
 #include "ColorScheme.h"
 
 #define SETTING_INT(Section, Entry, Default, Variable)	\
-	AddSetting<int>(_T(Section), _T(Entry), Default, Variable)	\
-
+	AddSetting<int>(_T(Section), _T(Entry), Default, Variable)
 #define SETTING_BOOL(Section, Entry, Default, Variable)	\
-	AddSetting<bool>(_T(Section), _T(Entry), Default, Variable)	\
-
+	AddSetting<bool>(_T(Section), _T(Entry), Default, Variable)
 #define SETTING_STRING(Section, Entry, Default, Variable)	\
-	AddSetting<CString>(_T(Section), _T(Entry), Default, Variable)	\
-
+	AddSetting<CString>(_T(Section), _T(Entry), Default, Variable)
 // CSettings
 
 CSettings* CSettings::GetObject()
@@ -59,7 +56,8 @@ CSettings::CSettings() : m_iAddedSettings(0)
 CSettings::~CSettings()
 {
 	// Release all settings
-	for (int i = 0; i < m_iAddedSettings; ++i) {
+	for (int i = 0; i < m_iAddedSettings; ++i)
+	{
 		SAFE_RELEASE(m_pSettings[i]);
 	}
 }
@@ -84,7 +82,7 @@ void CSettings::SetupSettings()
 	SETTING_INT("General", "Page step size", 4, &General.iPageStepSize);
 	SETTING_BOOL("General", "Wrap cursor", true, &General.bWrapCursor);
 	SETTING_BOOL("General", "Wrap across frames", true, &General.bWrapFrames);
-	SETTING_BOOL("General", "Free cursor edit",	false, &General.bFreeCursorEdit);
+	SETTING_BOOL("General", "Free cursor edit", false, &General.bFreeCursorEdit);
 	SETTING_BOOL("General", "Wave preview", true, &General.bWavePreview);
 	SETTING_BOOL("General", "Key repeat", true, &General.bKeyRepeat);
 	SETTING_BOOL("General", "Hex row display", true, &General.bRowInHex);
@@ -102,14 +100,14 @@ void CSettings::SetupSettings()
 	SETTING_BOOL("General", "Double click selection", false, &General.bDblClickSelect);
 
 	// Keys
-	SETTING_INT("Keys", "Note cut",		0x31, &Keys.iKeyNoteCut);
+	SETTING_INT("Keys", "Note cut", 0x31, &Keys.iKeyNoteCut);
 	SETTING_INT("Keys", "Note release", 0xDC, &Keys.iKeyNoteRelease);
-	SETTING_INT("Keys", "Clear field",	0xBD, &Keys.iKeyClear);
-	SETTING_INT("Keys", "Repeat",		0x00, &Keys.iKeyRepeat);
+	SETTING_INT("Keys", "Clear field", 0xBD, &Keys.iKeyClear);
+	SETTING_INT("Keys", "Repeat", 0x00, &Keys.iKeyRepeat);
 
 	// Sound
 	SETTING_INT("Sound", "Audio Device", 0, &Sound.iDevice);
-	SETTING_INT("Sound", "Sample rate",	44100, &Sound.iSampleRate);
+	SETTING_INT("Sound", "Sample rate", 44100, &Sound.iSampleRate);
 	SETTING_INT("Sound", "Sample size", 16, &Sound.iSampleSize);
 	SETTING_INT("Sound", "Buffer length", 40, &Sound.iBufferLength);
 	SETTING_INT("Sound", "Bass filter freq", 30, &Sound.iBassFilter);
@@ -123,28 +121,33 @@ void CSettings::SetupSettings()
 	SETTING_BOOL("MIDI", "Master sync", false, &Midi.bMidiMasterSync);
 	SETTING_BOOL("MIDI", "Key release", false, &Midi.bMidiKeyRelease);
 	SETTING_BOOL("MIDI", "Channel map", false, &Midi.bMidiChannelMap);
-	SETTING_BOOL("MIDI", "Velocity control", false,	&Midi.bMidiVelocity);
+	SETTING_BOOL("MIDI", "Velocity control", false, &Midi.bMidiVelocity);
 	SETTING_BOOL("MIDI", "Auto Arpeggio", false, &Midi.bMidiArpeggio);
 
 	// Appearance
 	SETTING_INT("Appearance", "Background", DEFAULT_COLOR_SCHEME.BACKGROUND, &Appearance.iColBackground);
-	SETTING_INT("Appearance", "Background highlighted", DEFAULT_COLOR_SCHEME.BACKGROUND_HILITE, &Appearance.iColBackgroundHilite);
-	SETTING_INT("Appearance", "Background highlighted 2", DEFAULT_COLOR_SCHEME.BACKGROUND_HILITE2, &Appearance.iColBackgroundHilite2);
+	SETTING_INT("Appearance", "Background highlighted", DEFAULT_COLOR_SCHEME.BACKGROUND_HILITE, &Appearance.
+		iColBackgroundHilite);
+	SETTING_INT("Appearance", "Background highlighted 2", DEFAULT_COLOR_SCHEME.BACKGROUND_HILITE2, &Appearance.
+		iColBackgroundHilite2);
 	SETTING_INT("Appearance", "Pattern text", DEFAULT_COLOR_SCHEME.TEXT_NORMAL, &Appearance.iColPatternText);
-	SETTING_INT("Appearance", "Pattern text highlighted", DEFAULT_COLOR_SCHEME.TEXT_HILITE, &Appearance.iColPatternTextHilite);
-	SETTING_INT("Appearance", "Pattern text highlighted 2", DEFAULT_COLOR_SCHEME.TEXT_HILITE2, &Appearance.iColPatternTextHilite2);
-	SETTING_INT("Appearance", "Pattern instrument", DEFAULT_COLOR_SCHEME.TEXT_INSTRUMENT, &Appearance.iColPatternInstrument);
+	SETTING_INT("Appearance", "Pattern text highlighted", DEFAULT_COLOR_SCHEME.TEXT_HILITE, &Appearance.
+		iColPatternTextHilite);
+	SETTING_INT("Appearance", "Pattern text highlighted 2", DEFAULT_COLOR_SCHEME.TEXT_HILITE2, &Appearance.
+		iColPatternTextHilite2);
+	SETTING_INT("Appearance", "Pattern instrument", DEFAULT_COLOR_SCHEME.TEXT_INSTRUMENT, &Appearance.iColPatternInstrument
+	);
 	SETTING_INT("Appearance", "Pattern volume", DEFAULT_COLOR_SCHEME.TEXT_VOLUME, &Appearance.iColPatternVolume);
 	SETTING_INT("Appearance", "Pattern effect", DEFAULT_COLOR_SCHEME.TEXT_EFFECT, &Appearance.iColPatternEffect);
 	SETTING_INT("Appearance", "Selection", DEFAULT_COLOR_SCHEME.SELECTION, &Appearance.iColSelection);
 	SETTING_INT("Appearance", "Cursor", DEFAULT_COLOR_SCHEME.CURSOR, &Appearance.iColCursor);
-	
+
 	// Window position
 	SETTING_INT("Window position", "Left", 100, &WindowPos.iLeft);
 	SETTING_INT("Window position", "Top", 100, &WindowPos.iTop);
-	SETTING_INT("Window position", "Right",	950, &WindowPos.iRight);
+	SETTING_INT("Window position", "Right", 950, &WindowPos.iRight);
 	SETTING_INT("Window position", "Bottom", 920, &WindowPos.iBottom);
-	SETTING_INT("Window position", "State",	STATE_NORMAL, &WindowPos.iState);
+	SETTING_INT("Window position", "State", STATE_NORMAL, &WindowPos.iState);
 
 	// Other
 	SETTING_INT("Other", "Sample window state", 0, &SampleWinState);
@@ -171,12 +174,13 @@ void CSettings::SetupSettings()
 	SETTING_INT("Mixer", "S5B", 0, &ChipLevels.iLevelS5B);
 }
 
-template<class T> void CSettings::AddSetting(LPCTSTR pSection, LPCTSTR pEntry, T tDefault, T* pVariable)
+template <class T>
+void CSettings::AddSetting(LPCTSTR pSection, LPCTSTR pEntry, T tDefault, T* pVariable)
 {
 	AddSetting(new CSettingType<T>(pSection, pEntry, tDefault, pVariable));
 }
 
-void CSettings::AddSetting(CSettingBase *pSetting)
+void CSettings::AddSetting(CSettingBase* pSetting)
 {
 	ASSERT(m_iAddedSettings < MAX_SETTINGS);
 	m_pSettings[m_iAddedSettings++] = pSetting;
@@ -186,21 +190,24 @@ void CSettings::AddSetting(CSettingBase *pSetting)
 
 void CSettings::LoadSettings()
 {
-	for (int i = 0; i < m_iAddedSettings; ++i) {
+	for (int i = 0; i < m_iAddedSettings; ++i)
+	{
 		m_pSettings[i]->Load();
 	}
 }
 
 void CSettings::SaveSettings()
 {
-	for (int i = 0; i < m_iAddedSettings; ++i) {
+	for (int i = 0; i < m_iAddedSettings; ++i)
+	{
 		m_pSettings[i]->Save();
 	}
 }
 
 void CSettings::DefaultSettings()
 {
-	for (int i = 0; i < m_iAddedSettings; ++i) {
+	for (int i = 0; i < m_iAddedSettings; ++i)
+	{
 		m_pSettings[i]->Default();
 	}
 }
@@ -250,37 +257,37 @@ int CSettings::LoadSetting(CString Section, CString Name, int Default) const
 
 // Settings types
 
-template<class T>
+template <class T>
 void CSettingType<T>::Load()
 {
 	*m_pVariable = theApp.GetProfileInt(m_pSection, m_pEntry, m_tDefaultValue);
 }
 
-template<>
+template <>
 void CSettingType<bool>::Load()
 {
 	*m_pVariable = theApp.GetProfileInt(m_pSection, m_pEntry, m_tDefaultValue ? 1 : 0) == 1;
 }
 
-template<>
+template <>
 void CSettingType<CString>::Load()
 {
 	*m_pVariable = theApp.GetProfileString(m_pSection, m_pEntry, m_tDefaultValue);
 }
 
-template<class T>
+template <class T>
 void CSettingType<T>::Save()
 {
 	theApp.WriteProfileInt(m_pSection, m_pEntry, *m_pVariable);
 }
 
-template<>
+template <>
 void CSettingType<CString>::Save()
 {
 	theApp.WriteProfileString(m_pSection, m_pEntry, *m_pVariable);
 }
 
-template<class T>
+template <class T>
 void CSettingType<T>::Default()
 {
 	*m_pVariable = m_tDefaultValue;

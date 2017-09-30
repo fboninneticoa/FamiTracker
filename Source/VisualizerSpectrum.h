@@ -35,18 +35,18 @@ public:
 
 	void Create(int Width, int Height);
 	void SetSampleRate(int SampleRate);
-	void SetSampleData(short *iSamples, unsigned int iCount);
+	void SetSampleData(short* iSamples, unsigned int iCount);
 	void Draw();
-	void Display(CDC *pDC, bool bPaintMsg);
+	void Display(CDC* pDC, bool bPaintMsg);
 
 protected:
-	void Transform(short *pSamples, unsigned int Count);
+	void Transform(short* pSamples, unsigned int Count);
 
 private:
 	static const COLORREF BG_COLOR = 0;
 
-	COLORREF *m_pBlitBuffer;
-	Fft	*m_pFftObject;
+	COLORREF* m_pBlitBuffer;
+	Fft* m_pFftObject;
 
 	int m_iFillPos;
 	short m_pSampleBuffer[FFT_POINTS];

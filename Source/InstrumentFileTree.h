@@ -30,7 +30,7 @@ public:
 	~CInstrumentFileTree();
 
 	bool BuildMenuTree(CString instrumentPath);
-	CMenu *GetMenu() const;
+	CMenu* GetMenu() const;
 	CString GetFile(int Index) const;
 	bool ShouldRebuild() const;
 	void Changed();
@@ -40,16 +40,16 @@ public:
 	static const int RECURSION_LIMIT = 6;
 	static const int MAX_MENUS = 200;
 
-	static const int MENU_BASE = 0x9000;	// Choose a range where no strings are located
+	static const int MENU_BASE = 0x9000; // Choose a range where no strings are located
 
-	static const int CACHE_TIMEOUT = 60000;	// 1 minute
+	static const int CACHE_TIMEOUT = 60000; // 1 minute
 
 protected:
-	bool ScanDirectory(CString path, CMenu *pMenu, int level);
+	bool ScanDirectory(CString path, CMenu* pMenu, int level);
 	void DeleteMenuObjects();
 
 private:
-	CMenu *m_pRootMenu;
+	CMenu* m_pRootMenu;
 	int m_iFileIndex;
 	CArray<CString, CString> m_fileList;
 	CArray<CMenu*, CMenu*> m_menuArray;

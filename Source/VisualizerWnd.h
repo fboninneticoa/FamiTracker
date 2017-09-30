@@ -28,19 +28,24 @@
 class CVisualizerBase
 {
 public:
-	CVisualizerBase() : m_iWidth(0), m_iHeight(0), m_iSampleCount(0), m_pSamples(NULL) {}
-	virtual ~CVisualizerBase() {}
+	CVisualizerBase() : m_iWidth(0), m_iHeight(0), m_iSampleCount(0), m_pSamples(NULL)
+	{
+	}
+
+	virtual ~CVisualizerBase()
+	{
+	}
 
 	// Create the visualizer
 	virtual void Create(int Width, int Height);
 	// Set rate of samples
 	virtual void SetSampleRate(int SampleRate) = 0;
 	// Set new sample data
-	virtual void SetSampleData(short *iSamples, unsigned int iCount);
+	virtual void SetSampleData(short* iSamples, unsigned int iCount);
 	// Render an image from the sample data
 	virtual void Draw() = 0;
 	// Display the image
-	virtual void Display(CDC *pDC, bool bPaintMsg) = 0;
+	virtual void Display(CDC* pDC, bool bPaintMsg) = 0;
 
 protected:
 	BITMAPINFO m_bmi;
@@ -48,21 +53,21 @@ protected:
 	int m_iHeight;
 
 	unsigned int m_iSampleCount;
-	short *m_pSamples;
+	short* m_pSamples;
 };
 
 // CVisualizerWnd
 
 class CVisualizerWnd : public CWnd
 {
-	DECLARE_DYNAMIC(CVisualizerWnd)
+DECLARE_DYNAMIC(CVisualizerWnd)
 
 public:
 	CVisualizerWnd();
 	virtual ~CVisualizerWnd();
 
 	void SetSampleRate(int SampleRate);
-	void FlushSamples(short *Samples, int Count);
+	void FlushSamples(short* Samples, int Count);
 	void ReportAudioProblem();
 
 private:
@@ -76,30 +81,31 @@ private:
 	static const int STATE_COUNT = 4;
 
 private:
-	CVisualizerBase *m_pStates[STATE_COUNT];
+	CVisualizerBase* m_pStates[STATE_COUNT];
 	unsigned int m_iCurrentState;
 
-	int	m_iBufferSize;
-	short *m_pBuffer1;
-	short *m_pBuffer2;
-	short *m_pFillBuffer;
+	int m_iBufferSize;
+	short* m_pBuffer1;
+	short* m_pBuffer2;
+	short* m_pFillBuffer;
 
 	HANDLE m_hNewSamples;
 
 	bool m_bNoAudio;
 
 	// Thread
-	CWinThread *m_pWorkerThread;
+	CWinThread* m_pWorkerThread;
 	bool m_bThreadRunning;
 
 	CCriticalSection m_csBufferSelect;
 	CCriticalSection m_csBuffer;
 
 public:
-	virtual BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	virtual BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+	                      CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);

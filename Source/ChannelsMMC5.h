@@ -24,14 +24,15 @@
 // Derived channels, MMC5
 //
 
-class CChannelHandlerMMC5 : public CChannelHandler {
+class CChannelHandlerMMC5 : public CChannelHandler
+{
 public:
 	CChannelHandlerMMC5();
 	virtual void ProcessChannel();
 	virtual void ResetChannel();
 
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -50,18 +51,24 @@ protected:
 };
 
 // Square 1
-class CMMC5Square1Chan : public CChannelHandlerMMC5 {
+class CMMC5Square1Chan : public CChannelHandlerMMC5
+{
 public:
-	CMMC5Square1Chan() : CChannelHandlerMMC5() {};
+	CMMC5Square1Chan() : CChannelHandlerMMC5()
+	{
+	};
 	void RefreshChannel();
 protected:
 	void ClearRegisters();
 };
 
 // Square 2
-class CMMC5Square2Chan : public CChannelHandlerMMC5 {
+class CMMC5Square2Chan : public CChannelHandlerMMC5
+{
 public:
-	CMMC5Square2Chan() : CChannelHandlerMMC5() {};
+	CMMC5Square2Chan() : CChannelHandlerMMC5()
+	{
+	};
 	void RefreshChannel();
 protected:
 	void ClearRegisters();

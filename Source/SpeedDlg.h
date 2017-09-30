@@ -25,26 +25,26 @@
 
 class CSpeedDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CSpeedDlg)
+DECLARE_DYNAMIC(CSpeedDlg)
 
 public:
-	CSpeedDlg(CWnd* pParent = NULL);   // standard constructor
+	CSpeedDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CSpeedDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SPEED };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	int m_iInitSpeed;
 	int m_iSpeed;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	int GetSpeedFromDlg(int InitialSpeed);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-//	virtual BOOL Create(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL);
+	//	virtual BOOL Create(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedCancel();
 };

@@ -26,52 +26,52 @@ class CFamiTrackerView;
 
 class CInstrumentEditorDPCM : public CInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorDPCM)
+DECLARE_DYNAMIC(CInstrumentEditorDPCM)
 
 public:
-	CInstrumentEditorDPCM(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorDPCM(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorDPCM();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("DPCM samples"); };
+	virtual TCHAR* GetTitle() const { return _T("DPCM samples"); };
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_DPCM };
 
 	// Overloaded
 	void SelectInstrument(int Instrument);
 
 protected:
-	static const char *KEY_NAMES[];
+	static const char* KEY_NAMES[];
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void BuildKeyList();
 	void BuildSampleList();
 	void UpdateKey(int Index);
-	bool LoadSample(const CString &FilePath, const CString &FileName);
-	bool InsertSample(CDSample *pNewSample);
+	bool LoadSample(const CString& FilePath, const CString& FileName);
+	bool InsertSample(CDSample* pNewSample);
 
-	CDSample *GetSelectedSample();
+	CDSample* GetSelectedSample();
 
 protected:
-	CInstrument2A03	*m_pInstrument;
+	CInstrument2A03* m_pInstrument;
 
-	int	m_iSelectedSample;
-	int	m_iOctave;
+	int m_iSelectedSample;
+	int m_iOctave;
 	int m_iSelectedKey;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedLoad();
 	afx_msg void OnBnClickedUnload();
-	afx_msg void OnNMClickSampleList(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMClickSampleList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedImport();
 	afx_msg void OnCbnSelchangeOctave();
 	afx_msg void OnCbnSelchangePitch();
-	afx_msg void OnLvnItemchangedTable(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMClickTable(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedTable(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMClickTable(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnCbnSelchangeSamples();
 	afx_msg void OnBnClickedSave();
 	afx_msg void OnBnClickedLoop();
@@ -81,11 +81,11 @@ public:
 	afx_msg void OnBnClickedRemove();
 	afx_msg void OnEnChangeLoopPoint();
 	afx_msg void OnBnClickedEdit();
-	afx_msg void OnNMDblclkSampleList(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMDblclkSampleList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedPreview();
-	afx_msg void OnNMRClickSampleList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMRClickTable(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMDblclkTable(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMRClickSampleList(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMRClickTable(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMDblclkTable(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeDeltaCounter();
-	afx_msg void OnDeltaposDeltaSpin(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposDeltaSpin(NMHDR* pNMHDR, LRESULT* pResult);
 };

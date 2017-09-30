@@ -25,23 +25,23 @@
 
 class CControlPanelDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CControlPanelDlg)
+DECLARE_DYNAMIC(CControlPanelDlg)
 
 public:
-	CControlPanelDlg(CWnd* pParent = NULL);   // standard constructor
+	CControlPanelDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CControlPanelDlg();
 
-	void SetFrameParent(CWnd *pMainFrm = NULL);
+	void SetFrameParent(CWnd* pMainFrm = NULL);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_MAINFRAME };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	CWnd *m_pMainFrame;
+	CWnd* m_pMainFrame;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);

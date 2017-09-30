@@ -24,23 +24,25 @@
 // Derived channels, VRC7
 //
 
-enum vrc7_command_t {
-	CMD_NONE, 
+enum vrc7_command_t
+{
+	CMD_NONE,
 	CMD_NOTE_ON,
 	CMD_NOTE_TRIGGER,
-	CMD_NOTE_OFF, 
+	CMD_NOTE_OFF,
 	CMD_NOTE_HALT,
 	CMD_NOTE_RELEASE
 };
 
-class CChannelHandlerVRC7 : public CChannelHandler {
+class CChannelHandlerVRC7 : public CChannelHandler
+{
 public:
 	CChannelHandlerVRC7();
 	virtual void ProcessChannel();
 	virtual void ResetChannel();
 	virtual void SetChannelID(int ID);
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -61,22 +63,25 @@ protected:
 	unsigned char m_iChannel;
 	unsigned char m_iPatch;
 
-	char	m_iRegs[8];
+	char m_iRegs[8];
 
-	bool	m_bHold;
+	bool m_bHold;
 
 	vrc7_command_t m_iCommand;
 
-	int		m_iTriggeredNote;
-	int		m_iOctave;
-	
-	int		m_iPostEffect;
-	int		m_iPostEffectParam;
+	int m_iTriggeredNote;
+	int m_iOctave;
+
+	int m_iPostEffect;
+	int m_iPostEffectParam;
 };
 
-class CVRC7Channel : public CChannelHandlerVRC7 {
+class CVRC7Channel : public CChannelHandlerVRC7
+{
 public:
-	CVRC7Channel() : CChannelHandlerVRC7() {};
+	CVRC7Channel() : CChannelHandlerVRC7()
+	{
+	};
 	void RefreshChannel();
 protected:
 	void ClearRegisters();

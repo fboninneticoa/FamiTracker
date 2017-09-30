@@ -32,7 +32,6 @@ IMPLEMENT_DYNAMIC(CControlPanelDlg, CDialog)
 CControlPanelDlg::CControlPanelDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CControlPanelDlg::IDD, pParent), m_pMainFrame(NULL)
 {
-
 }
 
 CControlPanelDlg::~CControlPanelDlg()
@@ -60,12 +59,12 @@ BOOL CControlPanelDlg::PreTranslateMessage(MSG* pMsg)
 BOOL CControlPanelDlg::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// Route command messages to main frame
-//	if (nID != IDC_KEYSTEP_SPIN) {
-		if (m_pMainFrame->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
-			return TRUE;
-//		if (GetParent()->GetParent()->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
-//			return TRUE;
-//	}
+	//	if (nID != IDC_KEYSTEP_SPIN) {
+	if (m_pMainFrame->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+		return TRUE;
+	//		if (GetParent()->GetParent()->OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+	//			return TRUE;
+	//	}
 	return CDialog::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
@@ -76,7 +75,7 @@ BOOL CControlPanelDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }
 
-void CControlPanelDlg::SetFrameParent(CWnd *pMainFrm)
+void CControlPanelDlg::SetFrameParent(CWnd* pMainFrm)
 {
 	// TODO: Use parent instead?
 	m_pMainFrame = pMainFrm;

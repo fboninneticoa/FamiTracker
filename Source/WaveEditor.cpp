@@ -18,7 +18,7 @@
 ** must bear this legend.
 */
 
-#include <iterator> 
+#include <iterator>
 #include <string>
 #include <sstream>
 #include "stdafx.h"
@@ -44,19 +44,19 @@ bool CWaveEditorN163::m_bLineMode = false;
 IMPLEMENT_DYNAMIC(CWaveEditor, CWnd)
 
 BEGIN_MESSAGE_MAP(CWaveEditor, CWnd)
-	ON_WM_PAINT()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_RBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_RBUTTONUP()
-	ON_WM_MBUTTONUP()
-	ON_WM_CONTEXTMENU()
-	ON_WM_MBUTTONDOWN()
+		ON_WM_PAINT()
+		ON_WM_MOUSEMOVE()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_RBUTTONDOWN()
+		ON_WM_LBUTTONUP()
+		ON_WM_RBUTTONUP()
+		ON_WM_MBUTTONUP()
+		ON_WM_CONTEXTMENU()
+		ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
-CWaveEditor::CWaveEditor(int sx, int sy, int lx, int ly) 
- : m_iSX(sx), m_iSY(sy), m_iLX(lx), m_iLY(ly)
+CWaveEditor::CWaveEditor(int sx, int sy, int lx, int ly)
+	: m_iSX(sx), m_iSY(sy), m_iLX(lx), m_iLY(ly)
 {
 	m_bDrawLine = false;
 }
@@ -65,7 +65,8 @@ CWaveEditor::~CWaveEditor()
 {
 }
 
-BOOL CWaveEditor::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd)
+BOOL CWaveEditor::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+                           const RECT& rect, CWnd* pParentWnd)
 {
 	CRect newRect;
 
@@ -90,11 +91,13 @@ void CWaveEditor::OnPaint()
 	CPaintDC dc(this);
 
 	// Background
-	for (int i = 0; i < m_iLY; ++i) {
+	for (int i = 0; i < m_iLY; ++i)
+	{
 		dc.FillSolidRect(0, i * m_iSY, m_iLX * m_iSX, m_iSY, (i & 1) ? GRAY1 : GRAY2);
 	}
 
-	if (GetLineMode()) {
+	if (GetLineMode())
+	{
 		// Lines
 		int Steps = m_iLY - 1;
 		int Sample = Steps - GetSample(0);
@@ -102,22 +105,25 @@ void CWaveEditor::OnPaint()
 		dc.MoveTo(m_iSX / 2, Sample * m_iSY + m_iSY / 2);
 
 		CPen gray(0, 2, LINE_COL);
-		CPen *pOldPen = dc.SelectObject(&gray);
+		CPen* pOldPen = dc.SelectObject(&gray);
 
 		int icX = m_iSX / 2;
 		int icY = m_iSY / 2;
 
 		// Lines
-		for (int i = 0; i < m_iLX; ++i) {
+		for (int i = 0; i < m_iLX; ++i)
+		{
 			int Sample = Steps - GetSample(i);
 			dc.LineTo(i * m_iSX + icX, Sample * m_iSY + icY);
 		}
 
 		dc.SelectObject(pOldPen);
 	}
-	else {
+	else
+	{
 		// Boxes
-		for (int i = 0; i < m_iLX; ++i) {
+		for (int i = 0; i < m_iLX; ++i)
+		{
 			int Sample = (m_iLY - 1) - GetSample(i);
 			DrawRect(&dc, i * m_iSX, Sample * m_iSY, m_iSX, m_iSY);
 		}
@@ -125,7 +131,8 @@ void CWaveEditor::OnPaint()
 
 	CRect rect;
 	GetClientRect(rect);
-	if ((m_iLX * m_iSX) < rect.Width()) {
+	if ((m_iLX * m_iSX) < rect.Width())
+	{
 		dc.FillSolidRect(m_iLX * m_iSX, 0, rect.Width() - (m_iLX * m_iSX), m_iLY * m_iSY, GRAY1);
 	}
 
@@ -136,14 +143,16 @@ void CWaveEditor::OnPaint()
 
 void CWaveEditor::OnMouseMove(UINT nFlags, CPoint point)
 {
-	static CPoint last_point; 
+	static CPoint last_point;
 
-	if (nFlags & MK_LBUTTON) {
+	if (nFlags & MK_LBUTTON)
+	{
 		// Draw a line
 		EditWave(point, last_point);
 		last_point = point;
 	}
-	else if ((nFlags & MK_MBUTTON) && m_bDrawLine) {
+	else if ((nFlags & MK_MBUTTON) && m_bDrawLine)
+	{
 		m_ptLineEnd = point;
 		EditWave(m_ptLineStart, m_ptLineEnd);
 	}
@@ -159,7 +168,8 @@ void CWaveEditor::OnLButtonDown(UINT nFlags, CPoint point)
 	SetCapture();
 	EditWave(point);
 
-	if (GetLineMode()) {
+	if (GetLineMode())
+	{
 		Invalidate();
 		RedrawWindow();
 	}
@@ -201,17 +211,19 @@ void CWaveEditor::EditWave(CPoint pt1, CPoint pt2)
 	float dx = float(pt2.x - pt1.x);
 	float dy = float(pt2.y - pt1.y) / dx;
 
-	float y = float( (pt2.x < pt1.x) ? pt2.y : pt1.y);
+	float y = float((pt2.x < pt1.x) ? pt2.y : pt1.y);
 
 	if (x1 == x2)
 		EditWave(CPoint(x1, int(y)));
 
-	for (int x = x1; x < x2; ++x) {
+	for (int x = x1; x < x2; ++x)
+	{
 		EditWave(CPoint(x, int(y)));
 		y += dy;
 	}
 
-	if (GetLineMode()) {
+	if (GetLineMode())
+	{
 		Invalidate();
 		RedrawWindow();
 	}
@@ -219,7 +231,7 @@ void CWaveEditor::EditWave(CPoint pt1, CPoint pt2)
 
 void CWaveEditor::EditWave(CPoint point)
 {
-	int index = (point.x ) / m_iSX;	
+	int index = (point.x) / m_iSX;
 	int sample = (m_iLY - 1) - (point.y / m_iSY);
 
 	if (sample < 0)
@@ -232,15 +244,17 @@ void CWaveEditor::EditWave(CPoint point)
 	if (index > GetMaxSamples() - 1)
 		index = GetMaxSamples() - 1;
 
-	if (!GetLineMode()) {
-		CDC *pDC = GetDC();
-		if (pDC != NULL) {
+	if (!GetLineMode())
+	{
+		CDC* pDC = GetDC();
+		if (pDC != NULL)
+		{
 			// Erase old sample
 			int s = (m_iLY - 1) - GetSample(index);
 			pDC->FillSolidRect(index * m_iSX, s * m_iSY, m_iSX, m_iSY, (s & 1) ? 0xA0A0A0 : 0xB0B0B0);
-		
+
 			SetSample(index, sample);
-		
+
 			// New sample
 			s = (m_iLY - 1) - GetSample(index);
 			DrawRect(pDC, index * m_iSX, s * m_iSY, m_iSX, m_iSY);
@@ -255,9 +269,10 @@ void CWaveEditor::EditWave(CPoint point)
 	GetParent()->PostMessage(WM_USER_WAVE_CHANGED);
 }
 
-void CWaveEditor::DrawLine(CDC *pDC)
+void CWaveEditor::DrawLine(CDC* pDC)
 {
-	if (m_ptLineStart.x != 0 && m_ptLineStart.y != 0) {
+	if (m_ptLineStart.x != 0 && m_ptLineStart.y != 0)
+	{
 		CPen *pOldPen, Pen;
 		Pen.CreatePen(1, 3, 0xFFFFFF);
 		pOldPen = pDC->SelectObject(&Pen);
@@ -277,7 +292,7 @@ void CWaveEditor::WaveChanged()
 void CWaveEditor::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	CMenu menu;
-	
+
 	menu.CreatePopupMenu();
 	menu.AppendMenu(MF_STRING, 1, _T("&Steps"));
 	menu.AppendMenu(MF_STRING, 2, _T("&Lines"));
@@ -287,13 +302,14 @@ void CWaveEditor::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	else
 		menu.CheckMenuItem(0, MF_BYPOSITION | MF_CHECKED);
 
-	switch (menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD, point.x, point.y, this)) {
-		case 1: 
-			SetLineMode(false);
-			break;
-		case 2: 
-			SetLineMode(true);
-			break;
+	switch (menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD, point.x, point.y, this))
+	{
+	case 1:
+		SetLineMode(false);
+		break;
+	case 2:
+		SetLineMode(true);
+		break;
 	}
 
 	Invalidate();
@@ -302,7 +318,7 @@ void CWaveEditor::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 // FDS wave
 
-void CWaveEditorFDS::SetInstrument(CInstrumentFDS *pInst)
+void CWaveEditorFDS::SetInstrument(CInstrumentFDS* pInst)
 {
 	m_pInstrument = pInst;
 	WaveChanged();
@@ -326,14 +342,14 @@ int CWaveEditorFDS::GetMaxSamples() const
 	return CInstrumentFDS::WAVE_SIZE;
 }
 
-void CWaveEditorFDS::DrawRect(CDC *pDC, int x, int y, int sx, int sy) const
+void CWaveEditorFDS::DrawRect(CDC* pDC, int x, int y, int sx, int sy) const
 {
 	pDC->FillSolidRect(x, y, sx, sy, 0x000000);
 }
 
 // N163 wave
 
-void CWaveEditorN163::SetInstrument(CInstrumentN163 *pInst)
+void CWaveEditorN163::SetInstrument(CInstrumentN163* pInst)
 {
 	m_pInstrument = pInst;
 	WaveChanged();
@@ -362,7 +378,7 @@ int CWaveEditorN163::GetMaxSamples() const
 	return m_pInstrument->GetWaveSize();
 }
 
-void CWaveEditorN163::DrawRect(CDC *pDC, int x, int y, int sx, int sy) const
+void CWaveEditorN163::DrawRect(CDC* pDC, int x, int y, int sx, int sy) const
 {
 	const COLORREF BOX_COLOR = 0x808000;
 	const COLORREF BOX_COLOR_HI = 0xB0B030;

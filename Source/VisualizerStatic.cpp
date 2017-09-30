@@ -34,7 +34,8 @@ CVisualizerStatic::CVisualizerStatic()
 
 CVisualizerStatic::~CVisualizerStatic()
 {
-	if (m_dcImage.m_hDC != NULL) {
+	if (m_dcImage.m_hDC != NULL)
+	{
 		m_dcImage.SelectObject(m_pOldBmp);
 	}
 }
@@ -52,12 +53,13 @@ void CVisualizerStatic::Draw()
 {
 }
 
-void CVisualizerStatic::Display(CDC *pDC, bool bPaintMsg)
+void CVisualizerStatic::Display(CDC* pDC, bool bPaintMsg)
 {
 	if (!bPaintMsg)
 		return;
 
-	if (m_dcImage.m_hDC == NULL) {
+	if (m_dcImage.m_hDC == NULL)
+	{
 		m_bmpImage.LoadBitmap(IDB_VISUALIZER);
 		m_dcImage.CreateCompatibleDC(pDC);
 		m_pOldBmp = m_dcImage.SelectObject(&m_bmpImage);

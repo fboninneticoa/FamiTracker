@@ -24,14 +24,15 @@
 // Derived channels, VRC6
 //
 
-class CChannelHandlerVRC6 : public CChannelHandler {
+class CChannelHandlerVRC6 : public CChannelHandler
+{
 public:
 	CChannelHandlerVRC6();
 	virtual void ProcessChannel();
 	virtual void ResetChannel();
 
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();
@@ -44,7 +45,8 @@ protected:
 	int m_iPostEffectParam;
 };
 
-class CVRC6Square1 : public CChannelHandlerVRC6 {
+class CVRC6Square1 : public CChannelHandlerVRC6
+{
 public:
 	CVRC6Square1() : CChannelHandlerVRC6() { m_iDefaultDuty = 0; };
 	void RefreshChannel();
@@ -53,7 +55,8 @@ protected:
 private:
 };
 
-class CVRC6Square2 : public CChannelHandlerVRC6 {
+class CVRC6Square2 : public CChannelHandlerVRC6
+{
 public:
 	CVRC6Square2() : CChannelHandlerVRC6() { m_iDefaultDuty = 0; };
 	void RefreshChannel();
@@ -62,7 +65,8 @@ protected:
 private:
 };
 
-class CVRC6Sawtooth : public CChannelHandlerVRC6 {
+class CVRC6Sawtooth : public CChannelHandlerVRC6
+{
 public:
 	CVRC6Sawtooth() : CChannelHandlerVRC6() { m_iDefaultDuty = 0; };
 	void RefreshChannel();

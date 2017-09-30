@@ -22,23 +22,23 @@
 
 class CInstrumentEditorS5B : public CSequenceInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorS5B)
+DECLARE_DYNAMIC(CInstrumentEditorS5B)
 
 public:
-	CInstrumentEditorS5B(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorS5B(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorS5B();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Sunsoft 5B"); };
+	virtual TCHAR* GetTitle() const { return _T("Sunsoft 5B"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 	void SetSequenceString(CString Sequence, bool Changed);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_INTERNAL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	virtual void OnKeyReturn();
 
@@ -52,12 +52,12 @@ protected:
 	static const int MAX_DUTY = 31;
 
 protected:
-	CInstrumentS5B	*m_pInstrument;
+	CInstrumentS5B* m_pInstrument;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedInstsettings(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeSeqIndex();
 	afx_msg void OnBnClickedFreeSeq();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

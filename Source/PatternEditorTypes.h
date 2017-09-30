@@ -24,22 +24,24 @@
 // Helper types for the pattern editor
 
 // Scroll modes
-enum scroll_t {
-	SCROLL_NONE, 
-	SCROLL_UP, 
-	SCROLL_DOWN, 
-	SCROLL_RIGHT, 
+enum scroll_t
+{
+	SCROLL_NONE,
+	SCROLL_UP,
+	SCROLL_DOWN,
+	SCROLL_RIGHT,
 	SCROLL_LEFT
 };
 
 // Column layout
-enum column_t {
-	COLUMN_NOTE, 
-	COLUMN_INSTRUMENT, 
-	COLUMN_VOLUME, 
-	COLUMN_EFF1, 
-	COLUMN_EFF2, 
-	COLUMN_EFF3, 
+enum column_t
+{
+	COLUMN_NOTE,
+	COLUMN_INSTRUMENT,
+	COLUMN_VOLUME,
+	COLUMN_EFF1,
+	COLUMN_EFF2,
+	COLUMN_EFF3,
 	COLUMN_EFF4
 };
 
@@ -47,53 +49,64 @@ enum column_t {
 class CPatternClipData
 {
 public:
-	CPatternClipData() : pPattern(NULL), Size(0) {
+	CPatternClipData() : pPattern(NULL), Size(0)
+	{
 		memset(&ClipInfo, 0, sizeof(ClipInfo));
 	}
-	CPatternClipData(int Channels, int Rows) {
+
+	CPatternClipData(int Channels, int Rows)
+	{
 		memset(&ClipInfo, 0, sizeof(ClipInfo));
 		Size = Channels * Rows;
 		pPattern = new stChanNote[Size];
 	}
-	~CPatternClipData() {
+
+	~CPatternClipData()
+	{
 		SAFE_RELEASE_ARRAY(pPattern);
 	}
 
-	SIZE_T GetAllocSize() const;	// Get clip data size in bytes
-	void ToMem(HGLOBAL hMem);		// Copy structures to memory
-	void FromMem(HGLOBAL hMem);		// Copy structures from memory
-	
-	stChanNote *GetPattern(int Channel, int Row);
-	const stChanNote *GetPattern(int Channel, int Row) const;
+	SIZE_T GetAllocSize() const; // Get clip data size in bytes
+	void ToMem(HGLOBAL hMem); // Copy structures to memory
+	void FromMem(HGLOBAL hMem); // Copy structures from memory
+
+	stChanNote* GetPattern(int Channel, int Row);
+	const stChanNote* GetPattern(int Channel, int Row) const;
 
 private:
 	// Do not make copies
-	CPatternClipData(const CPatternClipData &obj) {};
+	CPatternClipData(const CPatternClipData& obj)
+	{
+	};
 
 public:
-	struct {
-		int Channels;			// Number of channels
-		int Rows;				// Number of rows
-		int StartColumn;		// Start column in first channel
-		int EndColumn;			// End column in last channel
-		struct {				// OLE drag and drop info
+	struct
+	{
+		int Channels; // Number of channels
+		int Rows; // Number of rows
+		int StartColumn; // Start column in first channel
+		int EndColumn; // End column in last channel
+		struct
+		{
+			// OLE drag and drop info
 			int ChanOffset;
 			int RowOffset;
 		} OleInfo;
 	} ClipInfo;
 
-	stChanNote *pPattern;		// Pattern data
-	int Size;					// Pattern data size, in rows * columns
+	stChanNote* pPattern; // Pattern data
+	int Size; // Pattern data size, in rows * columns
 };
 
 
 // Cursor position
-class CCursorPos {
+class CCursorPos
+{
 public:
 	CCursorPos();
 	CCursorPos(int Row, int Channel, int Column);
-	const CCursorPos& operator=(const CCursorPos &pos);
-	bool operator !=(const CCursorPos &other) const;
+	const CCursorPos& operator=(const CCursorPos& pos);
+	bool operator !=(const CCursorPos& other) const;
 	bool IsValid(int RowCount, int ChannelCount) const;
 
 public:
@@ -104,29 +117,31 @@ public:
 
 
 // Selection
-class CSelection {
+class CSelection
+{
 public:
-	int  GetRowStart() const;
-	int  GetRowEnd() const;
-	int  GetColStart() const;
-	int  GetColEnd() const;
-	int  GetChanStart() const;
-	int  GetChanEnd() const;
-	bool IsWithin(const CCursorPos &pos) const;
+	int GetRowStart() const;
+	int GetRowEnd() const;
+	int GetColStart() const;
+	int GetColEnd() const;
+	int GetChanStart() const;
+	int GetChanEnd() const;
+	bool IsWithin(const CCursorPos& pos) const;
 	bool IsSingleChannel() const;
-	bool IsSameStartPoint(const CSelection &selection) const;
+	bool IsSameStartPoint(const CSelection& selection) const;
 	bool IsColumnSelected(int Column, int Channel) const;
 
 	void Clear();
-	void SetStart(const CCursorPos &pos);
-	void SetEnd(const CCursorPos &pos);
+	void SetStart(const CCursorPos& pos);
+	void SetEnd(const CCursorPos& pos);
 
-	bool operator !=(const CSelection &other) const;
+	bool operator !=(const CSelection& other) const;
 
 public:
 	CCursorPos m_cpStart;
 	CCursorPos m_cpEnd;
 };
+
 /*
 // Pattern layout
 class CPatternEditorLayout {

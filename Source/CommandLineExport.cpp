@@ -33,24 +33,32 @@
 class CCommandLineLog : public CCompilerLog
 {
 public:
-	CCommandLineLog(CStdioFile *pFile) : m_pFile(pFile) {};
-	void WriteLog(LPCTSTR text) {
+	CCommandLineLog(CStdioFile* pFile) : m_pFile(pFile)
+	{
+	};
+
+	void WriteLog(LPCTSTR text)
+	{
 		m_pFile->WriteString(text);
 	};
-	void Clear() {};
+
+	void Clear()
+	{
+	};
 private:
-	CStdioFile *m_pFile;
+	CStdioFile* m_pFile;
 };
 
 // Command line export function
-void CCommandLineExport::CommandLineExport(const CString& fileIn, const CString& fileOut, const CString& fileLog,  const CString& fileDPCM)
+void CCommandLineExport::CommandLineExport(const CString& fileIn, const CString& fileOut, const CString& fileLog,
+                                           const CString& fileDPCM)
 {
 	// open log
 	bool bLog = false;
 	CStdioFile fLog;
 	if (fileLog.GetLength() > 0)
 	{
-		if(fLog.Open(fileLog, CFile::modeCreate | CFile::modeWrite | CFile::typeText, NULL))
+		if (fLog.Open(fileLog, CFile::modeCreate | CFile::modeWrite | CFile::typeText, NULL))
 			bLog = true;
 	}
 
@@ -65,7 +73,7 @@ void CCommandLineExport::CommandLineExport(const CString& fileIn, const CString&
 	CFamiTrackerDoc* pExportDoc = static_cast<CFamiTrackerDoc*>(pObject);
 
 	// open file
-	if(!pExportDoc->OnOpenDocument(fileIn))
+	if (!pExportDoc->OnOpenDocument(fileIn))
 	{
 		if (bLog)
 		{
@@ -99,10 +107,10 @@ void CCommandLineExport::CommandLineExport(const CString& fileIn, const CString&
 	theApp.GetSoundGenerator()->GenerateVibratoTable(pExportDoc->GetVibratoStyle());
 
 	// export
-	if      (0 == ext.CompareNoCase(_T(".nsf")))
+	if (0 == ext.CompareNoCase(_T(".nsf")))
 	{
 		CCompiler compiler(pExportDoc, bLog ? new CCommandLineLog(&fLog) : NULL);
-		compiler.ExportNSF(fileOut, pExportDoc->GetMachine() );
+		compiler.ExportNSF(fileOut, pExportDoc->GetMachine());
 		if (bLog)
 		{
 			fLog.WriteString(_T("\nNSF export complete.\n"));
@@ -119,7 +127,7 @@ void CCommandLineExport::CommandLineExport(const CString& fileIn, const CString&
 		}
 		return;
 	}
-	// BIN export requires two files
+		// BIN export requires two files
 	else if (0 == ext.CompareNoCase(_T(".bin")))
 	{
 		CCompiler compiler(pExportDoc, bLog ? new CCommandLineLog(&fLog) : NULL);

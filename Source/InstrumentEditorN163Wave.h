@@ -26,18 +26,18 @@
 
 class CInstrumentEditorN163Wave : public CInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorN163Wave)
+DECLARE_DYNAMIC(CInstrumentEditorN163Wave)
 
 public:
-	CInstrumentEditorN163Wave(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorN163Wave(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorN163Wave();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Wave"); };
+	virtual TCHAR* GetTitle() const { return _T("Wave"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_N163_WAVE };
 
 protected:
@@ -47,14 +47,14 @@ protected:
 	void FillPosBox(int size);
 
 protected:
-	CInstrumentN163	*m_pInstrument;
-	CWaveEditorN163	*m_pWaveEditor;
+	CInstrumentN163* m_pInstrument;
+	CWaveEditorN163* m_pWaveEditor;
 	int m_iWaveIndex;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPresetSine();
@@ -68,7 +68,7 @@ public:
 	afx_msg void OnWaveSizeChange();
 	afx_msg void OnWavePosChange();
 	afx_msg void OnWavePosSelChange();
-//	afx_msg void OnPositionClicked();
+	//	afx_msg void OnPositionClicked();
 	afx_msg void OnWavesChange();
 	afx_msg void OnIndexChange();
 };

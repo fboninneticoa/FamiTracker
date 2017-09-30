@@ -23,21 +23,30 @@
 
 class CMixer;
 
-class CExternal {
+class CExternal
+{
 public:
-	CExternal() {};
-	CExternal(CMixer *pMixer) : m_pMixer(pMixer) {};
-	virtual ~CExternal() {};
+	CExternal()
+	{
+	};
 
-	virtual void	Reset() = 0;
-	virtual void	Process(uint32 Time) = 0;
-	virtual void	EndFrame() = 0;
+	CExternal(CMixer* pMixer) : m_pMixer(pMixer)
+	{
+	};
 
-	virtual void	Write(uint16 Address, uint8 Value) = 0;
-	virtual uint8	Read(uint16 Address, bool &Mapped) = 0;
+	virtual ~CExternal()
+	{
+	};
+
+	virtual void Reset() = 0;
+	virtual void Process(uint32 Time) = 0;
+	virtual void EndFrame() = 0;
+
+	virtual void Write(uint16 Address, uint8 Value) = 0;
+	virtual uint8 Read(uint16 Address, bool& Mapped) = 0;
 
 protected:
-	CMixer *m_pMixer;
+	CMixer* m_pMixer;
 };
 
 #endif /* EXTERNAL_H */

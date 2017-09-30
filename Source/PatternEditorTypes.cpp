@@ -24,15 +24,15 @@
 
 // CCursorPos /////////////////////////////////////////////////////////////////////
 
-CCursorPos::CCursorPos() : m_iRow(0), m_iChannel(0), m_iColumn(0) 
+CCursorPos::CCursorPos() : m_iRow(0), m_iChannel(0), m_iColumn(0)
 {
 }
 
-CCursorPos::CCursorPos(int Row, int Channel, int Column) : m_iRow(Row), m_iChannel(Channel), m_iColumn(Column) 
+CCursorPos::CCursorPos(int Row, int Channel, int Column) : m_iRow(Row), m_iChannel(Channel), m_iColumn(Column)
 {
 }
 
-const CCursorPos& CCursorPos::operator=(const CCursorPos &pos) 
+const CCursorPos& CCursorPos::operator=(const CCursorPos& pos)
 {
 	// Copy position
 	m_iRow = pos.m_iRow;
@@ -41,7 +41,7 @@ const CCursorPos& CCursorPos::operator=(const CCursorPos &pos)
 	return *this;
 }
 
-bool CCursorPos::operator !=(const CCursorPos &other) const
+bool CCursorPos::operator !=(const CCursorPos& other) const
 {
 	// Unequality check
 	return (m_iRow != other.m_iRow) || (m_iChannel != other.m_iChannel) || (m_iColumn != other.m_iColumn);
@@ -62,89 +62,106 @@ bool CCursorPos::IsValid(int RowCount, int ChannelCount) const
 
 // CSelection /////////////////////////////////////////////////////////////////////
 
-int CSelection::GetRowStart() const 
+int CSelection::GetRowStart() const
 {
-	return (m_cpEnd.m_iRow > m_cpStart.m_iRow ?  m_cpStart.m_iRow : m_cpEnd.m_iRow);
+	return (m_cpEnd.m_iRow > m_cpStart.m_iRow ? m_cpStart.m_iRow : m_cpEnd.m_iRow);
 }
 
-int CSelection::GetRowEnd() const 
+int CSelection::GetRowEnd() const
 {
 	return (m_cpEnd.m_iRow > m_cpStart.m_iRow ? m_cpEnd.m_iRow : m_cpStart.m_iRow);
 }
 
-int CSelection::GetColStart() const 
+int CSelection::GetColStart() const
 {
 	int Col = 0;
 	if (m_cpStart.m_iChannel == m_cpEnd.m_iChannel)
-		Col = (m_cpEnd.m_iColumn > m_cpStart.m_iColumn ? m_cpStart.m_iColumn : m_cpEnd.m_iColumn); 
+		Col = (m_cpEnd.m_iColumn > m_cpStart.m_iColumn ? m_cpStart.m_iColumn : m_cpEnd.m_iColumn);
 	else if (m_cpEnd.m_iChannel > m_cpStart.m_iChannel)
 		Col = m_cpStart.m_iColumn;
-	else 
+	else
 		Col = m_cpEnd.m_iColumn;
-	switch (Col) {
-		case 2: Col = 1; break;
-		case 5: case 6: Col = 4; break;
-		case 8: case 9: Col = 7; break;
-		case 11: case 12: Col = 10; break;
-		case 14: case 15: Col = 13; break;
+	switch (Col)
+	{
+	case 2: Col = 1;
+		break;
+	case 5: case 6: Col = 4;
+		break;
+	case 8: case 9: Col = 7;
+		break;
+	case 11: case 12: Col = 10;
+		break;
+	case 14: case 15: Col = 13;
+		break;
 	}
 	return Col;
 }
 
-int CSelection::GetColEnd() const 
+int CSelection::GetColEnd() const
 {
 	int Col = 0;
 	if (m_cpStart.m_iChannel == m_cpEnd.m_iChannel)
-		Col = (m_cpEnd.m_iColumn > m_cpStart.m_iColumn ? m_cpEnd.m_iColumn : m_cpStart.m_iColumn); 
+		Col = (m_cpEnd.m_iColumn > m_cpStart.m_iColumn ? m_cpEnd.m_iColumn : m_cpStart.m_iColumn);
 	else if (m_cpEnd.m_iChannel > m_cpStart.m_iChannel)
 		Col = m_cpEnd.m_iColumn;
 	else
 		Col = m_cpStart.m_iColumn;
-	switch (Col) {
-		case 1: Col = 2; break;					// Instrument
-		case 4: case 5: Col = 6; break;			// Eff 1
-		case 7: case 8: Col = 9; break;			// Eff 2
-		case 10: case 11: Col = 12; break;		// Eff 3
-		case 13: case 14: Col = 15; break;		// Eff 4
+	switch (Col)
+	{
+	case 1: Col = 2;
+		break; // Instrument
+	case 4: case 5: Col = 6;
+		break; // Eff 1
+	case 7: case 8: Col = 9;
+		break; // Eff 2
+	case 10: case 11: Col = 12;
+		break; // Eff 3
+	case 13: case 14: Col = 15;
+		break; // Eff 4
 	}
-	return Col;	
+	return Col;
 }
 
-int CSelection::GetChanStart() const 
+int CSelection::GetChanStart() const
 {
-	return (m_cpEnd.m_iChannel > m_cpStart.m_iChannel) ? m_cpStart.m_iChannel : m_cpEnd.m_iChannel; 
+	return (m_cpEnd.m_iChannel > m_cpStart.m_iChannel) ? m_cpStart.m_iChannel : m_cpEnd.m_iChannel;
 }
 
-int CSelection::GetChanEnd() const 
+int CSelection::GetChanEnd() const
 {
-	return (m_cpEnd.m_iChannel > m_cpStart.m_iChannel) ? m_cpEnd.m_iChannel : m_cpStart.m_iChannel; 
+	return (m_cpEnd.m_iChannel > m_cpStart.m_iChannel) ? m_cpEnd.m_iChannel : m_cpStart.m_iChannel;
 }
 
-bool CSelection::IsWithin(const CCursorPos &pos) const 
+bool CSelection::IsWithin(const CCursorPos& pos) const
 {
-	if (pos.m_iRow >= GetRowStart() && pos.m_iRow <= GetRowEnd()) {
-		if (pos.m_iChannel == GetChanStart() && pos.m_iChannel == GetChanEnd()) {
+	if (pos.m_iRow >= GetRowStart() && pos.m_iRow <= GetRowEnd())
+	{
+		if (pos.m_iChannel == GetChanStart() && pos.m_iChannel == GetChanEnd())
+		{
 			return (pos.m_iColumn >= GetColStart() && pos.m_iColumn <= GetColEnd());
 		}
-		else if (pos.m_iChannel == GetChanStart() && pos.m_iChannel != GetChanEnd()) {
+		else if (pos.m_iChannel == GetChanStart() && pos.m_iChannel != GetChanEnd())
+		{
 			return (pos.m_iColumn >= GetColStart());
 		}
-		else if (pos.m_iChannel == GetChanEnd() && pos.m_iChannel != GetChanStart()) {
+		else if (pos.m_iChannel == GetChanEnd() && pos.m_iChannel != GetChanStart())
+		{
 			return (pos.m_iColumn <= GetColEnd());
 		}
-		else if (pos.m_iChannel >= GetChanStart() && pos.m_iChannel < GetChanEnd()) {
+		else if (pos.m_iChannel >= GetChanStart() && pos.m_iChannel < GetChanEnd())
+		{
 			return true;
 		}
 	}
 	return false;
 }
 
-bool CSelection::IsSingleChannel() const 
+bool CSelection::IsSingleChannel() const
 {
 	return (m_cpStart.m_iChannel == m_cpEnd.m_iChannel);
 }
 
-bool CSelection::IsSameStartPoint(const CSelection &selection) const
+bool CSelection::IsSameStartPoint(const CSelection& selection) const
 {
 	return GetChanStart() == selection.GetChanStart() &&
 		GetRowStart() == selection.GetRowStart() &&
@@ -154,7 +171,7 @@ bool CSelection::IsSameStartPoint(const CSelection &selection) const
 bool CSelection::IsColumnSelected(int Column, int Channel) const
 {
 	int SelColStart = GetColStart();
-	int SelColEnd	= GetColEnd();
+	int SelColEnd = GetColEnd();
 
 	if (Channel > GetChanStart() && Channel < GetChanEnd())
 		return true;
@@ -169,16 +186,19 @@ bool CSelection::IsColumnSelected(int Column, int Channel) const
 
 	int SelStart = CPatternEditor::GetSelectColumn(SelColStart);
 	int SelEnd = CPatternEditor::GetSelectColumn(SelColEnd);
-	
-	if (Channel == GetChanStart() && Channel == GetChanEnd()) {
+
+	if (Channel == GetChanStart() && Channel == GetChanEnd())
+	{
 		if (Column >= SelStart && Column <= SelEnd)
 			return true;
 	}
-	else if (Channel == GetChanStart()) {
+	else if (Channel == GetChanStart())
+	{
 		if (Column >= SelStart)
 			return true;
 	}
-	else if (Channel == GetChanEnd()) {
+	else if (Channel == GetChanEnd())
+	{
 		if (Column <= SelEnd)
 			return true;
 	}
@@ -192,17 +212,17 @@ void CSelection::Clear()
 	m_cpEnd = CCursorPos();
 }
 
-void CSelection::SetStart(const CCursorPos &pos) 
+void CSelection::SetStart(const CCursorPos& pos)
 {
 	m_cpStart = pos;
 }
 
-void CSelection::SetEnd(const CCursorPos &pos) 
+void CSelection::SetEnd(const CCursorPos& pos)
 {
 	m_cpEnd = pos;
 }
 
-bool CSelection::operator !=(const CSelection &other) const
+bool CSelection::operator !=(const CSelection& other) const
 {
 	return (m_cpStart != other.m_cpStart) || (m_cpEnd != other.m_cpEnd);
 }
@@ -214,15 +234,16 @@ SIZE_T CPatternClipData::GetAllocSize() const
 	return sizeof(ClipInfo) + Size * sizeof(stChanNote);
 }
 
-void CPatternClipData::ToMem(HGLOBAL hMem) 
+void CPatternClipData::ToMem(HGLOBAL hMem)
 {
 	// From CPatternClipData to memory
 	ASSERT(hMem != NULL);
 	ASSERT(pPattern != NULL);
 
-	BYTE *pByte = (BYTE*)::GlobalLock(hMem);
+	BYTE* pByte = (BYTE*)::GlobalLock(hMem);
 
-	if (pByte != NULL) {
+	if (pByte != NULL)
+	{
 		memcpy(pByte, &ClipInfo, sizeof(ClipInfo));
 		memcpy(pByte + sizeof(ClipInfo), pPattern, Size * sizeof(stChanNote));
 
@@ -236,11 +257,12 @@ void CPatternClipData::FromMem(HGLOBAL hMem)
 	ASSERT(hMem != NULL);
 	ASSERT(pPattern == NULL);
 
-	BYTE *pByte = (BYTE*)::GlobalLock(hMem);
+	BYTE* pByte = (BYTE*)::GlobalLock(hMem);
 
-	if (pByte != NULL) {
+	if (pByte != NULL)
+	{
 		memcpy(&ClipInfo, pByte, sizeof(ClipInfo));
-	
+
 		Size = ClipInfo.Channels * ClipInfo.Rows;
 		pPattern = new stChanNote[Size];
 		memcpy(pPattern, pByte + sizeof(ClipInfo), Size * sizeof(stChanNote));
@@ -249,7 +271,7 @@ void CPatternClipData::FromMem(HGLOBAL hMem)
 	}
 }
 
-stChanNote *CPatternClipData::GetPattern(int Channel, int Row)
+stChanNote* CPatternClipData::GetPattern(int Channel, int Row)
 {
 	ASSERT(Channel < ClipInfo.Channels);
 	ASSERT(Row < ClipInfo.Rows);
@@ -257,7 +279,7 @@ stChanNote *CPatternClipData::GetPattern(int Channel, int Row)
 	return pPattern + (Channel * ClipInfo.Rows + Row);
 }
 
-const stChanNote *CPatternClipData::GetPattern(int Channel, int Row) const
+const stChanNote* CPatternClipData::GetPattern(int Channel, int Row) const
 {
 	ASSERT(Channel < ClipInfo.Channels);
 	ASSERT(Row < ClipInfo.Rows);

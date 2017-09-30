@@ -18,7 +18,7 @@
 ** must bear this legend.
 */
 
-#include <iterator> 
+#include <iterator>
 #include <string>
 #include <sstream>
 #include "stdafx.h"
@@ -36,7 +36,9 @@
 //
 
 IMPLEMENT_DYNAMIC(CInstrumentEditPanel, CDialog)
-CInstrumentEditPanel::CInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent) : CDialog(nIDTemplate, pParent)//, m_bShow(false)
+
+CInstrumentEditPanel::CInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent) : CDialog(nIDTemplate, pParent)
+//, m_bShow(false)
 {
 }
 
@@ -51,10 +53,10 @@ void CInstrumentEditPanel::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CInstrumentEditPanel, CDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_SETFOCUS()
+		ON_WM_ERASEBKGND()
+		ON_WM_CTLCOLOR()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
 //COLORREF m_iBGColor = 0xFF0000;
@@ -73,15 +75,16 @@ HBRUSH CInstrumentEditPanel::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	if (!theApp.IsThemeActive())
 		return hbr;
-	
-	switch (nCtlColor) {
-		case CTLCOLOR_STATIC:
-//		case CTLCOLOR_DLG:
-			pDC->SetBkMode(TRANSPARENT);
-			// TODO: this might fail on some themes?
-			//return NULL;
-			return GetSysColorBrush(COLOR_3DHILIGHT);
-			//return CreateSolidBrush(m_iBGColor);
+
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_STATIC:
+		//		case CTLCOLOR_DLG:
+		pDC->SetBkMode(TRANSPARENT);
+		// TODO: this might fail on some themes?
+		//return NULL;
+		return GetSysColorBrush(COLOR_3DHILIGHT);
+		//return CreateSolidBrush(m_iBGColor);
 	}
 
 	return hbr;
@@ -91,38 +94,41 @@ BOOL CInstrumentEditPanel::PreTranslateMessage(MSG* pMsg)
 {
 	TCHAR ClassName[256];
 
-	switch (pMsg->message) {
-		case WM_KEYDOWN:
-			switch (pMsg->wParam) {
-				case VK_RETURN:	// Return
-					pMsg->wParam = 0;
-					OnKeyReturn();
-					return TRUE;
-				case VK_ESCAPE:	// Esc, close the dialog
-					static_cast<CInstrumentEditDlg*>(GetParent())->DestroyWindow();
-					return TRUE;
-				case VK_TAB:
-				case VK_DOWN:
-				case VK_UP:
-				case VK_LEFT:
-				case VK_RIGHT:
-				case VK_SPACE:
-					// Do nothing
-					break;
-				default:	// Note keys
-					// Make sure the dialog is selected when previewing
-					GetClassName(pMsg->hwnd, ClassName, 256);
-					if (_tcscmp(ClassName, _T("Edit"))) {
-						// Remove repeated keys
-						if ((pMsg->lParam & (1 << 30)) == 0)
-							PreviewNote((unsigned char)pMsg->wParam);
-						return TRUE;
-					}
-			}
-			break;
-		case WM_KEYUP:
-			PreviewRelease((unsigned char)pMsg->wParam);
+	switch (pMsg->message)
+	{
+	case WM_KEYDOWN:
+		switch (pMsg->wParam)
+		{
+		case VK_RETURN: // Return
+			pMsg->wParam = 0;
+			OnKeyReturn();
 			return TRUE;
+		case VK_ESCAPE: // Esc, close the dialog
+			static_cast<CInstrumentEditDlg*>(GetParent())->DestroyWindow();
+			return TRUE;
+		case VK_TAB:
+		case VK_DOWN:
+		case VK_UP:
+		case VK_LEFT:
+		case VK_RIGHT:
+		case VK_SPACE:
+			// Do nothing
+			break;
+		default: // Note keys
+			// Make sure the dialog is selected when previewing
+			GetClassName(pMsg->hwnd, ClassName, 256);
+			if (_tcscmp(ClassName, _T("Edit")))
+			{
+				// Remove repeated keys
+				if ((pMsg->lParam & (1 << 30)) == 0)
+					PreviewNote((unsigned char)pMsg->wParam);
+				return TRUE;
+			}
+		}
+		break;
+	case WM_KEYUP:
+		PreviewRelease((unsigned char)pMsg->wParam);
+		return TRUE;
 	}
 
 	return CDialog::PreTranslateMessage(pMsg);
@@ -141,13 +147,13 @@ void CInstrumentEditPanel::OnKeyReturn()
 }
 
 void CInstrumentEditPanel::OnSetFocus(CWnd* pOldWnd)
-{	
+{
 	// Kill the default handler to avoid setting focus to a child control
 	//Invalidate();
 	CDialog::OnSetFocus(pOldWnd);
 }
 
-CFamiTrackerDoc *CInstrumentEditPanel::GetDocument() const
+CFamiTrackerDoc* CInstrumentEditPanel::GetDocument() const
 {
 	// Return selected document
 	return CFamiTrackerDoc::GetDoc();
@@ -171,8 +177,8 @@ void CInstrumentEditPanel::PreviewRelease(unsigned char Key)
 
 IMPLEMENT_DYNAMIC(CSequenceInstrumentEditPanel, CInstrumentEditPanel)
 
-CSequenceInstrumentEditPanel::CSequenceInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent) : 
-	CInstrumentEditPanel(nIDTemplate, pParent), 
+CSequenceInstrumentEditPanel::CSequenceInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent) :
+	CInstrumentEditPanel(nIDTemplate, pParent),
 	m_pSequenceEditor(NULL),
 	m_pSequence(NULL),
 	m_pParentWin(pParent),
@@ -190,42 +196,43 @@ void CSequenceInstrumentEditPanel::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CSequenceInstrumentEditPanel, CInstrumentEditPanel)
-	ON_NOTIFY(NM_RCLICK, IDC_INSTSETTINGS, OnRClickInstSettings)
+		ON_NOTIFY(NM_RCLICK, IDC_INSTSETTINGS, OnRClickInstSettings)
 END_MESSAGE_MAP()
 
-void CSequenceInstrumentEditPanel::SetupDialog(LPCTSTR *pListItems)
+void CSequenceInstrumentEditPanel::SetupDialog(LPCTSTR* pListItems)
 {
 	// Instrument settings
-	CListCtrl *pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
-	
+	CListCtrl* pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
+
 	pList->DeleteAllItems();
 	pList->InsertColumn(0, _T(""), LVCFMT_LEFT, 26);
 	pList->InsertColumn(1, _T("#"), LVCFMT_LEFT, 30);
 	pList->InsertColumn(2, _T("Effect name"), LVCFMT_LEFT, 84);
 	pList->SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES);
-	
-	for (int i = SEQ_COUNT - 1; i > -1; i--) {
+
+	for (int i = SEQ_COUNT - 1; i > -1; i--)
+	{
 		pList->InsertItem(0, _T(""), 0);
 		pList->SetCheck(0, 0);
 		pList->SetItemText(0, 1, _T("0"));
 		pList->SetItemText(0, 2, pListItems[i]);
 	}
-	
+
 	pList->SetItemState(m_iSelectedSetting, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 
 	SetDlgItemInt(IDC_SEQ_INDEX, m_iSelectedSetting);
 
-	CSpinButtonCtrl *pSequenceSpin = static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_SEQUENCE_SPIN));
+	CSpinButtonCtrl* pSequenceSpin = static_cast<CSpinButtonCtrl*>(GetDlgItem(IDC_SEQUENCE_SPIN));
 	pSequenceSpin->SetRange(0, MAX_SEQUENCES - 1);
 
 	CRect rect(190 - 2, 30 - 2, CSequenceEditor::SEQUENCE_EDIT_WIDTH, CSequenceEditor::SEQUENCE_EDIT_HEIGHT);
-	
-	m_pSequenceEditor = new CSequenceEditor(GetDocument());	
+
+	m_pSequenceEditor = new CSequenceEditor(GetDocument());
 	m_pSequenceEditor->CreateEditor(this, rect);
 	m_pSequenceEditor->ShowWindow(SW_SHOW);
 }
 
-int CSequenceInstrumentEditPanel::ReadStringValue(const std::string &str)
+int CSequenceInstrumentEditPanel::ReadStringValue(const std::string& str)
 {
 	// Translate a string number to integer, accepts '$' and 'x' for hexadecimal notation
 	std::stringstream ss;
@@ -252,7 +259,7 @@ void CSequenceInstrumentEditPanel::PreviewRelease(unsigned char Key)
 	CFamiTrackerView::GetView()->PreviewRelease(Key);
 }
 
-void CSequenceInstrumentEditPanel::TranslateMML(CString String, CSequence *pSequence, int Max, int Min) const
+void CSequenceInstrumentEditPanel::TranslateMML(CString String, CSequence* pSequence, int Max, int Min) const
 {
 	// Takes a string and translates it into a sequence
 
@@ -268,22 +275,27 @@ void CSequenceInstrumentEditPanel::TranslateMML(CString String, CSequence *pSequ
 	std::istream_iterator<std::string> begin(values);
 	std::istream_iterator<std::string> end;
 
-	while (begin != end && AddedItems < MAX_SEQUENCE_ITEMS) {
+	while (begin != end && AddedItems < MAX_SEQUENCE_ITEMS)
+	{
 		std::string item = *begin++;
 
-		if (item[0] == '|') {
+		if (item[0] == '|')
+		{
 			// Set loop point
 			pSequence->SetLoopPoint(AddedItems);
 		}
-		else if (item[0] == '/') {
+		else if (item[0] == '/')
+		{
 			// Set release point
 			pSequence->SetReleasePoint(AddedItems);
 		}
-		else {
+		else
+		{
 			// Convert to number
 			int value = ReadStringValue(item);
 			// Check for invalid chars
-			if (!(value == 0 && item[0] != '0')) {
+			if (!(value == 0 && item[0] != '0'))
+			{
 				value = std::min<int>(std::max<int>(value, Min), Max);
 				pSequence->SetItem(AddedItems++, value);
 			}
@@ -304,7 +316,7 @@ void CSequenceInstrumentEditPanel::OnRClickInstSettings(NMHDR* pNMHDR, LRESULT* 
 	// Display clone menu
 	CMenu contextMenu;
 	contextMenu.LoadMenu(IDR_SEQUENCE_POPUP);
-	CMenu *pMenu = contextMenu.GetSubMenu(0);
+	CMenu* pMenu = contextMenu.GetSubMenu(0);
 	pMenu->EnableMenuItem(ID_CLONE_SEQUENCE, (m_pSequence->GetItemCount() != 0) ? FALSE : TRUE);
 	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, oPoint.x, oPoint.y, this);
 }

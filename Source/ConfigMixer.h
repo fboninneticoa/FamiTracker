@@ -25,13 +25,13 @@
 
 class CConfigMixer : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CConfigMixer)
+DECLARE_DYNAMIC(CConfigMixer)
 
 public:
 	CConfigMixer();
 	virtual ~CConfigMixer();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CONFIG_MIXER };
 
 	static const int LEVEL_RANGE;
@@ -53,9 +53,9 @@ protected:
 	void UpdateLevel(int nID, int Level);
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();

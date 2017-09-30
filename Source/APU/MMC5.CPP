@@ -24,7 +24,7 @@
 
 // MMC5 external sound
 
-CMMC5::CMMC5(CMixer *pMixer) : 
+CMMC5::CMMC5(CMixer* pMixer) :
 	m_pEXRAM(new uint8[0x400]),
 	m_pSquare1(new CSquare(pMixer, CHANID_MMC5_SQUARE1, SNDCHIP_MMC5)),
 	m_pSquare2(new CSquare(pMixer, CHANID_MMC5_SQUARE2, SNDCHIP_MMC5)),
@@ -56,62 +56,66 @@ void CMMC5::Reset()
 
 void CMMC5::Write(uint16 Address, uint8 Value)
 {
-	if (Address >= 0x5C00 && Address <= 0x5FF5) {
+	if (Address >= 0x5C00 && Address <= 0x5FF5)
+	{
 		m_pEXRAM[Address & 0x3FF] = Value;
 		return;
 	}
 
-	switch (Address) {
+	switch (Address)
+	{
 		// Channel 1
-		case 0x5000:
-			m_pSquare1->Write(0, Value);
-			break;
-		case 0x5002:
-			m_pSquare1->Write(2, Value);
-			break;
-		case 0x5003:
-			m_pSquare1->Write(3, Value);
-			break;
+	case 0x5000:
+		m_pSquare1->Write(0, Value);
+		break;
+	case 0x5002:
+		m_pSquare1->Write(2, Value);
+		break;
+	case 0x5003:
+		m_pSquare1->Write(3, Value);
+		break;
 		// Channel 2
-		case 0x5004:
-			m_pSquare2->Write(0, Value);
-			break;
-		case 0x5006:
-			m_pSquare2->Write(2, Value);
-			break;
-		case 0x5007:
-			m_pSquare2->Write(3, Value);
-			break;
+	case 0x5004:
+		m_pSquare2->Write(0, Value);
+		break;
+	case 0x5006:
+		m_pSquare2->Write(2, Value);
+		break;
+	case 0x5007:
+		m_pSquare2->Write(3, Value);
+		break;
 		// Channel 3... (doesn't exist)
 		// Control
-		case 0x5015:
-			m_pSquare1->WriteControl(Value & 1);
-			m_pSquare2->WriteControl((Value >> 1) & 1);
-			break;
+	case 0x5015:
+		m_pSquare1->WriteControl(Value & 1);
+		m_pSquare2->WriteControl((Value >> 1) & 1);
+		break;
 		// Hardware multiplier
-		case 0x5205:
-			m_iMulLow = Value;
-			break;
-		case 0x5206:
-			m_iMulHigh = Value;
-			break;
+	case 0x5205:
+		m_iMulLow = Value;
+		break;
+	case 0x5206:
+		m_iMulHigh = Value;
+		break;
 	}
 }
 
-uint8 CMMC5::Read(uint16 Address, bool &Mapped)
+uint8 CMMC5::Read(uint16 Address, bool& Mapped)
 {
-	if (Address >= 0x5C00 && Address <= 0x5FF5) {
+	if (Address >= 0x5C00 && Address <= 0x5FF5)
+	{
 		Mapped = true;
 		return m_pEXRAM[Address & 0x3FF];
 	}
-	
-	switch (Address) {
-		case 0x5205:
-			Mapped = true;
-			return (m_iMulLow * m_iMulHigh) & 0xFF;
-		case 0x5206:
-			Mapped = true;
-			return (m_iMulLow * m_iMulHigh) >> 8;
+
+	switch (Address)
+	{
+	case 0x5205:
+		Mapped = true;
+		return (m_iMulLow * m_iMulHigh) & 0xFF;
+	case 0x5206:
+		Mapped = true;
+		return (m_iMulLow * m_iMulHigh) >> 8;
 	}
 
 	return 0;

@@ -25,21 +25,21 @@
 
 class CConfigSound : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CConfigSound)
+DECLARE_DYNAMIC(CConfigSound)
 
 public:
 	CConfigSound();
 	virtual ~CConfigSound();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CONFIG_SOUND };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	void UpdateTexts();
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

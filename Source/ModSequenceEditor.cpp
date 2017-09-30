@@ -30,9 +30,9 @@ int SIZE_X = 12;
 IMPLEMENT_DYNAMIC(CModSequenceEditor, CWnd)
 
 BEGIN_MESSAGE_MAP(CModSequenceEditor, CWnd)
-	ON_WM_PAINT()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONDOWN()
+		ON_WM_PAINT()
+		ON_WM_MOUSEMOVE()
+		ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -44,7 +44,8 @@ CModSequenceEditor::~CModSequenceEditor()
 {
 }
 
-BOOL CModSequenceEditor::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd)
+BOOL CModSequenceEditor::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle,
+                                  const RECT& rect, CWnd* pParentWnd)
 {
 	CRect newRect;
 
@@ -59,7 +60,7 @@ BOOL CModSequenceEditor::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTST
 	return 0;
 }
 
-void FillItem(CDC *pDC, int Index, int Value, bool Remove)
+void FillItem(CDC* pDC, int Index, int Value, bool Remove)
 {
 	const int POS[] = {0, 7, 14, 21, 28, 35, 42, 52};
 	const int VAL[] = {3, 2, 1, 0, 7, 6, 5, 4};
@@ -76,24 +77,24 @@ void CModSequenceEditor::OnPaint()
 	// Draw the sample
 	dc.FillSolidRect(0, 0, 32 * (SIZE_X + 2) + 4 /*388*/, 61, 0xA0A0A0);
 
-	for (int i = 0; i < 32; i++) {
+	for (int i = 0; i < 32; i++)
+	{
 		int x = 2 + i * (SIZE_X + 2);
 
 		int mod = m_pInstrument->GetModulation(i);
 
-		dc.FillSolidRect(x, 2 + 0, SIZE_X, 5, mod == 3 ? 0x00FF00 : 0xD0D0D0);		// +4
- 		dc.FillSolidRect(x, 2 + 7, SIZE_X, 5, mod == 2 ? 0x00FF00 : 0xD0D0D0);		// +2
-		dc.FillSolidRect(x, 2 + 14, SIZE_X, 5, mod == 1 ? 0x00FF00 : 0xD0D0D0);		// +1
-		dc.FillSolidRect(x, 2 + 21, SIZE_X, 5, mod == 0 ? 0x00FFFF : 0xD0D0D0);		// 0
-		dc.FillSolidRect(x, 2 + 28, SIZE_X, 5, mod == 7 ? 0x00FF00 : 0xD0D0D0);		// -1
-		dc.FillSolidRect(x, 2 + 35, SIZE_X, 5, mod == 6 ? 0x00FF00 : 0xD0D0D0);		// -2
-		dc.FillSolidRect(x, 2 + 42, SIZE_X, 5, mod == 5 ? 0x00FF00 : 0xD0D0D0);		// -4
-		dc.FillSolidRect(x, 2 + 52, SIZE_X, 5, mod == 4 ? 0xFF0000 : 0xD0D0D0);		// reset
+		dc.FillSolidRect(x, 2 + 0, SIZE_X, 5, mod == 3 ? 0x00FF00 : 0xD0D0D0); // +4
+		dc.FillSolidRect(x, 2 + 7, SIZE_X, 5, mod == 2 ? 0x00FF00 : 0xD0D0D0); // +2
+		dc.FillSolidRect(x, 2 + 14, SIZE_X, 5, mod == 1 ? 0x00FF00 : 0xD0D0D0); // +1
+		dc.FillSolidRect(x, 2 + 21, SIZE_X, 5, mod == 0 ? 0x00FFFF : 0xD0D0D0); // 0
+		dc.FillSolidRect(x, 2 + 28, SIZE_X, 5, mod == 7 ? 0x00FF00 : 0xD0D0D0); // -1
+		dc.FillSolidRect(x, 2 + 35, SIZE_X, 5, mod == 6 ? 0x00FF00 : 0xD0D0D0); // -2
+		dc.FillSolidRect(x, 2 + 42, SIZE_X, 5, mod == 5 ? 0x00FF00 : 0xD0D0D0); // -4
+		dc.FillSolidRect(x, 2 + 52, SIZE_X, 5, mod == 4 ? 0xFF0000 : 0xD0D0D0); // reset
 	}
-
 }
 
-void CModSequenceEditor::SetInstrument(CInstrumentFDS *pInst)
+void CModSequenceEditor::SetInstrument(CInstrumentFDS* pInst)
 {
 	m_pInstrument = pInst;
 	Invalidate();
@@ -116,7 +117,7 @@ void CModSequenceEditor::OnLButtonDown(UINT nFlags, CPoint point)
 }
 
 void CModSequenceEditor::EditSequence(CPoint point)
-{	
+{
 	const int VALUES[] = {3, 2, 1, 0, 7, 6, 5, 4};
 
 	int index = (point.x - 2) / (SIZE_X + 2);
@@ -134,9 +135,10 @@ void CModSequenceEditor::EditSequence(CPoint point)
 
 	value = VALUES[value];
 
-	CDC *pDC = GetDC();
+	CDC* pDC = GetDC();
 
-	if (pDC != NULL) {
+	if (pDC != NULL)
+	{
 		int s = m_pInstrument->GetModulation(index);
 		FillItem(pDC, index, s, true);
 		m_pInstrument->SetModulation(index, value);

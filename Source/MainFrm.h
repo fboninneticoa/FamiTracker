@@ -29,12 +29,14 @@
 #include "ControlPanelDlg.h"
 #include "CustomControls.h"
 
-enum frame_edit_pos_t { 
-	FRAME_EDIT_POS_TOP, 
+enum frame_edit_pos_t
+{
+	FRAME_EDIT_POS_TOP,
 	FRAME_EDIT_POS_LEFT
 };
 
-enum {
+enum
+{
 	WM_USER_DISPLAY_MESSAGE_STRING = WM_USER,
 	WM_USER_DISPLAY_MESSAGE_ID
 };
@@ -49,56 +51,56 @@ class CMainFrame : public CFrameWnd
 {
 protected: // create from serialization only
 	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
+DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+	// Attributes
 public:
-	CFrameEditor *GetFrameEditor() const;
+	CFrameEditor* GetFrameEditor() const;
 
-// Operations
+	// Operations
 public:
-	void	SetStatusText(LPCTSTR Text,...);
-	void	ChangeNoteState(int Note);
-	
+	void SetStatusText(LPCTSTR Text,...);
+	void ChangeNoteState(int Note);
+
 	// Indicators & controls
-	void	SetIndicatorTime(int Min, int Sec, int MSec);
-	void	SetIndicatorPos(int Frame, int Row);
-	void	SetSongInfo(const char *pName, const char *pArtist, const char *pCopyright);
-	void	SetupColors();
-	void	DisplayOctave();
+	void SetIndicatorTime(int Min, int Sec, int MSec);
+	void SetIndicatorPos(int Frame, int Row);
+	void SetSongInfo(const char* pName, const char* pArtist, const char* pCopyright);
+	void SetupColors();
+	void DisplayOctave();
 
-	void	UpdateTrackBox();
-	void	UpdateControls();
-	void	ResizeFrameWindow();
+	void UpdateTrackBox();
+	void UpdateControls();
+	void ResizeFrameWindow();
 
-	void	SetFirstHighlightRow(int Rows);
-	void	SetSecondHighlightRow(int Rows);
+	void SetFirstHighlightRow(int Rows);
+	void SetSecondHighlightRow(int Rows);
 
-	void	UpdateMenus();
+	void UpdateMenus();
 
 	// Instrument
-	void	OpenInstrumentEditor();
-	void	CloseInstrumentEditor();
-	void	UpdateInstrumentList();
-	void	SelectInstrument(int Index);
-	int		GetSelectedInstrument() const;
-	void	SwapInstruments(int First, int Second);
+	void OpenInstrumentEditor();
+	void CloseInstrumentEditor();
+	void UpdateInstrumentList();
+	void SelectInstrument(int Index);
+	int GetSelectedInstrument() const;
+	void SwapInstruments(int First, int Second);
 
 	// Track
-	int		GetSelectedTrack() const;
-	void	SelectTrack(unsigned int Track);
+	int GetSelectedTrack() const;
+	void SelectTrack(unsigned int Track);
 
 	// Undo/redo
-	bool	AddAction(CAction *pAction);
-	CAction *GetLastAction(int Filter) const;
-	void	ResetUndo();
+	bool AddAction(CAction* pAction);
+	CAction* GetLastAction(int Filter) const;
+	void ResetUndo();
 
-	bool	ChangeAllPatterns() const;
+	bool ChangeAllPatterns() const;
 
-// Overrides
+	// Overrides
 public:
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -107,84 +109,86 @@ public:
 #endif
 
 private:
-	bool	CreateDialogPanels();
-	bool	CreateToolbars();
-	bool	CreateInstrumentToolbar();
-	bool	CreateVisualizerWindow();
-	void	SetSpeed(int Speed);
-	void	SetTempo(int Tempo);
-	void	SetRowCount(int Count);
-	void	SetFrameCount(int Count);
+	bool CreateDialogPanels();
+	bool CreateToolbars();
+	bool CreateInstrumentToolbar();
+	bool CreateVisualizerWindow();
+	void SetSpeed(int Speed);
+	void SetTempo(int Tempo);
+	void SetRowCount(int Count);
+	void SetFrameCount(int Count);
 
 	// Instrument list operations
-	void	NewInstrument(int ChipType);
-	void	ClearInstrumentList();
-	void	GetInstrumentName(char *pText) const;
-	void	SetInstrumentName(char *pText);
+	void NewInstrument(int ChipType);
+	void ClearInstrumentList();
+	void GetInstrumentName(char* pText) const;
+	void SetInstrumentName(char* pText);
 
-	void	UpdateMenu(CMenu *pMenu);
-	void	SetFrameEditorPosition(int Position);
-	void	SelectInstrumentFolder();
+	void UpdateMenu(CMenu* pMenu);
+	void SetFrameEditorPosition(int Position);
+	void SelectInstrumentFolder();
 
-	bool	CheckRepeat() const;
+	bool CheckRepeat() const;
 
-	void	CheckAudioStatus();
+	void CheckAudioStatus();
 
-private:  // control bar embedded members
-	CStatusBar			m_wndStatusBar;
-	CToolBar			m_wndToolBar;
-	CReBar				m_wndToolBarReBar;
-	CDialogReBar		m_wndOctaveBar;
-	CDialogBar			m_wndControlBar;	// Parent to frame editor and settings/instrument editor
-	CDialogBar			m_wndVerticalControlBar;	// Parent to large frame editor
-	CControlPanelDlg	m_wndDialogBar;
+private: // control bar embedded members
+	CStatusBar m_wndStatusBar;
+	CToolBar m_wndToolBar;
+	CReBar m_wndToolBarReBar;
+	CDialogReBar m_wndOctaveBar;
+	CDialogBar m_wndControlBar; // Parent to frame editor and settings/instrument editor
+	CDialogBar m_wndVerticalControlBar; // Parent to large frame editor
+	CControlPanelDlg m_wndDialogBar;
 
-	CControlPanelDlg	m_wndFrameControls;		// Contains +, - and change all
+	CControlPanelDlg m_wndFrameControls; // Contains +, - and change all
 
-	CWnd				m_wndInstToolBarWnd;
-	CToolBar			m_wndInstToolBar;
-	CReBarCtrl			m_wndInstToolReBar;
-	CInstrumentEditDlg	m_wndInstEdit;
-	CPerformanceDlg		m_wndPerformanceDlg;
+	CWnd m_wndInstToolBarWnd;
+	CToolBar m_wndInstToolBar;
+	CReBarCtrl m_wndInstToolReBar;
+	CInstrumentEditDlg m_wndInstEdit;
+	CPerformanceDlg m_wndPerformanceDlg;
 
-	CFrameEditor		*m_pFrameEditor;
-	CInstrumentList		*m_pInstrumentList;
-	CImageList			*m_pImageList;
-	CVisualizerWnd		*m_pVisualizerWnd;
+	CFrameEditor* m_pFrameEditor;
+	CInstrumentList* m_pInstrumentList;
+	CImageList* m_pImageList;
+	CVisualizerWnd* m_pVisualizerWnd;
 
-	CLockedEdit			*m_pLockedEditSpeed;
-	CLockedEdit			*m_pLockedEditTempo;
-	CLockedEdit			*m_pLockedEditLength;
-	CLockedEdit			*m_pLockedEditFrames;
-	CLockedEdit			*m_pLockedEditStep;
+	CLockedEdit* m_pLockedEditSpeed;
+	CLockedEdit* m_pLockedEditTempo;
+	CLockedEdit* m_pLockedEditLength;
+	CLockedEdit* m_pLockedEditFrames;
+	CLockedEdit* m_pLockedEditStep;
 
-	CBannerEdit			*m_pBannerEditName;
-	CBannerEdit			*m_pBannerEditArtist;
-	CBannerEdit			*m_pBannerEditCopyright;
+	CBannerEdit* m_pBannerEditName;
+	CBannerEdit* m_pBannerEditArtist;
+	CBannerEdit* m_pBannerEditCopyright;
 
-	CBitmap				m_bmToolbar;			// main toolbar
-	CImageList			m_ilToolBar;
+	CBitmap m_bmToolbar; // main toolbar
+	CImageList m_ilToolBar;
 
-	CBitmap				m_bmInstToolbar;		// instrument toolbar
-	CImageList			m_ilInstToolBar;
+	CBitmap m_bmInstToolbar; // instrument toolbar
+	CImageList m_ilInstToolBar;
 
-	CActionHandler		*m_pActionHandler;
+	CActionHandler* m_pActionHandler;
 
-	int					m_iFrameEditorPos;
+	int m_iFrameEditorPos;
 
-	CInstrumentFileTree	*m_pInstrumentFileTree;
+	CInstrumentFileTree* m_pInstrumentFileTree;
 
 	// State variables
-	int					m_iOctave;					// Selected octave
-	int					m_iInstrument;				// Selected instrument
-	int					m_iTrack;					// Selected track
+	int m_iOctave; // Selected octave
+	int m_iInstrument; // Selected instrument
+	int m_iTrack; // Selected track
 
 public:
-	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle = WS_OVERLAPPEDWINDOW, const RECT& rect = rectDefault, CWnd* pParentWnd = NULL, LPCTSTR lpszMenuName = NULL, DWORD dwExStyle = 0, CCreateContext* pContext = NULL);
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle = WS_OVERLAPPEDWINDOW,
+	                    const RECT& rect = rectDefault, CWnd* pParentWnd = NULL, LPCTSTR lpszMenuName = NULL,
+	                    DWORD dwExStyle = 0, CCreateContext* pContext = NULL);
 
-// Generated message map functions
+	// Generated message map functions
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -195,11 +199,11 @@ public:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT* pCopyDataStruct);
-	afx_msg void OnDeltaposTempoSpin(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposSpeedSpin(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposRowsSpin(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposFrameSpin(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposKeyStepSpin(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposTempoSpin(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposSpeedSpin(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposRowsSpin(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposFrameSpin(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposKeyStepSpin(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnInstNameChange();
 	afx_msg void OnTrackerTogglePlay();
 	afx_msg void OnTrackerPlay();
@@ -217,40 +221,40 @@ public:
 	afx_msg void OnKeyRepeat();
 	afx_msg void OnEnKeyStepChange();
 	afx_msg void OnHelpPerformance();
-	afx_msg void OnUpdateSBTempo(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSBPosition(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSBInstrument(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSBOctave(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSBFrequency(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSBChip(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateKeyStepEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSpeedEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateTempoEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateRowsEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateFramesEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateKeyRepeat(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInsertFrame(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateRemoveFrame(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateDuplicateFrame(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateModuleMoveframedown(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateModuleMoveframeup(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentNew(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentRemove(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentClone(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentDeepClone(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentEdit(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentLoad(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateInstrumentSave(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateNextSong(CCmdUI *pCmdUI);
-	afx_msg void OnUpdatePrevSong(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateViewControlpanel(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateHighlight(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditCut(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditCopy(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditPaste(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditDelete(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditEnablemidi(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateSelectionEnabled(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateSBTempo(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSBPosition(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSBInstrument(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSBOctave(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSBFrequency(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSBChip(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateKeyStepEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSpeedEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateTempoEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateRowsEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFramesEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateKeyRepeat(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInsertFrame(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateRemoveFrame(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateDuplicateFrame(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModuleMoveframedown(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModuleMoveframeup(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentNew(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentRemove(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentClone(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentDeepClone(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentEdit(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentLoad(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInstrumentSave(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateNextSong(CCmdUI* pCmdUI);
+	afx_msg void OnUpdatePrevSong(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewControlpanel(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateHighlight(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditEnablemidi(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateSelectionEnabled(CCmdUI* pCmdUI);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnFileGeneralsettings();
 	afx_msg void OnEnSongNameChange();
@@ -282,7 +286,7 @@ public:
 	afx_msg void OnNextSong();
 	afx_msg void OnPrevSong();
 	afx_msg void OnTrackerSwitchToInstrument();
-	afx_msg void OnUpdateTrackerSwitchToInstrument(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateTrackerSwitchToInstrument(CCmdUI* pCmdUI);
 	afx_msg void OnClickedFollow();
 	afx_msg void OnToggleFollow();
 	afx_msg void OnViewControlpanel();
@@ -295,8 +299,8 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnNextInstrument();
 	afx_msg void OnPrevInstrument();
-	afx_msg void OnNewInstrumentMenu(NMHDR * pNotifyStruct, LRESULT * result);
-	afx_msg void OnLoadInstrumentMenu(NMHDR * pNotifyStruct, LRESULT * result);
+	afx_msg void OnNewInstrumentMenu(NMHDR* pNotifyStruct, LRESULT* result);
+	afx_msg void OnLoadInstrumentMenu(NMHDR* pNotifyStruct, LRESULT* result);
 	afx_msg void OnAddInstrument2A03();
 	afx_msg void OnAddInstrumentVRC6();
 	afx_msg void OnAddInstrumentVRC7();
@@ -318,14 +322,14 @@ public:
 	afx_msg void OnEditRemoveUnusedPatterns();
 	afx_msg void OnEditMergeDuplicatedPatterns();
 	afx_msg void OnEditEnableMIDI();
-	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
 	afx_msg void OnDecayFast();
 	afx_msg void OnDecaySlow();
 	afx_msg void OnFrameeditorTop();
 	afx_msg void OnFrameeditorLeft();
-	afx_msg void OnUpdateFrameeditorTop(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateFrameeditorLeft(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateFrameeditorTop(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFrameeditorLeft(CCmdUI* pCmdUI);
 	afx_msg void OnToggleSpeed();
 	afx_msg LRESULT OnDisplayMessageString(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnDisplayMessageID(WPARAM wParam, LPARAM lParam);
@@ -336,6 +340,6 @@ public:
 };
 
 // Global DPI functions
-int  SX(int pt);
-int  SY(int pt);
-void ScaleMouse(CPoint &pt);
+int SX(int pt);
+int SY(int pt);
+void ScaleMouse(CPoint& pt);

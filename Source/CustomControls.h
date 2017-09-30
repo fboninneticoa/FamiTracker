@@ -26,12 +26,13 @@
 class CMainFrame;
 
 // The instrument list
-class CInstrumentList : public CListCtrl {
-	DECLARE_DYNAMIC(CInstrumentList)
+class CInstrumentList : public CListCtrl
+{
+DECLARE_DYNAMIC(CInstrumentList)
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
-	CInstrumentList(CMainFrame *pMainFrame);
+	CInstrumentList(CMainFrame* pMainFrame);
 
 	int GetInstrumentIndex(int Selection) const;
 	int FindInstrument(int Index) const;
@@ -40,11 +41,11 @@ public:
 	void SelectPreviousItem();
 	void InsertInstrument(int Index);
 	void RemoveInstrument(int Index);
-	void SetInstrumentName(int Index, TCHAR *pName);
+	void SetInstrumentName(int Index, TCHAR* pName);
 
 private:
-	CMainFrame *m_pMainFrame;
-	CImageList *m_pDragImage;
+	CMainFrame* m_pMainFrame;
+	CImageList* m_pDragImage;
 	UINT m_nDragIndex;
 	UINT m_nDropIndex;
 	bool m_bDragging;
@@ -52,24 +53,26 @@ private:
 public:
 	afx_msg void OnContextMenu(CWnd*, CPoint);
 	afx_msg void OnAddInstrument();
-	afx_msg void OnLvnBeginlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnKeydown(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnLvnBegindrag(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnBeginlabeledit(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMClick(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnItemchanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMDblclk(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 // Edit controls that can be enabled by double clicking
-class CLockedEdit : public CEdit {
-	DECLARE_DYNAMIC(CLockedEdit)
+class CLockedEdit : public CEdit
+{
+DECLARE_DYNAMIC(CLockedEdit)
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
-	CLockedEdit() : m_bUpdate(false), m_iValue(0) {
+	CLockedEdit() : m_bUpdate(false), m_iValue(0)
+	{
 	};
 	bool IsEditable() const;
 	bool Update();
@@ -88,10 +91,11 @@ public:
 
 
 // Edit controls that displays a banner when empty
-class CBannerEdit : public CEdit {
-	DECLARE_DYNAMIC(CBannerEdit)
+class CBannerEdit : public CEdit
+{
+DECLARE_DYNAMIC(CBannerEdit)
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	CBannerEdit(UINT nID) : CEdit() { m_strText.LoadString(nID); };
 protected:

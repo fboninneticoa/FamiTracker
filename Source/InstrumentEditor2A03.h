@@ -24,25 +24,25 @@ class CSequenceEditor;
 
 class CInstrumentEditor2A03 : public CSequenceInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditor2A03)
+DECLARE_DYNAMIC(CInstrumentEditor2A03)
 
 public:
-	CInstrumentEditor2A03(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditor2A03(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditor2A03();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("2A03 settings"); };
+	virtual TCHAR* GetTitle() const { return _T("2A03 settings"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 	virtual void SetSequenceString(CString Sequence, bool Changed);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_INTERNAL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual void OnKeyReturn();
-	
+
 	void TranslateMML(CString String, int Max, int Min);
 	void SelectSequence(int Sequence, int Type);
 
@@ -50,12 +50,12 @@ protected:
 	static LPCTSTR INST_SETTINGS_2A03[CInstrument2A03::SEQUENCE_COUNT];
 
 protected:
-	CInstrument2A03	*m_pInstrument;
+	CInstrument2A03* m_pInstrument;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedInstsettings(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeSeqIndex();
 	afx_msg void OnBnClickedFreeSeq();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -45,7 +45,7 @@ static CString GetDumpFilename(int counter)
 	//
 	CString filename;
 	CTime t = CTime::GetCurrentTime();
-	
+
 	filename = MINIDUMP_FILE_PRE;
 
 	// Date
@@ -70,7 +70,7 @@ static CString GetDumpFilename(int counter)
 	return filename;
 }
 
-static LONG WINAPI ExceptionHandler(__in struct _EXCEPTION_POINTERS *ep)
+static LONG WINAPI ExceptionHandler(__in struct _EXCEPTION_POINTERS* ep)
 {
 	static BOOL HasDumped = FALSE;
 
@@ -87,18 +87,20 @@ static LONG WINAPI ExceptionHandler(__in struct _EXCEPTION_POINTERS *ep)
 
 	while (GetFileAttributes(MinidumpFile) != 0xFFFFFFFF)
 		MinidumpFile = GetDumpFilename(dump_counter++);
-	
-	HANDLE hFile = CreateFile(MinidumpFile, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
+
+	HANDLE hFile = CreateFile(MinidumpFile, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,
+	                          NULL);
 
 	// Save the memory dump file
-	if ((hFile != NULL) && (hFile != INVALID_HANDLE_VALUE))  {
+	if ((hFile != NULL) && (hFile != INVALID_HANDLE_VALUE))
+	{
 		// Create the minidump 
-		MINIDUMP_EXCEPTION_INFORMATION mdei; 
-		mdei.ThreadId			= GetCurrentThreadId();
-		mdei.ExceptionPointers	= ep;
-		mdei.ClientPointers		= FALSE;
+		MINIDUMP_EXCEPTION_INFORMATION mdei;
+		mdei.ThreadId = GetCurrentThreadId();
+		mdei.ExceptionPointers = ep;
+		mdei.ClientPointers = FALSE;
 
-		HANDLE hProcess	  = GetCurrentProcess();
+		HANDLE hProcess = GetCurrentProcess();
 		DWORD dwProcessId = GetCurrentProcessId();
 
 		MiniDumpWriteDump(hProcess, dwProcessId, hFile, MiniDumpNormal, (ep != 0) ? &mdei : NULL, 0, 0);
@@ -120,15 +122,17 @@ static LONG WINAPI ExceptionHandler(__in struct _EXCEPTION_POINTERS *ep)
 	CString text;
 	text.Format(_T("This application has encountered a problem and needs to close.\n\n"));
 	text.AppendFormat(_T("Unhandled exception %X.\n\n"), ep->ExceptionRecord->ExceptionCode);
-	text.AppendFormat(_T("A memory dump file has been created (%s), please include this if you file a bug report!\n\n"), LPCTSTR(MinidumpFile));
+	text.AppendFormat(
+		_T("A memory dump file has been created (%s), please include this if you file a bug report!\n\n"),
+		LPCTSTR(MinidumpFile));
 	text.AppendFormat(_T("Attempting to save current module as %s."), LPCTSTR(DocDumpFile));
-//	text.Append(_T("Application will now close."));
+	//	text.Append(_T("Application will now close."));
 	AfxMessageBox(text, MB_ICONSTOP);
 
 	// Try to save the document
-	CFrameWnd *pFrameWnd = NULL;
-	CDocument *pDoc = NULL;
-	CWinApp *pApp = AfxGetApp();
+	CFrameWnd* pFrameWnd = NULL;
+	CDocument* pDoc = NULL;
+	CWinApp* pApp = AfxGetApp();
 
 	if (pApp != NULL)
 		pFrameWnd = (CFrameWnd*)pApp->m_pMainWnd;
@@ -143,7 +147,7 @@ static LONG WINAPI ExceptionHandler(__in struct _EXCEPTION_POINTERS *ep)
 	ExitProcess(0);
 
 	// (never called)
-	return EXCEPTION_CONTINUE_SEARCH; 
+	return EXCEPTION_CONTINUE_SEARCH;
 }
 
 void InstallExceptionHandler()
@@ -157,4 +161,3 @@ void UninstallExceptionHandler()
 }
 
 //#endif
-

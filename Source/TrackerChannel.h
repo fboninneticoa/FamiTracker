@@ -25,9 +25,10 @@
 
 #include <afxmt.h>	// For CMutex
 
-enum note_prio_t {
-	NOTE_PRIO_0, 
-	NOTE_PRIO_1, 
+enum note_prio_t
+{
+	NOTE_PRIO_0,
+	NOTE_PRIO_1,
 	NOTE_PRIO_2
 };
 
@@ -43,7 +44,7 @@ public:
 	void SetColumnCount(int Count);
 
 	stChanNote GetNote();
-	void SetNote(stChanNote &Note, note_prio_t Priority);
+	void SetNote(stChanNote& Note, note_prio_t Priority);
 	bool NewNoteData() const;
 	void Reset();
 
@@ -53,7 +54,7 @@ public:
 	void SetPitch(int Pitch);
 	int GetPitch() const;
 
-	bool IsInstrumentCompatible(int Instrument, CFamiTrackerDoc *pDoc) const;
+	bool IsInstrumentCompatible(int Instrument, CFamiTrackerDoc* pDoc) const;
 
 private:
 	LPCTSTR m_pChannelName;
@@ -65,7 +66,7 @@ private:
 
 	stChanNote m_Note;
 	bool m_bNewNote;
-	note_prio_t	m_iNotePriority;
+	note_prio_t m_iNotePriority;
 
 	int m_iVolumeMeter;
 	int m_iPitch;

@@ -27,6 +27,7 @@
 // CConfigGeneral dialog
 
 IMPLEMENT_DYNAMIC(CConfigGeneral, CPropertyPage)
+
 CConfigGeneral::CConfigGeneral()
 	: CPropertyPage(CConfigGeneral::IDD)
 {
@@ -43,25 +44,25 @@ void CConfigGeneral::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigGeneral, CPropertyPage)
-	ON_BN_CLICKED(IDC_OPT_WRAPCURSOR, OnBnClickedOptWrapcursor)
-	ON_BN_CLICKED(IDC_OPT_WRAPFRAMES, OnBnClickedOptWrapFrames)
-	ON_BN_CLICKED(IDC_OPT_FREECURSOR, OnBnClickedOptFreecursor)
-	ON_BN_CLICKED(IDC_OPT_WAVEPREVIEW, OnBnClickedOptWavepreview)
-	ON_BN_CLICKED(IDC_OPT_KEYREPEAT, OnBnClickedOptKeyrepeat)
-	ON_BN_CLICKED(IDC_STYLE1, OnBnClickedStyle1)
-	ON_BN_CLICKED(IDC_STYLE2, OnBnClickedStyle2)
-	ON_BN_CLICKED(IDC_STYLE3, OnBnClickedStyle3)
-	ON_BN_CLICKED(IDC_OPT_HEXROW, OnBnClickedOptHexadecimal)
-	ON_BN_CLICKED(IDC_OPT_FRAMEPREVIEW, OnBnClickedOptFramepreview)
-	ON_BN_CLICKED(IDC_OPT_NODPCMRESET, OnBnClickedOptNodpcmreset)
-	ON_CBN_EDITUPDATE(IDC_PAGELENGTH, OnCbnEditupdatePagelength)
-	ON_CBN_SELENDOK(IDC_PAGELENGTH, OnCbnSelendokPagelength)
-	ON_BN_CLICKED(IDC_OPT_NOSTEPMOVE, OnBnClickedOptNostepmove)
-	ON_BN_CLICKED(IDC_OPT_PULLUPDELETE, OnBnClickedOptPullupdelete)
-	ON_BN_CLICKED(IDC_OPT_BACKUPS, OnBnClickedOptBackups)
-	ON_BN_CLICKED(IDC_OPT_SINGLEINSTANCE, OnBnClickedOptSingleInstance)
-	ON_BN_CLICKED(IDC_OPT_PREVIEWFULLROW, OnBnClickedOptPreviewFullRow)
-	ON_BN_CLICKED(IDC_OPT_DOUBLECLICK, OnBnClickedOptDisableDoubleClick)
+		ON_BN_CLICKED(IDC_OPT_WRAPCURSOR, OnBnClickedOptWrapcursor)
+		ON_BN_CLICKED(IDC_OPT_WRAPFRAMES, OnBnClickedOptWrapFrames)
+		ON_BN_CLICKED(IDC_OPT_FREECURSOR, OnBnClickedOptFreecursor)
+		ON_BN_CLICKED(IDC_OPT_WAVEPREVIEW, OnBnClickedOptWavepreview)
+		ON_BN_CLICKED(IDC_OPT_KEYREPEAT, OnBnClickedOptKeyrepeat)
+		ON_BN_CLICKED(IDC_STYLE1, OnBnClickedStyle1)
+		ON_BN_CLICKED(IDC_STYLE2, OnBnClickedStyle2)
+		ON_BN_CLICKED(IDC_STYLE3, OnBnClickedStyle3)
+		ON_BN_CLICKED(IDC_OPT_HEXROW, OnBnClickedOptHexadecimal)
+		ON_BN_CLICKED(IDC_OPT_FRAMEPREVIEW, OnBnClickedOptFramepreview)
+		ON_BN_CLICKED(IDC_OPT_NODPCMRESET, OnBnClickedOptNodpcmreset)
+		ON_CBN_EDITUPDATE(IDC_PAGELENGTH, OnCbnEditupdatePagelength)
+		ON_CBN_SELENDOK(IDC_PAGELENGTH, OnCbnSelendokPagelength)
+		ON_BN_CLICKED(IDC_OPT_NOSTEPMOVE, OnBnClickedOptNostepmove)
+		ON_BN_CLICKED(IDC_OPT_PULLUPDELETE, OnBnClickedOptPullupdelete)
+		ON_BN_CLICKED(IDC_OPT_BACKUPS, OnBnClickedOptBackups)
+		ON_BN_CLICKED(IDC_OPT_SINGLEINSTANCE, OnBnClickedOptSingleInstance)
+		ON_BN_CLICKED(IDC_OPT_PREVIEWFULLROW, OnBnClickedOptPreviewFullRow)
+		ON_BN_CLICKED(IDC_OPT_DOUBLECLICK, OnBnClickedOptDisableDoubleClick)
 END_MESSAGE_MAP()
 
 
@@ -86,7 +87,7 @@ BOOL CConfigGeneral::OnSetActive()
 	CheckDlgButton(IDC_OPT_SINGLEINSTANCE, m_bSingleInstance);
 	CheckDlgButton(IDC_OPT_PREVIEWFULLROW, m_bPreviewFullRow);
 	CheckDlgButton(IDC_OPT_DOUBLECLICK, m_bDisableDblClick);
-	
+
 	SetDlgItemInt(IDC_PAGELENGTH, m_iPageStepSize, FALSE);
 	return CPropertyPage::OnSetActive();
 }
@@ -132,33 +133,33 @@ BOOL CConfigGeneral::OnApply()
 	BOOL Trans;
 
 	m_iPageStepSize = GetDlgItemInt(IDC_PAGELENGTH, &Trans, FALSE);
-	
+
 	if (Trans == FALSE)
 		m_iPageStepSize = 4;
 	else if (m_iPageStepSize > MAX_PATTERN_LENGTH)
 		m_iPageStepSize = MAX_PATTERN_LENGTH;
 
-	theApp.GetSettings()->General.bWrapCursor		= m_bWrapCursor;
-	theApp.GetSettings()->General.bWrapFrames		= m_bWrapFrames;
-	theApp.GetSettings()->General.bFreeCursorEdit	= m_bFreeCursorEdit;
-	theApp.GetSettings()->General.bWavePreview		= m_bPreviewWAV;
-	theApp.GetSettings()->General.bKeyRepeat		= m_bKeyRepeat;
-	theApp.GetSettings()->General.bRowInHex			= m_bRowInHex;
-	theApp.GetSettings()->General.iEditStyle		= m_iEditStyle;
-	theApp.GetSettings()->General.bFramePreview		= m_bFramePreview;
-	theApp.GetSettings()->General.bNoDPCMReset		= m_bNoDPCMReset;
-	theApp.GetSettings()->General.bNoStepMove		= m_bNoStepMove;
-	theApp.GetSettings()->General.iPageStepSize		= m_iPageStepSize;
-	theApp.GetSettings()->General.bPullUpDelete		= m_bPullUpDelete;
-	theApp.GetSettings()->General.bBackups			= m_bBackups;
-	theApp.GetSettings()->General.bSingleInstance	= m_bSingleInstance;
-	theApp.GetSettings()->General.bPreviewFullRow	= m_bPreviewFullRow;
-	theApp.GetSettings()->General.bDblClickSelect	= m_bDisableDblClick;
+	theApp.GetSettings()->General.bWrapCursor = m_bWrapCursor;
+	theApp.GetSettings()->General.bWrapFrames = m_bWrapFrames;
+	theApp.GetSettings()->General.bFreeCursorEdit = m_bFreeCursorEdit;
+	theApp.GetSettings()->General.bWavePreview = m_bPreviewWAV;
+	theApp.GetSettings()->General.bKeyRepeat = m_bKeyRepeat;
+	theApp.GetSettings()->General.bRowInHex = m_bRowInHex;
+	theApp.GetSettings()->General.iEditStyle = m_iEditStyle;
+	theApp.GetSettings()->General.bFramePreview = m_bFramePreview;
+	theApp.GetSettings()->General.bNoDPCMReset = m_bNoDPCMReset;
+	theApp.GetSettings()->General.bNoStepMove = m_bNoStepMove;
+	theApp.GetSettings()->General.iPageStepSize = m_iPageStepSize;
+	theApp.GetSettings()->General.bPullUpDelete = m_bPullUpDelete;
+	theApp.GetSettings()->General.bBackups = m_bBackups;
+	theApp.GetSettings()->General.bSingleInstance = m_bSingleInstance;
+	theApp.GetSettings()->General.bPreviewFullRow = m_bPreviewFullRow;
+	theApp.GetSettings()->General.bDblClickSelect = m_bDisableDblClick;
 
-	theApp.GetSettings()->Keys.iKeyNoteCut			= m_iKeyNoteCut;
-	theApp.GetSettings()->Keys.iKeyNoteRelease		= m_iKeyNoteRelease;
-	theApp.GetSettings()->Keys.iKeyClear			= m_iKeyClear;
-	theApp.GetSettings()->Keys.iKeyRepeat			= m_iKeyRepeat;
+	theApp.GetSettings()->Keys.iKeyNoteCut = m_iKeyNoteCut;
+	theApp.GetSettings()->Keys.iKeyNoteRelease = m_iKeyNoteRelease;
+	theApp.GetSettings()->Keys.iKeyClear = m_iKeyClear;
+	theApp.GetSettings()->Keys.iKeyRepeat = m_iKeyRepeat;
 
 	return CPropertyPage::OnApply();
 }
@@ -169,27 +170,27 @@ BOOL CConfigGeneral::OnInitDialog()
 
 	CPropertyPage::OnInitDialog();
 
-	m_bWrapCursor		= theApp.GetSettings()->General.bWrapCursor;
-	m_bWrapFrames		= theApp.GetSettings()->General.bWrapFrames;
-	m_bFreeCursorEdit	= theApp.GetSettings()->General.bFreeCursorEdit;
-	m_bPreviewWAV		= theApp.GetSettings()->General.bWavePreview;
-	m_bKeyRepeat		= theApp.GetSettings()->General.bKeyRepeat;
-	m_bRowInHex			= theApp.GetSettings()->General.bRowInHex;
-	m_iEditStyle		= theApp.GetSettings()->General.iEditStyle;
-	m_bFramePreview		= theApp.GetSettings()->General.bFramePreview;
-	m_bNoDPCMReset		= theApp.GetSettings()->General.bNoDPCMReset;
-	m_bNoStepMove		= theApp.GetSettings()->General.bNoStepMove;
-	m_iPageStepSize		= theApp.GetSettings()->General.iPageStepSize;
-	m_bPullUpDelete		= theApp.GetSettings()->General.bPullUpDelete;
-	m_bBackups			= theApp.GetSettings()->General.bBackups;
-	m_bSingleInstance	= theApp.GetSettings()->General.bSingleInstance;
-	m_bPreviewFullRow	= theApp.GetSettings()->General.bPreviewFullRow;
-	m_bDisableDblClick	= theApp.GetSettings()->General.bDblClickSelect;
+	m_bWrapCursor = theApp.GetSettings()->General.bWrapCursor;
+	m_bWrapFrames = theApp.GetSettings()->General.bWrapFrames;
+	m_bFreeCursorEdit = theApp.GetSettings()->General.bFreeCursorEdit;
+	m_bPreviewWAV = theApp.GetSettings()->General.bWavePreview;
+	m_bKeyRepeat = theApp.GetSettings()->General.bKeyRepeat;
+	m_bRowInHex = theApp.GetSettings()->General.bRowInHex;
+	m_iEditStyle = theApp.GetSettings()->General.iEditStyle;
+	m_bFramePreview = theApp.GetSettings()->General.bFramePreview;
+	m_bNoDPCMReset = theApp.GetSettings()->General.bNoDPCMReset;
+	m_bNoStepMove = theApp.GetSettings()->General.bNoStepMove;
+	m_iPageStepSize = theApp.GetSettings()->General.iPageStepSize;
+	m_bPullUpDelete = theApp.GetSettings()->General.bPullUpDelete;
+	m_bBackups = theApp.GetSettings()->General.bBackups;
+	m_bSingleInstance = theApp.GetSettings()->General.bSingleInstance;
+	m_bPreviewFullRow = theApp.GetSettings()->General.bPreviewFullRow;
+	m_bDisableDblClick = theApp.GetSettings()->General.bDblClickSelect;
 
-	m_iKeyNoteCut		= theApp.GetSettings()->Keys.iKeyNoteCut; 
-	m_iKeyNoteRelease	= theApp.GetSettings()->Keys.iKeyNoteRelease; 
-	m_iKeyClear			= theApp.GetSettings()->Keys.iKeyClear; 
-	m_iKeyRepeat		= theApp.GetSettings()->Keys.iKeyRepeat;
+	m_iKeyNoteCut = theApp.GetSettings()->Keys.iKeyNoteCut;
+	m_iKeyNoteRelease = theApp.GetSettings()->Keys.iKeyNoteRelease;
+	m_iKeyClear = theApp.GetSettings()->Keys.iKeyClear;
+	m_iKeyRepeat = theApp.GetSettings()->Keys.iKeyRepeat;
 
 	GetKeyNameText(MapVirtualKey(m_iKeyNoteCut, MAPVK_VK_TO_VSC) << 16, Text, 64);
 	SetDlgItemText(IDC_KEY_NOTE_CUT, Text);
@@ -205,18 +206,20 @@ BOOL CConfigGeneral::OnInitDialog()
 	m_wndToolTip.Create(this, TTS_ALWAYSTIP);
 	m_wndToolTip.Activate(TRUE);
 
-	CWnd *pWndChild = GetWindow(GW_CHILD);
+	CWnd* pWndChild = GetWindow(GW_CHILD);
 	CString strToolTip;
 
-	while (pWndChild) {
+	while (pWndChild)
+	{
 		int nID = pWndChild->GetDlgCtrlID();
-		if (strToolTip.LoadString(nID)) {
+		if (strToolTip.LoadString(nID))
+		{
 			m_wndToolTip.AddTool(pWndChild, strToolTip);
 		}
 		pWndChild = pWndChild->GetWindow(GW_HWNDNEXT);
 	}
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -304,29 +307,31 @@ void CConfigGeneral::OnCbnSelendokPagelength()
 
 BOOL CConfigGeneral::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message == WM_KEYDOWN) {
+	if (pMsg->message == WM_KEYDOWN)
+	{
 		char Text[64];
 		int id = GetFocus()->GetDlgCtrlID();
 		int key = pMsg->wParam;
 
-		if (key == 27)		// ESC
+		if (key == 27) // ESC
 			key = 0;
 
-		switch (id) {
-			case IDC_KEY_NOTE_CUT:
-				m_iKeyNoteCut = key;
-				break;
-			case IDC_KEY_NOTE_RELEASE:
-				m_iKeyNoteRelease = key;
-				break;
-			case IDC_KEY_CLEAR:
-				m_iKeyClear = key;
-				break;
-			case IDC_KEY_REPEAT:
-				m_iKeyRepeat = key;
-				break;
-			default:
-				return CPropertyPage::PreTranslateMessage(pMsg);
+		switch (id)
+		{
+		case IDC_KEY_NOTE_CUT:
+			m_iKeyNoteCut = key;
+			break;
+		case IDC_KEY_NOTE_RELEASE:
+			m_iKeyNoteRelease = key;
+			break;
+		case IDC_KEY_CLEAR:
+			m_iKeyClear = key;
+			break;
+		case IDC_KEY_REPEAT:
+			m_iKeyRepeat = key;
+			break;
+		default:
+			return CPropertyPage::PreTranslateMessage(pMsg);
 		}
 
 		GetKeyNameText(key ? pMsg->lParam : 0, Text, 64);

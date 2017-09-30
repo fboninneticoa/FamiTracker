@@ -44,9 +44,9 @@ CInstrumentVRC7::CInstrumentVRC7() :
 	m_iRegs[7] = 0x0F;
 }
 
-CInstrument *CInstrumentVRC7::Clone() const
+CInstrument* CInstrumentVRC7::Clone() const
 {
-	CInstrumentVRC7 *pNew = new CInstrumentVRC7();
+	CInstrumentVRC7* pNew = new CInstrumentVRC7();
 
 	pNew->SetPatch(GetPatch());
 
@@ -62,7 +62,7 @@ void CInstrumentVRC7::Setup()
 {
 }
 
-void CInstrumentVRC7::Store(CDocumentFile *pDocFile)
+void CInstrumentVRC7::Store(CDocumentFile* pDocFile)
 {
 	pDocFile->WriteBlockInt(m_iPatch);
 
@@ -70,7 +70,7 @@ void CInstrumentVRC7::Store(CDocumentFile *pDocFile)
 		pDocFile->WriteBlockChar(GetCustomReg(i));
 }
 
-bool CInstrumentVRC7::Load(CDocumentFile *pDocFile)
+bool CInstrumentVRC7::Load(CDocumentFile* pDocFile)
 {
 	m_iPatch = pDocFile->GetBlockInt();
 
@@ -80,7 +80,7 @@ bool CInstrumentVRC7::Load(CDocumentFile *pDocFile)
 	return true;
 }
 
-void CInstrumentVRC7::SaveFile(CInstrumentFile *pFile, const CFamiTrackerDoc *pDoc)
+void CInstrumentVRC7::SaveFile(CInstrumentFile* pFile, const CFamiTrackerDoc* pDoc)
 {
 	pFile->WriteInt(m_iPatch);
 
@@ -88,7 +88,7 @@ void CInstrumentVRC7::SaveFile(CInstrumentFile *pFile, const CFamiTrackerDoc *pD
 		pFile->WriteChar(GetCustomReg(i));
 }
 
-bool CInstrumentVRC7::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTrackerDoc *pDoc)
+bool CInstrumentVRC7::LoadFile(CInstrumentFile* pFile, int iVersion, CFamiTrackerDoc* pDoc)
 {
 	m_iPatch = pFile->ReadInt();
 
@@ -98,15 +98,17 @@ bool CInstrumentVRC7::LoadFile(CInstrumentFile *pFile, int iVersion, CFamiTracke
 	return true;
 }
 
-int CInstrumentVRC7::Compile(CFamiTrackerDoc *pDoc, CChunk *pChunk, int Index)
+int CInstrumentVRC7::Compile(CFamiTrackerDoc* pDoc, CChunk* pChunk, int Index)
 {
 	int Patch = GetPatch();
 
-	pChunk->StoreByte(Patch << 4);	// Shift up by 4 to make room for volume
+	pChunk->StoreByte(Patch << 4); // Shift up by 4 to make room for volume
 
-	if (Patch == 0) {
+	if (Patch == 0)
+	{
 		// Write custom patch settings
-		for (int i = 0; i < 8; ++i) {
+		for (int i = 0; i < 8; ++i)
+		{
 			pChunk->StoreByte(GetCustomReg(i));
 		}
 	}
@@ -116,7 +118,7 @@ int CInstrumentVRC7::Compile(CFamiTrackerDoc *pDoc, CChunk *pChunk, int Index)
 
 bool CInstrumentVRC7::CanRelease() const
 {
-	return false;	// This can use release but disable it when previewing notes
+	return false; // This can use release but disable it when previewing notes
 }
 
 void CInstrumentVRC7::SetPatch(unsigned int Patch)

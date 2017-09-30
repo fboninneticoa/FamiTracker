@@ -29,7 +29,7 @@
 #include "CreateWaveDlg.h"
 
 const int MAX_LOOP_TIMES = 99;
-const int MAX_PLAY_TIME	 = (99 * 60) + 0;
+const int MAX_PLAY_TIME = (99 * 60) + 0;
 
 // CCreateWaveDlg dialog
 
@@ -51,9 +51,9 @@ void CCreateWaveDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CCreateWaveDlg, CDialog)
-	ON_BN_CLICKED(IDC_BEGIN, &CCreateWaveDlg::OnBnClickedBegin)
-	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_LOOP, &CCreateWaveDlg::OnDeltaposSpinLoop)
-	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_TIME, &CCreateWaveDlg::OnDeltaposSpinTime)
+		ON_BN_CLICKED(IDC_BEGIN, &CCreateWaveDlg::OnBnClickedBegin)
+		ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_LOOP, &CCreateWaveDlg::OnDeltaposSpinLoop)
+		ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_TIME, &CCreateWaveDlg::OnDeltaposSpinTime)
 END_MESSAGE_MAP()
 
 int CCreateWaveDlg::GetFrameLoopCount() const
@@ -92,19 +92,20 @@ void CCreateWaveDlg::OnBnClickedBegin()
 	render_end_t EndType = SONG_TIME_LIMIT;
 	int EndParam = 0;
 
-	CFamiTrackerDoc *pDoc = CFamiTrackerDoc::GetDoc();
-	CFamiTrackerView *pView = CFamiTrackerView::GetView();
+	CFamiTrackerDoc* pDoc = CFamiTrackerDoc::GetDoc();
+	CFamiTrackerView* pView = CFamiTrackerView::GetView();
 
 	CString FileName = pDoc->GetFileTitle();
 
 	int Track = m_ctlTracks.GetCurSel();
 
-	if (pDoc->GetTrackCount() > 1) {
+	if (pDoc->GetTrackCount() > 1)
+	{
 		FileName.AppendFormat(_T(" - Track %02i (%s)"), Track + 1, pDoc->GetTrackTitle(Track).GetBuffer());
 	}
 
 	CWavProgressDlg ProgressDlg;
-	CString fileFilter = LoadDefaultFilter(IDS_FILTER_WAV, _T(".wav"));	
+	CString fileFilter = LoadDefaultFilter(IDS_FILTER_WAV, _T(".wav"));
 	CFileDialog SaveDialog(FALSE, _T("wav"), FileName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, fileFilter);
 
 	// Close this dialog
@@ -113,13 +114,15 @@ void CCreateWaveDlg::OnBnClickedBegin()
 	// Ask for file location
 	if (SaveDialog.DoModal() == IDCANCEL)
 		return;
-	
+
 	// Save
-	if (IsDlgButtonChecked(IDC_RADIO_LOOP)) {
+	if (IsDlgButtonChecked(IDC_RADIO_LOOP))
+	{
 		EndType = SONG_LOOP_LIMIT;
 		EndParam = GetFrameLoopCount();
 	}
-	else if (IsDlgButtonChecked(IDC_RADIO_TIME)) {
+	else if (IsDlgButtonChecked(IDC_RADIO_TIME))
+	{
 		EndType = SONG_TIME_LIMIT;
 		EndParam = GetTimeLimit();
 	}
@@ -127,7 +130,8 @@ void CCreateWaveDlg::OnBnClickedBegin()
 	pView->UnmuteAllChannels();
 
 	// Mute selected channels
-	for (int i = 0; i < m_ctlChannelList.GetCount(); ++i) {
+	for (int i = 0; i < m_ctlChannelList.GetCount(); ++i)
+	{
 		if (m_ctlChannelList.GetCheck(i) == 0)
 			pView->ToggleChannel(i);
 	}
@@ -154,25 +158,27 @@ BOOL CCreateWaveDlg::OnInitDialog()
 
 	m_ctlTracks.SubclassDlgItem(IDC_TRACKS, this);
 
-	CFamiTrackerDoc *pDoc = CFamiTrackerDoc::GetDoc();
+	CFamiTrackerDoc* pDoc = CFamiTrackerDoc::GetDoc();
 
 	int ChannelCount = pDoc->GetAvailableChannels();
-	for (int i = 0; i < ChannelCount; ++i) {
+	for (int i = 0; i < ChannelCount; ++i)
+	{
 		m_ctlChannelList.AddString(pDoc->GetChannel(i)->GetChannelName());
 		m_ctlChannelList.SetCheck(i, 1);
 	}
 
-	for (unsigned int i = 0; i < pDoc->GetTrackCount(); ++i) {
+	for (unsigned int i = 0; i < pDoc->GetTrackCount(); ++i)
+	{
 		CString text;
 		text.Format(_T("#%02i - "), i + 1);
 		text.Append(pDoc->GetTrackTitle(i));
 		m_ctlTracks.AddString(text);
 	}
 
-	CMainFrame *pMainFrm = static_cast<CMainFrame*>(theApp.GetMainWnd());
+	CMainFrame* pMainFrm = static_cast<CMainFrame*>(theApp.GetMainWnd());
 	m_ctlTracks.SetCurSel(pMainFrm->GetSelectedTrack());
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -181,7 +187,7 @@ void CCreateWaveDlg::ShowDialog()
 	CDialog::DoModal();
 }
 
-void CCreateWaveDlg::OnDeltaposSpinLoop(NMHDR *pNMHDR, LRESULT *pResult)
+void CCreateWaveDlg::OnDeltaposSpinLoop(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	int Times = GetFrameLoopCount() - pNMUpDown->iDelta;
@@ -197,7 +203,7 @@ void CCreateWaveDlg::OnDeltaposSpinLoop(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CCreateWaveDlg::OnDeltaposSpinTime(NMHDR *pNMHDR, LRESULT *pResult)
+void CCreateWaveDlg::OnDeltaposSpinTime(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	int Minutes, Seconds;

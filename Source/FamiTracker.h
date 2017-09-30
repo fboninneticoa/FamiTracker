@@ -35,8 +35,9 @@
 #include "resource.h"       // main symbols
 
 // Inter-process commands
-enum {
-	IPC_LOAD = 1,	
+enum
+{
+	IPC_LOAD = 1,
 	IPC_LOAD_PLAY
 };
 
@@ -74,7 +75,7 @@ class CCustomExporters;
 
 class CMutex;
 
-enum play_mode_t;	// Defined in soundgen.h
+enum play_mode_t; // Defined in soundgen.h
 
 // CFamiTrackerApp:
 // See FamiTracker.cpp for the implementation of this class
@@ -90,32 +91,56 @@ public:
 	// Public functions
 	//
 public:
-	void			LoadSoundConfig();
-	void			ReloadColorScheme();
-	int				GetCPUUsage() const;
-	bool			IsThemeActive() const;
-	void			RemoveSoundGenerator();
-	void			ThreadDisplayMessage(LPCTSTR lpszText, UINT nType = 0, UINT nIDHelp = 0);
-	void			ThreadDisplayMessage(UINT nIDPrompt, UINT nType = 0, UINT nIDHelp = 0);
+	void LoadSoundConfig();
+	void ReloadColorScheme();
+	int GetCPUUsage() const;
+	bool IsThemeActive() const;
+	void RemoveSoundGenerator();
+	void ThreadDisplayMessage(LPCTSTR lpszText, UINT nType = 0, UINT nIDHelp = 0);
+	void ThreadDisplayMessage(UINT nIDPrompt, UINT nType = 0, UINT nIDHelp = 0);
 
 	// Tracker player functions
-	void			StartPlayer(play_mode_t Mode);
-	void			StopPlayer();
-	void			StopPlayerAndWait();
-	void			TogglePlayer();
-	bool			IsPlaying() const;
-	void			ResetPlayer();
-	void			SilentEverything();
-	void			WaitUntilStopped() const;
+	void StartPlayer(play_mode_t Mode);
+	void StopPlayer();
+	void StopPlayerAndWait();
+	void TogglePlayer();
+	bool IsPlaying() const;
+	void ResetPlayer();
+	void SilentEverything();
+	void WaitUntilStopped() const;
 
 	// Get-functions
-	CAccelerator	*GetAccelerator() const		{ ASSERT(m_pAccel); return m_pAccel; }
-	CSoundGen		*GetSoundGenerator() const	{ ASSERT(m_pSoundGenerator); return m_pSoundGenerator; }
-	CMIDI			*GetMIDI() const			{ ASSERT(m_pMIDI); return m_pMIDI; }
-	CSettings		*GetSettings() const		{ ASSERT(m_pSettings); return m_pSettings; }
-	CChannelMap		*GetChannelMap() const		{ ASSERT(m_pChannelMap); return m_pChannelMap; }
-	
-	CCustomExporters *GetCustomExporters() const;
+	CAccelerator* GetAccelerator() const
+	{
+		ASSERT(m_pAccel);
+		return m_pAccel;
+	}
+
+	CSoundGen* GetSoundGenerator() const
+	{
+		ASSERT(m_pSoundGenerator);
+		return m_pSoundGenerator;
+	}
+
+	CMIDI* GetMIDI() const
+	{
+		ASSERT(m_pMIDI);
+		return m_pMIDI;
+	}
+
+	CSettings* GetSettings() const
+	{
+		ASSERT(m_pSettings);
+		return m_pSettings;
+	}
+
+	CChannelMap* GetChannelMap() const
+	{
+		ASSERT(m_pChannelMap);
+		return m_pChannelMap;
+	}
+
+	CCustomExporters* GetCustomExporters() const;
 
 #ifdef EXPORT_TEST
 	void			VerifyExport() const;
@@ -129,47 +154,48 @@ public:
 private:
 	void CheckAppThemed();
 	void ShutDownSynth();
-	bool CheckSingleInstance(CFTCommandLineInfo &cmdInfo);
+	bool CheckSingleInstance(CFTCommandLineInfo& cmdInfo);
 	void RegisterSingleInstance();
 	void UnregisterSingleInstance();
 	void CheckNewVersion();
 	void LoadLocalization();
 
 protected:
-	BOOL DoPromptFileName(CString& fileName, CString& filePath, UINT nIDSTitle, DWORD lFlags, BOOL bOpenFileDialog, CDocTemplate* pTemplate);
+	BOOL DoPromptFileName(CString& fileName, CString& filePath, UINT nIDSTitle, DWORD lFlags, BOOL bOpenFileDialog,
+	                      CDocTemplate* pTemplate);
 
 	// Private variables and objects
 private:
 	// Objects
-	CMIDI			*m_pMIDI;
-	CAccelerator	*m_pAccel;					// Keyboard accelerator
-	CSoundGen		*m_pSoundGenerator;			// Sound synth & player
-	CSettings		*m_pSettings;				// Program settings
-	CChannelMap		*m_pChannelMap;
+	CMIDI* m_pMIDI;
+	CAccelerator* m_pAccel; // Keyboard accelerator
+	CSoundGen* m_pSoundGenerator; // Sound synth & player
+	CSettings* m_pSettings; // Program settings
+	CChannelMap* m_pChannelMap;
 
-	CCustomExporters *m_customExporters;
+	CCustomExporters* m_customExporters;
 
 	// Single instance stuff
-	CMutex			*m_pInstanceMutex;
-	HANDLE			m_hWndMapFile;
+	CMutex* m_pInstanceMutex;
+	HANDLE m_hWndMapFile;
 
-	bool			m_bThemeActive;
+	bool m_bThemeActive;
 
 #ifdef EXPORT_TEST
 	bool			m_bExportTesting;
 #endif
 
 #ifdef SUPPORT_TRANSLATIONS
-	HINSTANCE		m_hInstResDLL;
+	HINSTANCE m_hInstResDLL;
 #endif
 
 	// Overrides
 public:
 	virtual BOOL InitInstance();
-	virtual int ExitInstance();	
+	virtual int ExitInstance();
 
 	// Implementation
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileOpen();
@@ -182,6 +208,6 @@ extern CFamiTrackerApp theApp;
 // Global helper functions
 CString LoadDefaultFilter(LPCTSTR Name, LPCTSTR Ext);
 CString LoadDefaultFilter(UINT nID, LPCTSTR Ext);
-void AfxFormatString3(CString &rString, UINT nIDS, LPCTSTR lpsz1, LPCTSTR lpsz2, LPCTSTR lpsz3);
+void AfxFormatString3(CString& rString, UINT nIDS, LPCTSTR lpsz1, LPCTSTR lpsz2, LPCTSTR lpsz3);
 CString MakeIntString(int val, LPCTSTR format = _T("%i"));
 CString MakeFloatString(float val, LPCTSTR format = _T("%g"));

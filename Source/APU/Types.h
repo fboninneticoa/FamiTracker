@@ -22,15 +22,16 @@
 
 #include "../Common.h"
 
-const uint8 SNDCHIP_NONE  = 0;
-const uint8 SNDCHIP_VRC6  = 1;			// Konami VRCVI
-const uint8 SNDCHIP_VRC7  = 2;			// Konami VRCVII
-const uint8 SNDCHIP_FDS	  = 4;			// Famicom Disk Sound
-const uint8 SNDCHIP_MMC5  = 8;			// Nintendo MMC5
-const uint8 SNDCHIP_N163  = 16;			// Namco N-106
-const uint8 SNDCHIP_S5B	  = 32;			// Sunsoft 5B
+const uint8 SNDCHIP_NONE = 0;
+const uint8 SNDCHIP_VRC6 = 1; // Konami VRCVI
+const uint8 SNDCHIP_VRC7 = 2; // Konami VRCVII
+const uint8 SNDCHIP_FDS = 4; // Famicom Disk Sound
+const uint8 SNDCHIP_MMC5 = 8; // Nintendo MMC5
+const uint8 SNDCHIP_N163 = 16; // Namco N-106
+const uint8 SNDCHIP_S5B = 32; // Sunsoft 5B
 
-enum chan_id_t {
+enum chan_id_t
+{
 	CHANID_SQUARE1,
 	CHANID_SQUARE2,
 	CHANID_TRIANGLE,
@@ -67,10 +68,11 @@ enum chan_id_t {
 	CHANID_S5B_CH2,
 	CHANID_S5B_CH3,
 
-	CHANNELS		/* Total number of channels */
+	CHANNELS /* Total number of channels */
 };
 
-enum apu_machine_t {
-	MACHINE_NTSC, 
+enum apu_machine_t
+{
+	MACHINE_NTSC,
 	MACHINE_PAL
 };

@@ -22,40 +22,40 @@
 
 class CInstrumentEditorN163 : public CSequenceInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CInstrumentEditorN163)
+DECLARE_DYNAMIC(CInstrumentEditorN163)
 
 public:
-	CInstrumentEditorN163(CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditorN163(CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditorN163();
 	virtual int GetIDD() const { return IDD; };
-	virtual TCHAR *GetTitle() const { return _T("Envelopes"); };
+	virtual TCHAR* GetTitle() const { return _T("Envelopes"); };
 
 	// Public
 	virtual void SelectInstrument(int Instrument);
 	virtual void SetSequenceString(CString Sequence, bool Changed);
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_INSTRUMENT_INTERNAL };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual void OnKeyReturn();
 
 	void SelectSequence(int Sequence, int Type);
 	void TranslateMML(CString String, int Max, int Min);
 
 protected:
-	CInstrumentN163	*m_pInstrument;
+	CInstrumentN163* m_pInstrument;
 
 protected:
 	static LPCTSTR INST_SETTINGS_N163[CInstrumentN163::SEQUENCE_COUNT];
 
 	static const int MAX_VOLUME = 15;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedInstsettings(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeSeqIndex();
 	afx_msg void OnBnClickedFreeSeq();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

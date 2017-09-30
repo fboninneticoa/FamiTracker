@@ -28,13 +28,13 @@
 class CBinaryFileWriter
 {
 protected:
-	CBinaryFileWriter(CFile *pFile);
-	void Store(const void *pData, unsigned int Size);
+	CBinaryFileWriter(CFile* pFile);
+	void Store(const void* pData, unsigned int Size);
 	void Fill(unsigned int Size);
 	unsigned int GetWritten() const;
 
 private:
-	CFile		*m_pFile;
+	CFile* m_pFile;
 	unsigned int m_iDataWritten;
 };
 
@@ -42,13 +42,13 @@ private:
 class CChunkRenderBinary : public CBinaryFileWriter
 {
 public:
-	CChunkRenderBinary(CFile *pFile);
-	void StoreChunks(const std::vector<CChunk*> &Chunks);
-	void StoreSamples(const std::vector<const CDSample*> &Samples);
+	CChunkRenderBinary(CFile* pFile);
+	void StoreChunks(const std::vector<CChunk*>& Chunks);
+	void StoreSamples(const std::vector<const CDSample*>& Samples);
 
 private:
-	void StoreChunk(CChunk *pChunk);
-	void StoreSample(const CDSample *pDSample);
+	void StoreChunk(CChunk* pChunk);
+	void StoreSample(const CDSample* pDSample);
 
 private:
 	int m_iSampleAddress;
@@ -58,25 +58,25 @@ private:
 class CChunkRenderNSF : public CBinaryFileWriter
 {
 public:
-	CChunkRenderNSF(CFile *pFile, unsigned int StartAddr);
+	CChunkRenderNSF(CFile* pFile, unsigned int StartAddr);
 
-	void StoreDriver(const char *pDriver, unsigned int Size);
-	void StoreChunks(const std::vector<CChunk*> &Chunks);
-	void StoreChunksBankswitched(const std::vector<CChunk*> &Chunks);
-	void StoreSamples(const std::vector<const CDSample*> &Samples);
-	void StoreSamplesBankswitched(const std::vector<const CDSample*> &Samples);
-	int  GetBankCount() const;
+	void StoreDriver(const char* pDriver, unsigned int Size);
+	void StoreChunks(const std::vector<CChunk*>& Chunks);
+	void StoreChunksBankswitched(const std::vector<CChunk*>& Chunks);
+	void StoreSamples(const std::vector<const CDSample*>& Samples);
+	void StoreSamplesBankswitched(const std::vector<const CDSample*>& Samples);
+	int GetBankCount() const;
 
 protected:
-	void StoreChunk(const CChunk *pChunk);
-	void StoreChunkBankswitched(const CChunk *pChunk);
-	void StoreSample(const CDSample *pDSample);
-	void StoreSampleBankswitched(const CDSample *pDSample);
+	void StoreChunk(const CChunk* pChunk);
+	void StoreChunkBankswitched(const CChunk* pChunk);
+	void StoreSample(const CDSample* pDSample);
+	void StoreSampleBankswitched(const CDSample* pDSample);
 
-	int  GetRemainingSize() const;
+	int GetRemainingSize() const;
 	void AllocateNewBank();
-	int  GetBank() const;
-	int	 GetAbsoluteAddr() const;
+	int GetBank() const;
+	int GetAbsoluteAddr() const;
 
 protected:
 	unsigned int m_iStartAddr;
@@ -87,6 +87,6 @@ protected:
 class CChunkRenderNES : public CChunkRenderNSF
 {
 public:
-	CChunkRenderNES(CFile *pFile, unsigned int StartAddr);
-	void StoreCaller(const void *pData, unsigned int Size);
+	CChunkRenderNES(CFile* pFile, unsigned int StartAddr);
+	void StoreCaller(const void* pData, unsigned int Size);
 };

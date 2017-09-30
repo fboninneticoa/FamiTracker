@@ -30,19 +30,19 @@
 IMPLEMENT_DYNAMIC(CSampleEditorView, CStatic)
 
 BEGIN_MESSAGE_MAP(CSampleEditorView, CStatic)
-	ON_WM_PAINT()
-	ON_WM_ERASEBKGND()
-	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_SIZE()
-	ON_WM_CONTEXTMENU()
-	ON_WM_HSCROLL()
+		ON_WM_PAINT()
+		ON_WM_ERASEBKGND()
+		ON_WM_MOUSEMOVE()
+		ON_WM_LBUTTONDOWN()
+		ON_WM_LBUTTONUP()
+		ON_WM_SIZE()
+		ON_WM_CONTEXTMENU()
+		ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
-CSampleEditorView::CSampleEditorView() : 
-	m_iSelStart(-1), 
-	m_iSelEnd(-1), 
+CSampleEditorView::CSampleEditorView() :
+	m_iSelStart(-1),
+	m_iSelEnd(-1),
 	m_iStartCursor(0),
 	m_pSamples(NULL),
 	m_bClicked(false),
@@ -94,7 +94,8 @@ void CSampleEditorView::OnPaint()
 	m_dcCopy.FillSolidRect(m_clientRect, 0xFFFFFF);
 	m_dcCopy.SetViewportOrg(1, 1);
 
-	if (m_iSize == 0) {
+	if (m_iSize == 0)
+	{
 		m_dcCopy.TextOut(10, 10, CString(_T("No sample")));
 		dc.BitBlt(0, 0, m_clientRect.Width(), m_clientRect.Height(), &m_dcCopy, 0, 0, SRCCOPY);
 		return;
@@ -106,12 +107,12 @@ void CSampleEditorView::OnPaint()
 	if (Size == 0)
 		Size = 1;
 
-	double Step = double(Size) / double(Width);	// Samples / pixel
+	double Step = double(Size) / double(Width); // Samples / pixel
 
 	m_dSampleStep = Step;
 	m_iBlockSize = (Width * (8 * 16)) / Size;
 
-	CPen *oldPen = m_dcCopy.SelectObject(m_pSolidPen);
+	CPen* oldPen = m_dcCopy.SelectObject(m_pSolidPen);
 
 	// Block markers
 	m_dcCopy.SelectObject(m_pGrayDashedPen);
@@ -119,8 +120,10 @@ void CSampleEditorView::OnPaint()
 	int StartBlock = (m_iViewStart / (8 * 16));
 	int Blocks = (Size / (8 * 16));
 	int Offset = m_iViewStart % (8 * 16);
-	if (Blocks < (Width / 2)) {
-		for (int i = 1; i < Blocks + 2; ++i) {
+	if (Blocks < (Width / 2))
+	{
+		for (int i = 1; i < Blocks + 2; ++i)
+		{
 			int x = int((i * 128 - Offset) / m_dSampleStep) - 1;
 			if ((i + StartBlock) % 4 == 0)
 				m_dcCopy.SelectObject(m_pDarkGrayDashedPen);
@@ -132,7 +135,8 @@ void CSampleEditorView::OnPaint()
 	}
 
 	// Selection, each step is 16 bytes, or 128 samples
-	if (m_iSelStart != m_iSelEnd) {
+	if (m_iSelStart != m_iSelEnd)
+	{
 		const COLORREF SEL_COLOR = 0xFF80A0;
 		int Offset = int(m_iViewStart / m_dSampleStep);
 		int StartPixel = GetPixel(m_iSelStart) - Offset;
@@ -152,7 +156,8 @@ void CSampleEditorView::OnPaint()
 	int Min = 255, Max = 0;
 	int LastValue = y;
 
-	for (int i = m_iViewStart + 1; i < m_iViewEnd; ++i) {
+	for (int i = m_iViewStart + 1; i < m_iViewEnd; ++i)
+	{
 		if (m_pSamples[i] < Min)
 			Min = m_pSamples[i];
 		if (m_pSamples[i] > Max)
@@ -162,14 +167,17 @@ void CSampleEditorView::OnPaint()
 		++Steps;
 
 		int x = int(Pos);
-		if (x != LastPos) {
-			if (Steps == 1) {
+		if (x != LastPos)
+		{
+			if (Steps == 1)
+			{
 				int y = (Min * Height) / 127;
 				m_dcCopy.LineTo(x, LastValue);
 				m_dcCopy.LineTo(x, y);
 				LastValue = y;
 			}
-			else {
+			else
+			{
 				m_dcCopy.LineTo(x, (Min * Height) / 127);
 				m_dcCopy.LineTo(x, (Max * Height) / 127);
 			}
@@ -206,7 +214,8 @@ void CSampleEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	if (point.y > m_clientRect.bottom)
 		return;
 
-	if (nFlags & MK_LBUTTON && m_iSelStart != -1) {
+	if (nFlags & MK_LBUTTON && m_iSelStart != -1)
+	{
 		int Block = GetBlock(point.x + (m_iBlockSize / 2) + int(m_iViewStart / m_dSampleStep));
 		m_iSelEnd = Block;
 		Invalidate();
@@ -254,13 +263,16 @@ void CSampleEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 	double Sample = double(point.x + int(m_iViewStart / m_dSampleStep)) * m_dSampleStep;
 	int Offset = int(Sample / (8.0 * 64.0));
 
-	if (m_iSelEnd == m_iSelStart) {
+	if (m_iSelEnd == m_iSelStart)
+	{
 		m_iStartCursor = Offset;
 		m_iSelStart = m_iSelEnd = -1;
 		DrawStartCursor();
 	}
-	else {
-		if (m_iSelEnd < m_iSelStart) {
+	else
+	{
+		if (m_iSelEnd < m_iSelStart)
+		{
 			int Temp = m_iSelEnd;
 			m_iSelEnd = m_iSelStart;
 			m_iSelStart = Temp;
@@ -274,13 +286,14 @@ void CSampleEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CSampleEditorView::DrawPlayCursor(int Pos)
 {
-	CDC *pDC = GetDC();
+	CDC* pDC = GetDC();
 	int x = int((double(Pos + m_iStartCursor) * 8.0 * 64.0 - m_iViewStart) / m_dSampleStep);
 
 	pDC->BitBlt(0, 0, m_clientRect.Width(), m_clientRect.Height(), &m_dcCopy, 0, 0, SRCCOPY);
 
-	if (Pos != -1) {
-		CPen *oldPen = pDC->SelectObject(m_pDashedPen);
+	if (Pos != -1)
+	{
+		CPen* oldPen = pDC->SelectObject(m_pDashedPen);
 		pDC->MoveTo(x, 0);
 		pDC->LineTo(x, m_clientRect.bottom);
 		pDC->SelectObject(oldPen);
@@ -291,13 +304,14 @@ void CSampleEditorView::DrawPlayCursor(int Pos)
 
 void CSampleEditorView::DrawStartCursor()
 {
-	CDC *pDC = GetDC();
+	CDC* pDC = GetDC();
 	int x = int((double(m_iStartCursor) * 8.0 * 64.0 - m_iViewStart) / m_dSampleStep);
 
 	pDC->BitBlt(0, 0, m_clientRect.Width(), m_clientRect.Height(), &m_dcCopy, 0, 0, SRCCOPY);
 
-	if (m_iStartCursor != -1) {
-		CPen *oldPen = pDC->SelectObject(m_pDashedPen);
+	if (m_iStartCursor != -1)
+	{
+		CPen* oldPen = pDC->SelectObject(m_pDashedPen);
 		pDC->MoveTo(x, 0);
 		pDC->LineTo(x, m_clientRect.bottom);
 		pDC->SelectObject(oldPen);
@@ -306,7 +320,7 @@ void CSampleEditorView::DrawStartCursor()
 	ReleaseDC(pDC);
 }
 
-void CSampleEditorView::ExpandSample(CDSample *pSample, int Start)
+void CSampleEditorView::ExpandSample(CDSample* pSample, int Start)
 {
 	// Expand DPCM to PCM
 	//
@@ -315,7 +329,8 @@ void CSampleEditorView::ExpandSample(CDSample *pSample, int Start)
 
 	SAFE_RELEASE_ARRAY(m_pSamples);
 
-	if (pSample->GetSize() == 0) {
+	if (pSample->GetSize() == 0)
+	{
 		m_iSize = 0;
 		m_iStartCursor = 0;
 		m_iSelStart = m_iSelEnd = -1;
@@ -326,36 +341,42 @@ void CSampleEditorView::ExpandSample(CDSample *pSample, int Start)
 	m_pSamples = new int[Size];
 	m_iSize = Size;
 
-	const char *pData = pSample->GetData();
+	const char* pData = pSample->GetData();
 	int Delta = Start;
 
-	for (int i = 0; i < Size; ++i) {
+	for (int i = 0; i < Size; ++i)
+	{
 		int BitPos = (i & 0x07);
-		if (pData[i >> 3] & (1 << BitPos)) {
+		if (pData[i >> 3] & (1 << BitPos))
+		{
 			if (Delta < 126)
 				Delta += 2;
 		}
-		else {
+		else
+		{
 			if (Delta > 1)
 				Delta -= 2;
 		}
 		m_pSamples[i] = Delta;
-	}	
+	}
 
 	m_iSelStart = m_iSelEnd = -1;
 	m_iStartCursor = 0;
 
-	if (m_iViewEnd == 0) {
+	if (m_iViewEnd == 0)
+	{
 		m_iViewStart = 0;
 		m_iViewEnd = m_iSize;
 		SetZoom(1.0f);
 	}
 
 	int ViewSize = m_iViewEnd - m_iViewStart;
-	if (m_iViewEnd > m_iSize) {
+	if (m_iViewEnd > m_iSize)
+	{
 		m_iViewEnd = m_iSize;
 		m_iViewStart = m_iSize - ViewSize;
-		if (m_iViewStart < 0) {
+		if (m_iViewStart < 0)
+		{
 			m_iViewStart = 0;
 			SetZoom(1.0f);
 		}
@@ -391,7 +412,8 @@ void CSampleEditorView::OnSize(UINT nType, int cx, int cy)
 {
 	CStatic::OnSize(nType, cx, cy);
 
-	if (m_pScrollBar->m_hWnd != NULL) {
+	if (m_pScrollBar->m_hWnd != NULL)
+	{
 		CRect clientRect, scrollRect;
 		GetClientRect(&clientRect);
 		m_pScrollBar->GetClientRect(&scrollRect);
@@ -430,7 +452,7 @@ void CSampleEditorView::OnRight()
 void CSampleEditorView::OnLeft()
 {
 	m_iStartCursor--;
-	
+
 	if (m_iStartCursor < 0)
 		m_iStartCursor = 0;
 
@@ -441,7 +463,7 @@ void CSampleEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	CMenu contextMenu;
 	contextMenu.LoadMenu(IDR_SAMPLE_EDITOR_POPUP);
-	CMenu *pPopupMenu = contextMenu.GetSubMenu(0);
+	CMenu* pPopupMenu = contextMenu.GetSubMenu(0);
 	pPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, pWnd->GetParent());
 }
 
@@ -452,16 +474,17 @@ bool CSampleEditorView::HasSelection() const
 
 void CSampleEditorView::PreSubclassWindow()
 {
-	if (m_pScrollBar == NULL) {
+	if (m_pScrollBar == NULL)
+	{
 		m_pScrollBar = new CScrollBar();
 	}
 
 	// Create scroll bar
-	if (m_pScrollBar->m_hWnd == NULL) {
+	if (m_pScrollBar->m_hWnd == NULL)
+	{
 		CRect rect;
 		GetClientRect(&rect);
 		m_pScrollBar->Create(SBS_HORZ | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE, rect, this, 1);
-		
 	}
 
 	CStatic::PreSubclassWindow();
@@ -471,8 +494,8 @@ void CSampleEditorView::SetZoom(float Factor)
 {
 	// Set zoom, 1.0f = no zoom, 0.0f = max zoom
 	//
-	const float MAX_FACTOR = 1.0f;		// 1x
-	const float MIN_FACTOR = 0.01f;		// 100x
+	const float MAX_FACTOR = 1.0f; // 1x
+	const float MIN_FACTOR = 0.01f; // 100x
 
 	int FullViewSize = m_iSize;
 	int ViewSize = m_iViewEnd - m_iViewStart;
@@ -491,10 +514,12 @@ void CSampleEditorView::SetZoom(float Factor)
 	if (m_iViewStart < 0)
 		m_iViewStart = 0;
 
-	if (Factor == 1.0f) {
+	if (Factor == 1.0f)
+	{
 		m_pScrollBar->EnableWindow(FALSE);
 	}
-	else {
+	else
+	{
 		m_pScrollBar->EnableWindow(TRUE);
 		m_iScrollMax = int(1000.0f * (1.0f - Zoom));
 		m_pScrollBar->SetScrollRange(0, m_iScrollMax);
@@ -532,17 +557,18 @@ void CSampleEditorView::SetScroll(UINT nPos)
 
 void CSampleEditorView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-	switch (nSBCode) {
-		case SB_LINERIGHT:
-			SetScroll(pScrollBar->GetScrollPos() + 1);
-			break;
-		case SB_LINELEFT: 
-			SetScroll(pScrollBar->GetScrollPos() - 1);
-			break;
-		case SB_THUMBPOSITION:
-		case SB_THUMBTRACK:
-			SetScroll(nPos);
-			break;
+	switch (nSBCode)
+	{
+	case SB_LINERIGHT:
+		SetScroll(pScrollBar->GetScrollPos() + 1);
+		break;
+	case SB_LINELEFT:
+		SetScroll(pScrollBar->GetScrollPos() - 1);
+		break;
+	case SB_THUMBPOSITION:
+	case SB_THUMBTRACK:
+		SetScroll(nPos);
+		break;
 	}
 
 	CStatic::OnHScroll(nSBCode, nPos, pScrollBar);

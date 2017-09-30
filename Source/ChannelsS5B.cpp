@@ -30,12 +30,12 @@
 #include "APU/APU.h"
 
 // Static member variables, for the shared stuff in 5B
-int			  CChannelHandlerS5B::m_iModes		= 0;
-int			  CChannelHandlerS5B::m_iNoiseFreq	= 0;
-unsigned char CChannelHandlerS5B::m_iEnvFreqHi	= 0;
-unsigned char CChannelHandlerS5B::m_iEnvFreqLo	= 0;
-int			  CChannelHandlerS5B::m_iEnvType	= 0;
-bool		  CChannelHandlerS5B::m_bRegsDirty	= false;
+int CChannelHandlerS5B::m_iModes = 0;
+int CChannelHandlerS5B::m_iNoiseFreq = 0;
+unsigned char CChannelHandlerS5B::m_iEnvFreqHi = 0;
+unsigned char CChannelHandlerS5B::m_iEnvFreqLo = 0;
+int CChannelHandlerS5B::m_iEnvType = 0;
+bool CChannelHandlerS5B::m_bRegsDirty = false;
 
 // Class functions
 
@@ -61,21 +61,23 @@ void CChannelHandlerS5B::SetMode(int Chan, int Square, int Noise)
 {
 	int initModes = m_iModes;
 
-	switch (Chan) {
-		case 0:
-			m_iModes &= 0x36;
-			break;
-		case 1:
-			m_iModes &= 0x2D;
-			break;
-		case 2:
-			m_iModes &= 0x1B;
-			break;
+	switch (Chan)
+	{
+	case 0:
+		m_iModes &= 0x36;
+		break;
+	case 1:
+		m_iModes &= 0x2D;
+		break;
+	case 2:
+		m_iModes &= 0x1B;
+		break;
 	}
 
 	m_iModes |= (Noise << (3 + Chan)) | (Square << Chan);
-	
-	if (m_iModes != initModes) {
+
+	if (m_iModes != initModes)
+	{
 		m_bRegsDirty = true;
 	}
 }
@@ -86,7 +88,7 @@ void CChannelHandlerS5B::SetNoiseFreq(int Freq)
 	m_bRegsDirty = true;
 }
 
-void CChannelHandlerS5B::UpdateRegs(CAPU *pAPU)
+void CChannelHandlerS5B::UpdateRegs(CAPU* pAPU)
 {
 	if (!m_bRegsDirty)
 		return;
@@ -112,9 +114,9 @@ void CChannelHandlerS5B::UpdateRegs(CAPU *pAPU)
 
 // Instance functions
 
-CChannelHandlerS5B::CChannelHandlerS5B() : 
-	CChannelHandler(0xFFF, 0x0F), 
-	m_iNoiseOffset(0), 
+CChannelHandlerS5B::CChannelHandlerS5B() :
+	CChannelHandler(0xFFF, 0x0F),
+	m_iNoiseOffset(0),
 	m_bUpdate(false)
 {
 }
@@ -126,51 +128,55 @@ bool NoteValid(int Note)
 }
 */
 
-void CChannelHandlerS5B::HandleNoteData(stChanNote *pNoteData, int EffColumns)
+void CChannelHandlerS5B::HandleNoteData(stChanNote* pNoteData, int EffColumns)
 {
 	CChannelHandler::HandleNoteData(pNoteData, EffColumns);
 }
 
 void CChannelHandlerS5B::HandleCustomEffects(int EffNum, int EffParam)
 {
-	if (!CheckCommonEffects(EffNum, EffParam)) {
-		switch (EffNum) {
-			case EF_SUNSOFT_ENV_HI:
-				SetEnvelopeHigh(EffParam);
-				break;
-			case EF_SUNSOFT_ENV_LO:
-				SetEnvelopeLow(EffParam);
-				break;
-			case EF_SUNSOFT_ENV_TYPE:
-				SetEnvelopeType(EffParam);
-				m_bEnvEnable = true;
-				m_bUpdate = true;
-				break;
+	if (!CheckCommonEffects(EffNum, EffParam))
+	{
+		switch (EffNum)
+		{
+		case EF_SUNSOFT_ENV_HI:
+			SetEnvelopeHigh(EffParam);
+			break;
+		case EF_SUNSOFT_ENV_LO:
+			SetEnvelopeLow(EffParam);
+			break;
+		case EF_SUNSOFT_ENV_TYPE:
+			SetEnvelopeType(EffParam);
+			m_bEnvEnable = true;
+			m_bUpdate = true;
+			break;
 
-				/*
-			case EF_SLIDE_UP:
-			case EF_SLIDE_DOWN:
-				PostEffect = EffCmd;
-				PostEffectParam = EffParam;
-				SetupSlide(EffCmd, EffParam);
-				break;
-				*/
+			/*
+		case EF_SLIDE_UP:
+		case EF_SLIDE_DOWN:
+			PostEffect = EffCmd;
+			PostEffectParam = EffParam;
+			SetupSlide(EffCmd, EffParam);
+			break;
+			*/
 		}
 	}
 }
 
 bool CChannelHandlerS5B::HandleInstrument(int Instrument, bool Trigger, bool NewInstrument)
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 	CInstrumentContainer<CInstrumentS5B> instContainer(pDocument, Instrument);
-	CInstrumentS5B *pInstrument = instContainer();
+	CInstrumentS5B* pInstrument = instContainer();
 
 	if (pInstrument == NULL)
 		return false;
 
-	for (int i = 0; i < SEQ_COUNT; ++i) {
-		const CSequence *pSequence = pDocument->GetSequence(SNDCHIP_S5B, pInstrument->GetSeqIndex(i), i);
-		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i)) {
+	for (int i = 0; i < SEQ_COUNT; ++i)
+	{
+		const CSequence* pSequence = pDocument->GetSequence(SNDCHIP_S5B, pInstrument->GetSeqIndex(i), i);
+		if (Trigger || !IsSequenceEqual(i, pSequence) || pInstrument->GetSeqEnable(i) > GetSequenceState(i))
+		{
 			if (pInstrument->GetSeqEnable(i) == 1)
 				SetupSequence(i, pSequence);
 			else
@@ -193,7 +199,8 @@ void CChannelHandlerS5B::HandleCut()
 
 void CChannelHandlerS5B::HandleRelease()
 {
-	if (!m_bRelease) {
+	if (!m_bRelease)
+	{
 		ReleaseNote();
 		m_bUpdate = true;
 	}
@@ -201,7 +208,7 @@ void CChannelHandlerS5B::HandleRelease()
 
 void CChannelHandlerS5B::HandleNote(int Note, int Octave)
 {
-	m_iNote	= RunNote(Octave, Note);
+	m_iNote = RunNote(Octave, Note);
 	m_iSeqVolume = 0xF;
 
 	m_iDutyPeriod = S5B_MODE_SQUARE;
@@ -211,7 +218,7 @@ void CChannelHandlerS5B::HandleNote(int Note, int Octave)
 
 void CChannelHandlerS5B::ProcessChannel()
 {
-	CFamiTrackerDoc *pDocument = m_pSoundGen->GetDocument();
+	CFamiTrackerDoc* pDocument = m_pSoundGen->GetDocument();
 
 	// Default effects
 	CChannelHandler::ProcessChannel();
@@ -258,13 +265,13 @@ void CS5BChannel1::RefreshChannel()
 	if (!Noise)
 		SetNoiseFreq(NoisePeriod);
 
-//	UpdateRegs(m_pAPU);
+	//	UpdateRegs(m_pAPU);
 }
 
 void CS5BChannel1::ClearRegisters()
 {
 	//WriteReg(7, 0x38);
-	WriteReg(8, 0);		// Clear volume
+	WriteReg(8, 0); // Clear volume
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,7 +304,7 @@ void CS5BChannel2::RefreshChannel()
 
 void CS5BChannel2::ClearRegisters()
 {
-	WriteReg(9, 0);		// Clear volume
+	WriteReg(9, 0); // Clear volume
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -306,12 +313,12 @@ void CS5BChannel2::ClearRegisters()
 
 void CS5BChannel3::RefreshChannel()
 {
-/*
-	if (!m_bUpdate)
-		return;
-
-	m_bUpdate = true;
-*/
+	/*
+		if (!m_bUpdate)
+			return;
+	
+		m_bUpdate = true;
+	*/
 	int Period = CalculatePeriod();
 	unsigned char LoPeriod = Period & 0xFF;
 	unsigned char HiPeriod = Period >> 8;
@@ -336,6 +343,5 @@ void CS5BChannel3::RefreshChannel()
 
 void CS5BChannel3::ClearRegisters()
 {
-	WriteReg(10, 0);		// Clear volume
+	WriteReg(10, 0); // Clear volume
 }
-

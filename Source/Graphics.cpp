@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "Graphics.h"
 
-void GradientRectTriple(CDC *pDC, int x, int y, int w, int h, COLORREF c1, COLORREF c2, COLORREF c3)
+void GradientRectTriple(CDC* pDC, int x, int y, int w, int h, COLORREF c1, COLORREF c2, COLORREF c3)
 {
 	// c1 -> c2 -> c3
 	TRIVERTEX Vertices[4];
@@ -65,7 +65,7 @@ void GradientRectTriple(CDC *pDC, int x, int y, int w, int h, COLORREF c1, COLOR
 	pDC->GradientFill(Vertices, 4, Rects, 2, GRADIENT_FILL_RECT_V);
 }
 
-void GradientBar(CDC *pDC, int x, int y, int w, int h, COLORREF col_fg, COLORREF col_bg)
+void GradientBar(CDC* pDC, int x, int y, int w, int h, COLORREF col_fg, COLORREF col_bg)
 {
 	TRIVERTEX Vertices[2];
 	GRADIENT_RECT Rect;
@@ -94,7 +94,7 @@ void GradientBar(CDC *pDC, int x, int y, int w, int h, COLORREF col_fg, COLORREF
 	pDC->GradientFill(Vertices, 2, &Rect, 1, GRADIENT_FILL_RECT_V);
 }
 
-void GradientRect(CDC *pDC, int x, int y, int w, int h, COLORREF top_col, COLORREF bottom_col)
+void GradientRect(CDC* pDC, int x, int y, int w, int h, COLORREF top_col, COLORREF bottom_col)
 {
 	TRIVERTEX Vertices[2];
 	GRADIENT_RECT Rect;
@@ -119,11 +119,12 @@ void GradientRect(CDC *pDC, int x, int y, int w, int h, COLORREF top_col, COLORR
 	pDC->GradientFill(Vertices, 2, &Rect, 1, GRADIENT_FILL_RECT_V);
 }
 
-void BlurBuffer(COLORREF *pBuffer, int Width, int Height, const int *pColorDecay)
+void BlurBuffer(COLORREF* pBuffer, int Width, int Height, const int* pColorDecay)
 {
-	for (int x = 1; x < Width - 1; ++x) {
-		for (int y = 1; y < Height - 1; ++y) {
-
+	for (int x = 1; x < Width - 1; ++x)
+	{
+		for (int y = 1; y < Height - 1; ++y)
+		{
 			COLORREF Col1 = pBuffer[(y + 1) * Width + (x + 0)];
 			COLORREF Col2 = pBuffer[(y - 1) * Width + (x + 0)];
 			COLORREF Col3 = pBuffer[(y + 0) * Width + (x + 1)];
@@ -134,13 +135,14 @@ void BlurBuffer(COLORREF *pBuffer, int Width, int Height, const int *pColorDecay
 			COLORREF Col8 = pBuffer[(y + 1) * Width + (x - 1)];
 
 			int r = (RED(Col1) + RED(Col2) + RED(Col3) + RED(Col4) + RED(Col5) + RED(Col6) + RED(Col7) + RED(Col8)) >> 3;
-			int g = (GREEN(Col1) + GREEN(Col2) + GREEN(Col3) + GREEN(Col4) + GREEN(Col5) + GREEN(Col6) + GREEN(Col7) + GREEN(Col8)) >> 3;
+			int g = (GREEN(Col1) + GREEN(Col2) + GREEN(Col3) + GREEN(Col4) + GREEN(Col5) + GREEN(Col6) + GREEN(Col7) + GREEN(Col8
+			)) >> 3;
 			int b = (BLUE(Col1) + BLUE(Col2) + BLUE(Col3) + BLUE(Col4) + BLUE(Col5) + BLUE(Col6) + BLUE(Col7) + BLUE(Col8)) >> 3;
-			
+
 			r -= pColorDecay[0];
 			g -= pColorDecay[1];
 			b -= pColorDecay[2];
-			
+
 			if (r < 0) r = 0;
 			if (g < 0) g = 0;
 			if (b < 0) b = 0;
@@ -152,18 +154,20 @@ void BlurBuffer(COLORREF *pBuffer, int Width, int Height, const int *pColorDecay
 		}
 	}
 
-	for (int x = 0; x < Width; ++x) {
+	for (int x = 0; x < Width; ++x)
+	{
 		pBuffer[x] = 0;
 		pBuffer[x + (Height - 1) * Width] = 0;
 	}
 
-	for (int y = 0; y < Height; ++y) {
+	for (int y = 0; y < Height; ++y)
+	{
 		pBuffer[y * Width] = 0;
 		pBuffer[y * Width + (Width - 1)] = 0;
 	}
 }
 
-void PutPixel(COLORREF *pBuffer, int Width, int Height, float x, float y, COLORREF col)
+void PutPixel(COLORREF* pBuffer, int Width, int Height, float x, float y, COLORREF col)
 {
 	if (x < 0.0f)
 		x = 0.0f;

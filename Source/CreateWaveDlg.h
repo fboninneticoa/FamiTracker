@@ -25,30 +25,30 @@
 
 class CCreateWaveDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CCreateWaveDlg)
+DECLARE_DYNAMIC(CCreateWaveDlg)
 
 public:
-	CCreateWaveDlg(CWnd* pParent = NULL);   // standard constructor
+	CCreateWaveDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CCreateWaveDlg();
 
 	void ShowDialog();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CREATEWAV };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
 	int GetFrameLoopCount() const;
 	int GetTimeLimit() const;
 
 	CCheckListBox m_ctlChannelList;
-	CComboBox	  m_ctlTracks;
+	CComboBox m_ctlTracks;
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedBegin();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnDeltaposSpinLoop(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposSpinTime(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinLoop(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposSpinTime(NMHDR* pNMHDR, LRESULT* pResult);
 };

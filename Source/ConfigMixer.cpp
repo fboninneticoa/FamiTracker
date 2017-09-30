@@ -27,6 +27,7 @@
 // CConfigLevels dialog
 
 IMPLEMENT_DYNAMIC(CConfigMixer, CPropertyPage)
+
 CConfigMixer::CConfigMixer()
 	: CPropertyPage(CConfigMixer::IDD)
 {
@@ -53,18 +54,18 @@ void CConfigMixer::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CConfigMixer, CPropertyPage)
-	ON_WM_VSCROLL()
+		ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 
 // CConfigMixer message handlers
 
-const int CConfigMixer::LEVEL_RANGE = 12;		// +/- 12 dB range
-const int CConfigMixer::LEVEL_SCALE = 10;		// 0.1 dB resolution
+const int CConfigMixer::LEVEL_RANGE = 12; // +/- 12 dB range
+const int CConfigMixer::LEVEL_SCALE = 10; // 0.1 dB resolution
 
 BOOL CConfigMixer::OnInitDialog()
 {
-	const CSettings *pSettings = theApp.GetSettings();
+	const CSettings* pSettings = theApp.GetSettings();
 
 	m_iLevelAPU1 = -pSettings->ChipLevels.iLevelAPU1;
 	m_iLevelAPU2 = -pSettings->ChipLevels.iLevelAPU2;
@@ -86,13 +87,13 @@ BOOL CConfigMixer::OnInitDialog()
 
 	CPropertyPage::OnInitDialog();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BOOL CConfigMixer::OnApply()
 {
-	CSettings *pSettings = theApp.GetSettings();
+	CSettings* pSettings = theApp.GetSettings();
 
 	pSettings->ChipLevels.iLevelAPU1 = -m_iLevelAPU1;
 	pSettings->ChipLevels.iLevelAPU2 = -m_iLevelAPU2;
@@ -117,7 +118,7 @@ void CConfigMixer::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 void CConfigMixer::SetupSlider(int nID) const
 {
-	CSliderCtrl *pSlider = static_cast<CSliderCtrl*>(GetDlgItem(nID));
+	CSliderCtrl* pSlider = static_cast<CSliderCtrl*>(GetDlgItem(nID));
 	pSlider->SetRange(-LEVEL_RANGE * LEVEL_SCALE, LEVEL_RANGE * LEVEL_SCALE);
 	pSlider->SetTicFreq(LEVEL_SCALE * 2);
 	pSlider->SetPageSize(5);

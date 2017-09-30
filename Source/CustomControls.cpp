@@ -44,7 +44,7 @@
 /// CBannerEdit
 ///
 
-const TCHAR CBannerEdit::BANNER_FONT[]	 = _T("Tahoma");
+const TCHAR CBannerEdit::BANNER_FONT[] = _T("Tahoma");
 const COLORREF CBannerEdit::BANNER_COLOR = 0x808080;
 
 // Used to display a banner in edit boxes
@@ -52,9 +52,9 @@ const COLORREF CBannerEdit::BANNER_COLOR = 0x808080;
 IMPLEMENT_DYNAMIC(CBannerEdit, CEdit)
 
 BEGIN_MESSAGE_MAP(CBannerEdit, CEdit)
-	ON_WM_PAINT()
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
+		ON_WM_PAINT()
+		ON_WM_SETFOCUS()
+		ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
 void CBannerEdit::OnSetFocus(CWnd* pOldWnd)
@@ -76,11 +76,12 @@ void CBannerEdit::OnPaint()
 	if (str.GetLength() > 0 || GetFocus() == this)
 		return;
 
-	CDC *pDC = GetDC();
-	if (pDC != NULL) {
+	CDC* pDC = GetDC();
+	if (pDC != NULL)
+	{
 		CFont font;
 		font.CreateFont(12, 0, 0, 0, 0, TRUE, FALSE, FALSE, 0, 0, 0, 0, 0, BANNER_FONT);
-		CFont *pOldFont = pDC->SelectObject(&font);
+		CFont* pOldFont = pDC->SelectObject(&font);
 
 		pDC->SetBkColor(pDC->GetPixel(4, 4));
 		pDC->SetTextColor(BANNER_COLOR);
@@ -111,9 +112,9 @@ void CBannerEdit::OnKillFocus(CWnd* pNewWnd)
 IMPLEMENT_DYNAMIC(CLockedEdit, CEdit)
 
 BEGIN_MESSAGE_MAP(CLockedEdit, CEdit)
-	ON_WM_LBUTTONDBLCLK()
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
+		ON_WM_LBUTTONDBLCLK()
+		ON_WM_SETFOCUS()
+		ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
 bool CLockedEdit::IsEditable() const
@@ -137,8 +138,9 @@ void CLockedEdit::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	m_bUpdate = false;
 	if (IsEditable())
-		SetSel(0, -1);	// select all
-	else {
+		SetSel(0, -1); // select all
+	else
+	{
 		SendMessage(EM_SETREADONLY, FALSE);
 		SetFocus();
 		SetSel(0, -1);
@@ -168,7 +170,8 @@ void CLockedEdit::OnKillFocus(CWnd* pNewWnd)
 BOOL CLockedEdit::PreTranslateMessage(MSG* pMsg)
 {
 	// For some reason OnKeyDown won't work
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN) {
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
 		CFamiTrackerView::GetView()->SetFocus();
 		return TRUE;
 	}

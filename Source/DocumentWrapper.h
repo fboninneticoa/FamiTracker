@@ -27,27 +27,27 @@
 class CFamiTrackerDocWrapper : public CFamiTrackerDocInterface
 {
 public:
-	CFamiTrackerDocWrapper(CFamiTrackerDoc *pDocument, int iTrack);
+	CFamiTrackerDocWrapper(CFamiTrackerDoc* pDocument, int iTrack);
 
 	// Export interface implementation
 public:
-	virtual void			  GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote *Data) const;
-	virtual unsigned int	  GetFrameCount()			const;
-	virtual unsigned int	  GetPatternLength()		const;
-	virtual unsigned int	  GetSongSpeed()			const;
-	virtual CSequenceInterface const	  *GetSequence(unsigned int Index, int Type) const;
-	virtual int				  GetSequenceCount(int Type) const;
-	virtual int               GetInstrumentCount() const;
-	virtual CInstrument2A03Interface const *Get2A03Instrument(int Instrument) const;
-	virtual unsigned int	GetNoteEffectType(unsigned int Frame, unsigned int Channel, unsigned int Row, int Index) const;
-	virtual unsigned int	GetNoteEffectParam(unsigned int Frame, unsigned int Channel, unsigned int Row, int Index) const;
-	virtual int				GetSampleCount() const;
-	virtual void			GetSampleName(unsigned int Index, char *Name) const;
-	virtual int				GetSampleSize(unsigned int Sample) const;
-	virtual char			GetSampleData(unsigned int Sample, unsigned int Offset) const;
+	virtual void GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote* Data) const;
+	virtual unsigned int GetFrameCount() const;
+	virtual unsigned int GetPatternLength() const;
+	virtual unsigned int GetSongSpeed() const;
+	virtual CSequenceInterface const* GetSequence(unsigned int Index, int Type) const;
+	virtual int GetSequenceCount(int Type) const;
+	virtual int GetInstrumentCount() const;
+	virtual CInstrument2A03Interface const* Get2A03Instrument(int Instrument) const;
+	virtual unsigned int GetNoteEffectType(unsigned int Frame, unsigned int Channel, unsigned int Row, int Index) const;
+	virtual unsigned int GetNoteEffectParam(unsigned int Frame, unsigned int Channel, unsigned int Row, int Index) const;
+	virtual int GetSampleCount() const;
+	virtual void GetSampleName(unsigned int Index, char* Name) const;
+	virtual int GetSampleSize(unsigned int Sample) const;
+	virtual char GetSampleData(unsigned int Sample, unsigned int Offset) const;
 
 	// Attributes
 private:
-	CFamiTrackerDoc *m_pDocument;
+	CFamiTrackerDoc* m_pDocument;
 	int m_iTrack;
 };

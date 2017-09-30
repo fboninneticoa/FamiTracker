@@ -33,15 +33,16 @@
 #include "SequenceSetting.h"
 
 // Arpeggio menu
-enum {
-	MENU_ARP_ABSOLUTE = 500, 
-	MENU_ARP_RELATIVE, 
+enum
+{
+	MENU_ARP_ABSOLUTE = 500,
+	MENU_ARP_RELATIVE,
 	MENU_ARP_FIXED
 };
 
 IMPLEMENT_DYNAMIC(CSequenceSetting, CWnd)
 
-CSequenceSetting::CSequenceSetting(CWnd *pParent) 
+CSequenceSetting::CSequenceSetting(CWnd* pParent)
 	: CWnd(), m_pParent(pParent), m_pSequence(NULL), m_bMouseOver(false)
 {
 }
@@ -51,17 +52,17 @@ CSequenceSetting::~CSequenceSetting()
 }
 
 BEGIN_MESSAGE_MAP(CSequenceSetting, CWnd)
-	ON_WM_PAINT()
-	ON_WM_LBUTTONDOWN()
-	ON_COMMAND(MENU_ARP_ABSOLUTE, OnMenuArpAbsolute)
-	ON_COMMAND(MENU_ARP_RELATIVE, OnMenuArpRelative)
-	ON_COMMAND(MENU_ARP_FIXED, OnMenuArpFixed)
-	ON_WM_MOUSEMOVE()
-	ON_WM_MOUSELEAVE()
+		ON_WM_PAINT()
+		ON_WM_LBUTTONDOWN()
+		ON_COMMAND(MENU_ARP_ABSOLUTE, OnMenuArpAbsolute)
+		ON_COMMAND(MENU_ARP_RELATIVE, OnMenuArpRelative)
+		ON_COMMAND(MENU_ARP_FIXED, OnMenuArpFixed)
+		ON_WM_MOUSEMOVE()
+		ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 
-void CSequenceSetting::Setup(CFont *pFont)
+void CSequenceSetting::Setup(CFont* pFont)
 {
 	m_menuPopup.CreatePopupMenu();
 
@@ -85,8 +86,8 @@ void CSequenceSetting::OnPaint()
 
 	int mode = m_pSequence->GetSetting();
 
-	if (bDraw) {
-
+	if (bDraw)
+	{
 		int BgColor = m_bMouseOver ? 0x303030 : 0x101010;
 
 		dc.FillSolidRect(rect, BgColor);
@@ -100,7 +101,8 @@ void CSequenceSetting::OnPaint()
 		rect.top += 2;
 		dc.DrawText(MODES[mode], _tcslen(MODES[mode]), rect, DT_CENTER);
 	}
-	else {
+	else
+	{
 		dc.FillSolidRect(rect, 0xFFFFFF);
 	}
 }
@@ -110,18 +112,19 @@ void CSequenceSetting::OnLButtonDown(UINT nFlags, CPoint point)
 	CRect rect;
 	GetWindowRect(rect);
 
-	if (m_iType == SEQ_ARPEGGIO) {
-
-		switch (m_pSequence->GetSetting()) {
-			case ARP_SETTING_ABSOLUTE:
-				m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_ABSOLUTE, MF_BYCOMMAND);
-				break;
-			case ARP_SETTING_RELATIVE:
-				m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_RELATIVE, MF_BYCOMMAND);
-				break;
-			case ARP_SETTING_FIXED:
-				m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_FIXED, MF_BYCOMMAND);
-				break;
+	if (m_iType == SEQ_ARPEGGIO)
+	{
+		switch (m_pSequence->GetSetting())
+		{
+		case ARP_SETTING_ABSOLUTE:
+			m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_ABSOLUTE, MF_BYCOMMAND);
+			break;
+		case ARP_SETTING_RELATIVE:
+			m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_RELATIVE, MF_BYCOMMAND);
+			break;
+		case ARP_SETTING_FIXED:
+			m_menuPopup.CheckMenuRadioItem(MENU_ARP_ABSOLUTE, MENU_ARP_FIXED, MENU_ARP_FIXED, MF_BYCOMMAND);
+			break;
 		}
 
 		m_menuPopup.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x + rect.left, point.y + rect.top, this);
@@ -130,10 +133,10 @@ void CSequenceSetting::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
-void CSequenceSetting::SelectSequence(CSequence *pSequence, int Type, int InstrumentType)
+void CSequenceSetting::SelectSequence(CSequence* pSequence, int Type, int InstrumentType)
 {
 	m_pSequence = pSequence;
-	m_iType		= Type;
+	m_iType = Type;
 	m_iInstType = InstrumentType;
 
 	UpdateWindow();
@@ -158,7 +161,8 @@ void CSequenceSetting::OnMenuArpFixed()
 	static_cast<CSequenceEditor*>(m_pParent)->ChangedSetting();
 
 	// Prevent invalid sequence items
-	for (unsigned int i = 0; i < m_pSequence->GetItemCount(); ++i) {
+	for (unsigned int i = 0; i < m_pSequence->GetItemCount(); ++i)
+	{
 		int Item = m_pSequence->GetItem(i);
 		if (Item < 0)
 			Item = 0;
@@ -170,7 +174,8 @@ void CSequenceSetting::OnMouseMove(UINT nFlags, CPoint point)
 {
 	bool bOldMouseOver = m_bMouseOver;
 	m_bMouseOver = true;
-	if (bOldMouseOver != m_bMouseOver) {
+	if (bOldMouseOver != m_bMouseOver)
+	{
 		TRACKMOUSEEVENT mouseEvent;
 		mouseEvent.cbSize = sizeof(TRACKMOUSEEVENT);
 		mouseEvent.dwFlags = TME_LEAVE;

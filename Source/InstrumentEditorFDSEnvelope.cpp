@@ -31,9 +31,11 @@
 
 IMPLEMENT_DYNAMIC(CInstrumentEditorFDSEnvelope, CSequenceInstrumentEditPanel)
 
-CInstrumentEditorFDSEnvelope::CInstrumentEditorFDSEnvelope(CWnd* pParent) : CSequenceInstrumentEditPanel(CInstrumentEditorFDSEnvelope::IDD, pParent),
-	m_pInstrument(NULL),
-	m_iSelectedType(0)
+CInstrumentEditorFDSEnvelope::CInstrumentEditorFDSEnvelope(CWnd* pParent) : CSequenceInstrumentEditPanel(
+	                                                                            CInstrumentEditorFDSEnvelope::IDD,
+	                                                                            pParent),
+                                                                            m_pInstrument(NULL),
+                                                                            m_iSelectedType(0)
 {
 }
 
@@ -57,13 +59,13 @@ void CInstrumentEditorFDSEnvelope::SelectInstrument(int Instrument)
 
 	m_pInstrument = static_cast<CInstrumentFDS*>(GetDocument()->GetInstrument(Instrument));
 	ASSERT(m_pInstrument->GetType() == INST_FDS);
-	
+
 	LoadSequence();
 }
 
 
 BEGIN_MESSAGE_MAP(CInstrumentEditorFDSEnvelope, CInstrumentEditPanel)
-	ON_CBN_SELCHANGE(IDC_TYPE, &CInstrumentEditorFDSEnvelope::OnCbnSelchangeType)
+		ON_CBN_SELCHANGE(IDC_TYPE, &CInstrumentEditorFDSEnvelope::OnCbnSelchangeType)
 END_MESSAGE_MAP()
 
 // CInstrumentEditorFDSEnvelope message handlers
@@ -82,7 +84,7 @@ BOOL CInstrumentEditorFDSEnvelope::OnInitDialog()
 
 	static_cast<CComboBox*>(GetDlgItem(IDC_TYPE))->SetCurSel(0);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -93,23 +95,24 @@ void CInstrumentEditorFDSEnvelope::SetSequenceString(CString Sequence, bool Chan
 
 void CInstrumentEditorFDSEnvelope::OnCbnSelchangeType()
 {
-	CComboBox *pTypeBox = static_cast<CComboBox*>(GetDlgItem(IDC_TYPE));
+	CComboBox* pTypeBox = static_cast<CComboBox*>(GetDlgItem(IDC_TYPE));
 	m_iSelectedType = pTypeBox->GetCurSel();
 	LoadSequence();
 }
 
 void CInstrumentEditorFDSEnvelope::LoadSequence()
 {
-	switch (m_iSelectedType) {
-		case SEQ_VOLUME:
-			m_pSequenceEditor->SelectSequence(m_pInstrument->GetVolumeSeq(), SEQ_VOLUME, INST_FDS);	
-			break;
-		case SEQ_ARPEGGIO:
-			m_pSequenceEditor->SelectSequence(m_pInstrument->GetArpSeq(), SEQ_ARPEGGIO, INST_FDS);
-			break;
-		case SEQ_PITCH:
-			m_pSequenceEditor->SelectSequence(m_pInstrument->GetPitchSeq(), SEQ_PITCH, INST_FDS);
-			break;
+	switch (m_iSelectedType)
+	{
+	case SEQ_VOLUME:
+		m_pSequenceEditor->SelectSequence(m_pInstrument->GetVolumeSeq(), SEQ_VOLUME, INST_FDS);
+		break;
+	case SEQ_ARPEGGIO:
+		m_pSequenceEditor->SelectSequence(m_pInstrument->GetArpSeq(), SEQ_ARPEGGIO, INST_FDS);
+		break;
+	case SEQ_PITCH:
+		m_pSequenceEditor->SelectSequence(m_pInstrument->GetPitchSeq(), SEQ_PITCH, INST_FDS);
+		break;
 	}
 }
 
@@ -119,16 +122,17 @@ void CInstrumentEditorFDSEnvelope::OnKeyReturn()
 
 	GetDlgItemText(IDC_SEQUENCE_STRING, string);
 
-	switch (m_iSelectedType) {
-		case SEQ_VOLUME:
-			TranslateMML(string, m_pInstrument->GetVolumeSeq(), MAX_VOLUME, 0);
-			break;
-		case SEQ_ARPEGGIO:
-			TranslateMML(string, m_pInstrument->GetArpSeq(), 96, -96);
-			break;
-		case SEQ_PITCH:
-			TranslateMML(string, m_pInstrument->GetPitchSeq(), 126, -127);
-			break;
+	switch (m_iSelectedType)
+	{
+	case SEQ_VOLUME:
+		TranslateMML(string, m_pInstrument->GetVolumeSeq(), MAX_VOLUME, 0);
+		break;
+	case SEQ_ARPEGGIO:
+		TranslateMML(string, m_pInstrument->GetArpSeq(), 96, -96);
+		break;
+	case SEQ_PITCH:
+		TranslateMML(string, m_pInstrument->GetPitchSeq(), 126, -127);
+		break;
 	}
 
 	// Update editor

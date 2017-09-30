@@ -29,6 +29,6 @@ public:
 	virtual ~CTextExport();
 
 	// returns an empty string on success, otherwise returns a descriptive error
-	const CString& ImportFile(LPCTSTR FileName, CFamiTrackerDoc *pDoc);
-	const CString& ExportFile(LPCTSTR FileName, CFamiTrackerDoc *pDoc);
+	const CString& ImportFile(LPCTSTR FileName, CFamiTrackerDoc* pDoc);
+	const CString& ExportFile(LPCTSTR FileName, CFamiTrackerDoc* pDoc);
 };

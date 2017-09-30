@@ -24,7 +24,8 @@
 // Derived channels, N163
 //
 
-class CChannelHandlerN163 : public CChannelHandlerInverted {
+class CChannelHandlerN163 : public CChannelHandlerInverted
+{
 public:
 	CChannelHandlerN163();
 	virtual void ResetChannel();
@@ -32,7 +33,7 @@ public:
 	virtual void RefreshChannel();
 
 protected:
-	virtual void HandleNoteData(stChanNote *pNoteData, int EffColumns);
+	virtual void HandleNoteData(stChanNote* pNoteData, int EffColumns);
 	virtual void HandleCustomEffects(int EffNum, int EffParam);
 	virtual bool HandleInstrument(int Instrument, bool Trigger, bool NewInstrument);
 	virtual void HandleEmptyNote();

@@ -35,13 +35,13 @@ public:
 	virtual ~CAction();
 
 	// Save the undo state and perform the action. This method may reject the action by returning false
-	virtual bool SaveState(CMainFrame *pMainFrm) = 0;
+	virtual bool SaveState(CMainFrame* pMainFrm) = 0;
 
 	// Undo the operation, using the saved state
-	virtual void Undo(CMainFrame *pMainFrm) = 0;
+	virtual void Undo(CMainFrame* pMainFrm) = 0;
 
 	// Redo the operation
-	virtual void Redo(CMainFrame *pMainFrm) = 0;
+	virtual void Redo(CMainFrame* pMainFrm) = 0;
 
 	// Get the action type
 	int GetAction() const;
@@ -65,16 +65,16 @@ public:
 	void Clear();
 
 	// Add new action to undo list
-	void Push(CAction *pAction);
+	void Push(CAction* pAction);
 
 	// Get first undo action object in queue
-	CAction *PopUndo();
+	CAction* PopUndo();
 
 	// Get first redo action object in queue
-	CAction *PopRedo();
+	CAction* PopRedo();
 
 	// Return last action in queue without changing the queue
-	CAction *GetLastAction() const;
+	CAction* GetLastAction() const;
 
 	// Get number of undo levels available
 	int GetUndoLevel() const;
@@ -93,9 +93,7 @@ public:
 	static const int MAX_LEVELS = 64;
 
 private:
-	CAction *m_pActionStack[MAX_LEVELS + 1];
-	int		m_iUndoLevel;
-	int		m_iRedoLevel;
-
+	CAction* m_pActionStack[MAX_LEVELS + 1];
+	int m_iUndoLevel;
+	int m_iRedoLevel;
 };
-

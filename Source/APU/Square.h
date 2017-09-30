@@ -28,34 +28,35 @@
 
 #include "Channel.h"
 
-class CSquare : public CChannel {
+class CSquare : public CChannel
+{
 public:
-	CSquare(CMixer *pMixer, int ID, int Chip);
+	CSquare(CMixer* pMixer, int ID, int Chip);
 	~CSquare();
 
-	void	Reset();
-	void	Write(uint16 Address, uint8 Value);
-	void	WriteControl(uint8 Value);
-	uint8	ReadControl();
-	void	Process(uint32 Time);
+	void Reset();
+	void Write(uint16 Address, uint8 Value);
+	void WriteControl(uint8 Value);
+	uint8 ReadControl();
+	void Process(uint32 Time);
 
-	void	LengthCounterUpdate();
-	void	SweepUpdate(int Diff);
-	void	EnvelopeUpdate();
+	void LengthCounterUpdate();
+	void SweepUpdate(int Diff);
+	void EnvelopeUpdate();
 
 public:
 	static const uint8 DUTY_TABLE[4][16];
 
 private:
-	uint8	m_iDutyLength, m_iDutyCycle;
+	uint8 m_iDutyLength, m_iDutyCycle;
 
-	uint8	m_iLooping, m_iEnvelopeFix, m_iEnvelopeSpeed;
-	uint8	m_iEnvelopeVolume, m_iFixedVolume;
-	int8	m_iEnvelopeCounter;
+	uint8 m_iLooping, m_iEnvelopeFix, m_iEnvelopeSpeed;
+	uint8 m_iEnvelopeVolume, m_iFixedVolume;
+	int8 m_iEnvelopeCounter;
 
-	uint8	m_iSweepEnabled, m_iSweepPeriod, m_iSweepMode, m_iSweepShift;
-	int16	m_iSweepCounter, m_iSweepResult;
-	bool	m_bSweepWritten;
+	uint8 m_iSweepEnabled, m_iSweepPeriod, m_iSweepMode, m_iSweepShift;
+	int16 m_iSweepCounter, m_iSweepResult;
+	bool m_bSweepWritten;
 };
 
 #endif /* SQUARE_H */

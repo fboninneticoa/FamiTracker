@@ -32,10 +32,10 @@ public:
 	void Create(int Width, int Height);
 	void SetSampleRate(int SampleRate);
 	void Draw();
-	void Display(CDC *pDC, bool bPaintMsg);
+	void Display(CDC* pDC, bool bPaintMsg);
 
 private:
 	CBitmap m_bmpImage;
-	CBitmap *m_pOldBmp;
-	CDC	m_dcImage;
+	CBitmap* m_pOldBmp;
+	CDC m_dcImage;
 };

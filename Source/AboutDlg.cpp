@@ -25,16 +25,16 @@
 
 // CAboutDlg dialog used for App About
 
-LPCTSTR LINK_WEB  = _T("http://www.famitracker.com");
+LPCTSTR LINK_WEB = _T("http://www.famitracker.com");
 LPCTSTR LINK_MAIL = _T("mailto:jsr@famitracker.com");
 
 // CLinkLabel
 
 BEGIN_MESSAGE_MAP(CLinkLabel, CStatic)
-	ON_WM_CTLCOLOR_REFLECT()
-	ON_WM_LBUTTONUP()
-	ON_WM_MOUSELEAVE()
-	ON_WM_MOUSEMOVE()
+		ON_WM_CTLCOLOR_REFLECT()
+		ON_WM_LBUTTONUP()
+		ON_WM_MOUSELEAVE()
+		ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 CLinkLabel::CLinkLabel(CString address)
@@ -62,19 +62,22 @@ void CLinkLabel::OnMouseLeave()
 	CRect rect, parentRect;
 	GetWindowRect(&rect);
 	GetParent()->GetWindowRect(parentRect);
-	rect.OffsetRect(-parentRect.left - GetSystemMetrics(SM_CXDLGFRAME), -parentRect.top - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME));
+	rect.OffsetRect(-parentRect.left - GetSystemMetrics(SM_CXDLGFRAME),
+	                -parentRect.top - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME));
 	GetParent()->RedrawWindow(rect);
 	CStatic::OnMouseLeave();
 }
 
 void CLinkLabel::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (!m_bHover) {
+	if (!m_bHover)
+	{
 		m_bHover = true;
 		CRect rect, parentRect;
 		GetWindowRect(&rect);
 		GetParent()->GetWindowRect(parentRect);
-		rect.OffsetRect(-parentRect.left - GetSystemMetrics(SM_CXDLGFRAME), -parentRect.top - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME));
+		rect.OffsetRect(-parentRect.left - GetSystemMetrics(SM_CXDLGFRAME),
+		                -parentRect.top - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME));
 		GetParent()->RedrawWindow(rect);
 
 		TRACKMOUSEEVENT t;
@@ -98,7 +101,7 @@ CHead::CHead()
 
 void CHead::DrawItem(LPDRAWITEMSTRUCT lpDraw)
 {
-	CDC *pDC = CDC::FromHandle(lpDraw->hDC);
+	CDC* pDC = CDC::FromHandle(lpDraw->hDC);
 
 	CBitmap bmp;
 	bmp.LoadBitmap(IDB_ABOUT);
@@ -115,11 +118,11 @@ void CHead::DrawItem(LPDRAWITEMSTRUCT lpDraw)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
-CAboutDlg::CAboutDlg() : 
-	CDialog(CAboutDlg::IDD), 
-	m_pMail(NULL), 
-	m_pWeb(NULL), 
-	m_pLinkFont(NULL), 
+CAboutDlg::CAboutDlg() :
+	CDialog(CAboutDlg::IDD),
+	m_pMail(NULL),
+	m_pWeb(NULL),
+	m_pLinkFont(NULL),
 	m_pBoldFont(NULL),
 	m_pTitleFont(NULL),
 	m_pHead(NULL)
@@ -164,8 +167,8 @@ BOOL CAboutDlg::OnInitDialog()
 	m_pHead->SubclassDlgItem(IDC_HEAD, this);
 
 	LOGFONT LogFont;
-	CFont *pFont;
-	
+	CFont* pFont;
+
 	EnableToolTips(TRUE);
 
 	m_wndToolTip.Create(this, TTS_ALWAYSTIP);
@@ -182,9 +185,9 @@ BOOL CAboutDlg::OnInitDialog()
 	m_pMail->SetFont(m_pLinkFont);
 	m_pWeb->SetFont(m_pLinkFont);
 
-	
-	CStatic *pStatic = static_cast<CStatic*>(GetDlgItem(IDC_ABOUT1));
-	CFont *pOldFont = pStatic->GetFont();
+
+	CStatic* pStatic = static_cast<CStatic*>(GetDlgItem(IDC_ABOUT1));
+	CFont* pOldFont = pStatic->GetFont();
 	LOGFONT NewLogFont;
 	pOldFont->GetLogFont(&NewLogFont);
 	NewLogFont.lfWeight = FW_BOLD;
@@ -192,12 +195,12 @@ BOOL CAboutDlg::OnInitDialog()
 	m_pTitleFont = new CFont();
 	m_pBoldFont->CreateFontIndirect(&NewLogFont);
 	NewLogFont.lfHeight = 18;
-//	NewLogFont.lfUnderline = TRUE;
+	//	NewLogFont.lfUnderline = TRUE;
 	m_pTitleFont->CreateFontIndirect(&NewLogFont);
 	static_cast<CStatic*>(GetDlgItem(IDC_ABOUT1))->SetFont(m_pTitleFont);
 	static_cast<CStatic*>(GetDlgItem(IDC_ABOUT2))->SetFont(m_pBoldFont);
 	static_cast<CStatic*>(GetDlgItem(IDC_ABOUT3))->SetFont(m_pBoldFont);
-	
+
 	return TRUE;
 }
 

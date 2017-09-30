@@ -25,17 +25,17 @@
 
 class CDialogReBar : public CDialogBar
 {
-	DECLARE_DYNAMIC(CDialogReBar)
+DECLARE_DYNAMIC(CDialogReBar)
 
 public:
-	CDialogReBar(CWnd* pParent = NULL);   // standard constructor
+	CDialogReBar(CWnd* pParent = NULL); // standard constructor
 	virtual ~CDialogReBar();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_OCTAVE };
 
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnMove(int x, int y);

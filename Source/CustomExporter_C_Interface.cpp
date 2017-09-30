@@ -29,9 +29,9 @@ void GetInterface(FamitrackerDocInterface* iface)
 
 	//instrument functions
 	iface->GetInstrumentCount = GetInstrumentCount;
-    iface->Get2A03Instrument = Get2A03Instrument;
+	iface->Get2A03Instrument = Get2A03Instrument;
 
-    iface->GetSeqEnable = GetSeqEnable;
+	iface->GetSeqEnable = GetSeqEnable;
 	iface->GetSeqIndex = GetSeqIndex;
 
 	//effect functions
@@ -51,7 +51,7 @@ void GetInterface(FamitrackerDocInterface* iface)
 }
 
 //overall document functions
-void GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote *Data)
+void GetNoteData(unsigned int Frame, unsigned int Channel, unsigned int Row, stChanNote* Data)
 {
 	if (NULL == _doc)
 	{
@@ -108,7 +108,7 @@ SequenceHandle GetSequence(int Index, int Type)
 	{
 		return NULL;
 	}
-	
+
 	return static_cast<SequenceHandle>(_doc->GetSequence(Index, Type));
 }
 
@@ -144,7 +144,7 @@ unsigned int GetLoopPoint(SequenceHandle sequence)
 	}
 
 	CSequenceInterface const* sequenceInterface = static_cast<CSequenceInterface const*>(sequence);
-	
+
 	return sequenceInterface->GetLoopPoint();
 }
 
@@ -155,7 +155,7 @@ int GetInstrumentCount()
 	{
 		return 0;
 	}
-	
+
 	return _doc->GetInstrumentCount();
 }
 
@@ -177,7 +177,7 @@ int GetSeqEnable(Instrument2A03Handle instrument, int Index)
 	}
 
 	CInstrument2A03Interface const* instrumentInterface = static_cast<CInstrument2A03Interface const*>(instrument);
-	
+
 	return instrumentInterface->GetSeqEnable(Index);
 }
 
@@ -225,7 +225,7 @@ int GetSampleCount()
 	return _doc->GetSampleCount();
 }
 
-void GetSampleName(unsigned int Index, char *Name)
+void GetSampleName(unsigned int Index, char* Name)
 {
 	if (NULL == _doc)
 	{

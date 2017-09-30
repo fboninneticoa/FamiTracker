@@ -28,27 +28,28 @@
 
 #include "Channel.h"
 
-class CTriangle : public CChannel {
+class CTriangle : public CChannel
+{
 public:
-	CTriangle(CMixer *pMixer, int ID);
+	CTriangle(CMixer* pMixer, int ID);
 	~CTriangle();
 
-	void	Reset();
-	void	Write(uint16 Address, uint8 Value);
-	void	WriteControl(uint8 Value);
-	uint8	ReadControl();
-	void	Process(uint32 Time);
+	void Reset();
+	void Write(uint16 Address, uint8 Value);
+	void WriteControl(uint8 Value);
+	uint8 ReadControl();
+	void Process(uint32 Time);
 
-	void	LengthCounterUpdate();
-	void	LinearCounterUpdate();
+	void LengthCounterUpdate();
+	void LinearCounterUpdate();
 
 private:
 	static const uint8 TRIANGLE_WAVE[];
 
 private:
-	uint8	m_iLoop, m_iLinearLoad, m_iHalt;
-	uint16	m_iLinearCounter;
-	int8	m_iStepGen;
+	uint8 m_iLoop, m_iLinearLoad, m_iHalt;
+	uint16 m_iLinearCounter;
+	int8 m_iStepGen;
 };
 
 #endif /* TRIANGLE_H */

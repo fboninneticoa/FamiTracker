@@ -30,18 +30,20 @@
 std::string test;
 
 LPCTSTR CInstrumentEditorS5B::INST_SETTINGS_S5B[] = {
-	_T("Volume"), 
-	_T("Arpeggio"), 
-	_T("Pitch"), 
-	_T("Hi-pitch"), 
+	_T("Volume"),
+	_T("Arpeggio"),
+	_T("Pitch"),
+	_T("Hi-pitch"),
 	_T("Noise / mode")
 };
 
 // CInstrumentEditorS5B dialog
 
 IMPLEMENT_DYNAMIC(CInstrumentEditorS5B, CSequenceInstrumentEditPanel)
-CInstrumentEditorS5B::CInstrumentEditorS5B(CWnd* pParent) : CSequenceInstrumentEditPanel(CInstrumentEditorS5B::IDD, pParent),
-	m_pInstrument(NULL)
+
+CInstrumentEditorS5B::CInstrumentEditorS5B(CWnd* pParent) : CSequenceInstrumentEditPanel(
+	                                                            CInstrumentEditorS5B::IDD, pParent),
+                                                            m_pInstrument(NULL)
 {
 }
 
@@ -60,10 +62,10 @@ void CInstrumentEditorS5B::DoDataExchange(CDataExchange* pDX)
 
 void CInstrumentEditorS5B::SelectInstrument(int Instrument)
 {
-	CInstrumentS5B *pInstrument = static_cast<CInstrumentS5B*>(GetDocument()->GetInstrument(Instrument));
+	CInstrumentS5B* pInstrument = static_cast<CInstrumentS5B*>(GetDocument()->GetInstrument(Instrument));
 	ASSERT(pInstrument->GetType() == INST_S5B);
-	
-	CListCtrl *pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
+
+	CListCtrl* pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
 
 	if (m_pInstrument)
 		m_pInstrument->Release();
@@ -71,10 +73,11 @@ void CInstrumentEditorS5B::SelectInstrument(int Instrument)
 	m_pInstrument = NULL;
 
 	// Update instrument setting list
-	for (int i = 0; i < SEQ_COUNT; ++i) {
+	for (int i = 0; i < SEQ_COUNT; ++i)
+	{
 		pList->SetCheck(i, pInstrument->GetSeqEnable(i));
 		pList->SetItemText(i, 1, MakeIntString(pInstrument->GetSeqIndex(i)));
-	} 
+	}
 
 	// Setting text box
 	SetDlgItemInt(IDC_SEQ_INDEX, pInstrument->GetSeqIndex(m_iSelectedSetting));
@@ -111,15 +114,16 @@ void CInstrumentEditorS5B::SetSequenceString(CString Sequence, bool Changed)
 	// Update sequence string
 	SetDlgItemText(IDC_SEQUENCE_STRING, Sequence);
 	// If the sequence was changed, assume the user wants to enable it
-	if (Changed) {
+	if (Changed)
+	{
 		static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS))->SetCheck(m_iSelectedSetting, 1);
 	}
 }
 
 BEGIN_MESSAGE_MAP(CInstrumentEditorS5B, CInstrumentEditPanel)
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_INSTSETTINGS, OnLvnItemchangedInstsettings)	
-	ON_EN_CHANGE(IDC_SEQ_INDEX, OnEnChangeSeqIndex)
-	ON_BN_CLICKED(IDC_FREE_SEQ, OnBnClickedFreeSeq)
+		ON_NOTIFY(LVN_ITEMCHANGED, IDC_INSTSETTINGS, OnLvnItemchangedInstsettings)
+		ON_EN_CHANGE(IDC_SEQ_INDEX, OnEnChangeSeqIndex)
+		ON_BN_CLICKED(IDC_FREE_SEQ, OnBnClickedFreeSeq)
 END_MESSAGE_MAP()
 
 // CInstrumentSettings message handlers
@@ -130,19 +134,21 @@ BOOL CInstrumentEditorS5B::OnInitDialog()
 
 	SetupDialog(INST_SETTINGS_S5B);
 	m_pSequenceEditor->SetMaxValues(MAX_VOLUME, MAX_DUTY);
-	
-	return TRUE;  // return TRUE unless you set the focus to a control
+
+	return TRUE; // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CInstrumentEditorS5B::OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *pResult)
+void CInstrumentEditorS5B::OnLvnItemchangedInstsettings(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	CListCtrl *pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
+	CListCtrl* pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
 
-	if (pNMLV->uChanged & LVIF_STATE && m_pInstrument != NULL) {
+	if (pNMLV->uChanged & LVIF_STATE && m_pInstrument != NULL)
+	{
 		// Selected new setting
-		if (pNMLV->uNewState & LVNI_SELECTED || pNMLV->uNewState & LCTRL_CHECKBOX_STATE) {
+		if (pNMLV->uNewState & LVNI_SELECTED || pNMLV->uNewState & LCTRL_CHECKBOX_STATE)
+		{
 			m_iSelectedSetting = pNMLV->iItem;
 			int Sequence = m_pInstrument->GetSeqIndex(m_iSelectedSetting);
 			SetDlgItemInt(IDC_SEQ_INDEX, Sequence);
@@ -152,13 +158,14 @@ void CInstrumentEditorS5B::OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *
 		}
 
 		// Changed checkbox
-		switch(pNMLV->uNewState & LCTRL_CHECKBOX_STATE) {
-			case LCTRL_CHECKBOX_CHECKED:
-				m_pInstrument->SetSeqEnable(m_iSelectedSetting, 1);
-				break;
-			case LCTRL_CHECKBOX_UNCHECKED:
-				m_pInstrument->SetSeqEnable(m_iSelectedSetting, 0);
-				break;
+		switch (pNMLV->uNewState & LCTRL_CHECKBOX_STATE)
+		{
+		case LCTRL_CHECKBOX_CHECKED:
+			m_pInstrument->SetSeqEnable(m_iSelectedSetting, 1);
+			break;
+		case LCTRL_CHECKBOX_UNCHECKED:
+			m_pInstrument->SetSeqEnable(m_iSelectedSetting, 0);
+			break;
 		}
 	}
 
@@ -168,15 +175,16 @@ void CInstrumentEditorS5B::OnLvnItemchangedInstsettings(NMHDR *pNMHDR, LRESULT *
 void CInstrumentEditorS5B::OnEnChangeSeqIndex()
 {
 	// Selected sequence changed
-	CListCtrl *pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
+	CListCtrl* pList = static_cast<CListCtrl*>(GetDlgItem(IDC_INSTSETTINGS));
 	int Index = GetDlgItemInt(IDC_SEQ_INDEX);
 
 	if (Index < 0)
 		Index = 0;
 	if (Index > (MAX_SEQUENCES - 1))
 		Index = (MAX_SEQUENCES - 1);
-	
-	if (m_pInstrument != NULL) {
+
+	if (m_pInstrument != NULL)
+	{
 		// Update list
 		pList->SetItemText(m_iSelectedSetting, 1, MakeIntString(Index));
 
@@ -192,7 +200,7 @@ void CInstrumentEditorS5B::OnBnClickedFreeSeq()
 	int FreeIndex = GetDocument()->GetFreeSequenceS5B(m_iSelectedSetting);
 	if (FreeIndex == -1)
 		FreeIndex = 0;
-	SetDlgItemInt(IDC_SEQ_INDEX, FreeIndex, FALSE);	// Things will update automatically by changing this
+	SetDlgItemInt(IDC_SEQ_INDEX, FreeIndex, FALSE); // Things will update automatically by changing this
 }
 
 BOOL CInstrumentEditorS5B::DestroyWindow()
@@ -207,21 +215,22 @@ void CInstrumentEditorS5B::OnKeyReturn()
 	CString Text;
 	GetDlgItemText(IDC_SEQUENCE_STRING, Text);
 
-	switch (m_iSelectedSetting) {
-		case SEQ_VOLUME:
-			TranslateMML(Text, MAX_VOLUME, 0);
-			break;
-		case SEQ_ARPEGGIO:
-			TranslateMML(Text, 96, -96);
-			break;
-		case SEQ_PITCH:
-			TranslateMML(Text, 126, -127);
-			break;
-		case SEQ_HIPITCH:
-			TranslateMML(Text, 126, -127);
-			break;
-		case SEQ_DUTYCYCLE:
-			TranslateMML(Text, 31, 0);
-			break;
+	switch (m_iSelectedSetting)
+	{
+	case SEQ_VOLUME:
+		TranslateMML(Text, MAX_VOLUME, 0);
+		break;
+	case SEQ_ARPEGGIO:
+		TranslateMML(Text, 96, -96);
+		break;
+	case SEQ_PITCH:
+		TranslateMML(Text, 126, -127);
+		break;
+	case SEQ_HIPITCH:
+		TranslateMML(Text, 126, -127);
+		break;
+	case SEQ_DUTYCYCLE:
+		TranslateMML(Text, 31, 0);
+		break;
 	}
 }

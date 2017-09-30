@@ -20,45 +20,49 @@
 
 #pragma once
 
-typedef unsigned char		uint8;
-typedef unsigned short		uint16;
-typedef unsigned long		uint32;
-typedef unsigned __int64	uint64;
-typedef signed char			int8;
-typedef signed short		int16;
-typedef signed long			int32;
-typedef signed __int64		int64;
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned long uint32;
+typedef unsigned __int64 uint64;
+typedef signed char int8;
+typedef signed short int16;
+typedef signed long int32;
+typedef signed __int64 int64;
 
 #define _MAIN_H_
 
 #define SAMPLES_IN_BYTES(x) (x << SampleSizeShift)
 
-const int SPEED_AUTO	= 0;
-const int SPEED_NTSC	= 1;
-const int SPEED_PAL		= 2;
+const int SPEED_AUTO = 0;
+const int SPEED_NTSC = 1;
+const int SPEED_PAL = 2;
 
 
 // Used to get the DPCM state
-struct stDPCMState {
+struct stDPCMState
+{
 	int SamplePos;
 	int DeltaCntr;
 };
 
 // Used to play the audio when the buffer is full
-class IAudioCallback {
+class IAudioCallback
+{
 public:
-	virtual void FlushBuffer(int16 *Buffer, uint32 Size) = 0;
+	virtual void FlushBuffer(int16* Buffer, uint32 Size) = 0;
 };
 
 
 // class for simulating CPU memory, used by the DPCM channel
-class CSampleMem 
+class CSampleMem
 {
 public:
-	CSampleMem() : m_pMemory(0), m_iMemSize(0) {
+	CSampleMem() : m_pMemory(0), m_iMemSize(0)
+	{
 	};
 
-	uint8 Read(uint16 Address) const {
+	uint8 Read(uint16 Address) const
+	{
 		if (!m_pMemory)
 			return 0;
 		uint16 Addr = (Address - 0xC000);// % m_iMemSize;
@@ -67,17 +71,19 @@ public:
 		return m_pMemory[Addr];
 	};
 
-	void SetMem(const char *pPtr, int Size) {
+	void SetMem(const char* pPtr, int Size)
+	{
 		m_pMemory = (uint8*)pPtr;
 		m_iMemSize = Size;
 	};
 
-	void Clear() {
+	void Clear()
+	{
 		m_pMemory = 0;
 		m_iMemSize = 0;
 	}
 
 private:
-	const uint8 *m_pMemory;
+	const uint8* m_pMemory;
 	uint16 m_iMemSize;
 };

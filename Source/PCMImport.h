@@ -20,30 +20,31 @@
 
 #pragma once
 
-namespace jarh {
+namespace jarh
+{
 	class sinc;
 }
 
 class CPCMImport : public CDialog
 {
-	DECLARE_DYNAMIC(CPCMImport)
+DECLARE_DYNAMIC(CPCMImport)
 
 public:
-	CPCMImport(CWnd* pParent = NULL);   // standard constructor
+	CPCMImport(CWnd* pParent = NULL); // standard constructor
 	virtual ~CPCMImport();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PCMIMPORT };
 
-	CDSample *ShowDialog();
+	CDSample* ShowDialog();
 
 protected:
-	CDSample *m_pImported;
-	CDSample *m_pCachedSample;
+	CDSample* m_pImported;
+	CDSample* m_pCachedSample;
 
-	CString		m_strPath, m_strFileName;
-	CFile		m_fSampleFile;
-	ULONGLONG	m_ullSampleStart;
+	CString m_strPath, m_strFileName;
+	CFile m_fSampleFile;
+	ULONGLONG m_ullSampleStart;
 
 	int m_iQuality;
 	int m_iVolume;
@@ -56,7 +57,7 @@ protected:
 	int m_iCachedVolume;
 	unsigned int m_iWaveSize;
 
-	jarh::sinc *m_psinc;
+	jarh::sinc* m_psinc;
 
 protected:
 	static const int SAMPLES_MAX;
@@ -65,17 +66,17 @@ protected:
 	static const int VOLUME_RANGE;
 
 protected:
-	CDSample *GetSample();
-	CDSample *ConvertFile();
+	CDSample* GetSample();
+	CDSample* ConvertFile();
 
 	bool OpenWaveFile();
 	void UpdateFileInfo();
 	void UpdateText();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

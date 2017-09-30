@@ -30,17 +30,16 @@
 class CCustomExporters
 {
 public:
-	CCustomExporters( CString PluginPath );
-	~CCustomExporters( void );
+	CCustomExporters(CString PluginPath);
+	~CCustomExporters(void);
 
-	void GetNames( CStringArray& names ) const;
-	void SetCurrentExporter( CString name );
-	CCustomExporter& GetCurrentExporter( void ) const;
+	void GetNames(CStringArray& names) const;
+	void SetCurrentExporter(CString name);
+	CCustomExporter& GetCurrentExporter(void) const;
 
 private:
-	void FindCustomExporters( CString PluginPath );
+	void FindCustomExporters(CString PluginPath);
 
-	CArray< CCustomExporter, CCustomExporter& > m_customExporters;
+	CArray<CCustomExporter, CCustomExporter&> m_customExporters;
 	CCustomExporter* m_currentExporter;
-	
 };

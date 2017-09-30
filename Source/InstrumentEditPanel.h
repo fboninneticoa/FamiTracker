@@ -31,26 +31,26 @@ class CSequence;
 
 class CInstrumentEditPanel : public CDialog
 {
-	DECLARE_DYNAMIC(CInstrumentEditPanel)
+DECLARE_DYNAMIC(CInstrumentEditPanel)
 public:
-	CInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
+	CInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent = NULL); // standard constructor
 	virtual ~CInstrumentEditPanel();
 	virtual int GetIDD() const = 0;
-	virtual TCHAR *GetTitle() const = 0;
+	virtual TCHAR* GetTitle() const = 0;
 
 	// Select instrument for the editing
 	virtual void SelectInstrument(int Instrument) = 0;
 
 protected:
-	CFamiTrackerDoc *GetDocument() const;
+	CFamiTrackerDoc* GetDocument() const;
 
 	virtual void PreviewNote(unsigned char Key);
 	virtual void PreviewRelease(unsigned char Key);
 	virtual void OnKeyReturn();
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -62,9 +62,9 @@ public:
 class CSequenceEditor;
 
 // Adds some functions for sequences
-class CSequenceInstrumentEditPanel : public CInstrumentEditPanel 
+class CSequenceInstrumentEditPanel : public CInstrumentEditPanel
 {
-	DECLARE_DYNAMIC(CSequenceInstrumentEditPanel)
+DECLARE_DYNAMIC(CSequenceInstrumentEditPanel)
 public:
 	CSequenceInstrumentEditPanel(UINT nIDTemplate, CWnd* pParent);
 	virtual ~CSequenceInstrumentEditPanel();
@@ -73,29 +73,28 @@ public:
 
 	// Static methods
 public:
-	static int ReadStringValue(const std::string &str);
+	static int ReadStringValue(const std::string& str);
 
 	// Member variables
 protected:
-	CSequenceEditor	*m_pSequenceEditor;
-	CSequence *m_pSequence;
-	CWnd *m_pParentWin;
+	CSequenceEditor* m_pSequenceEditor;
+	CSequence* m_pSequence;
+	CWnd* m_pParentWin;
 
 	unsigned int m_iSelectedSetting;
 
 protected:
 	// Setup default sequence dialog
-	void SetupDialog(LPCTSTR *pListItems);
-	
+	void SetupDialog(LPCTSTR* pListItems);
+
 	// Virtual methods
-	virtual void TranslateMML(CString String, CSequence *pSequence, int Max, int Min) const;
+	virtual void TranslateMML(CString String, CSequence* pSequence, int Max, int Min) const;
 	virtual void PreviewNote(unsigned char Key);
 	virtual void PreviewRelease(unsigned char Key);
 
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnRClickInstSettings(NMHDR* pNMHDR, LRESULT* pResult);
-
 };

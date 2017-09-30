@@ -23,8 +23,8 @@
 // Size editor
 class CSizeEditor : public CWnd
 {
-	DECLARE_DYNAMIC(CSizeEditor)
-	CSizeEditor(CWnd *pParent);
+DECLARE_DYNAMIC(CSizeEditor)
+	CSizeEditor(CWnd* pParent);
 	virtual ~CSizeEditor();
 public:
 	void SetValue(int Value);
@@ -32,14 +32,14 @@ public:
 private:
 	int m_iValue;
 	int m_iButtonPressed;
-	CWnd *m_pParentWnd;
+	CWnd* m_pParentWnd;
 	bool m_bSizeCursor;
 private:
 	void MouseAction(UINT nFlags, CPoint point);
 	void IncreaseValue();
 	void DecreaseValue();
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

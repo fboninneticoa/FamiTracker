@@ -25,22 +25,23 @@ class CModSequenceEditor : public CWnd
 public:
 	CModSequenceEditor();
 	virtual ~CModSequenceEditor();
-	DECLARE_DYNAMIC(CModSequenceEditor)
+DECLARE_DYNAMIC(CModSequenceEditor)
 
 public:
-	void SetInstrument(CInstrumentFDS *pInst);
+	void SetInstrument(CInstrumentFDS* pInst);
 
 private:
 	void EditSequence(CPoint point);
 
 private:
-	CInstrumentFDS *m_pInstrument;
+	CInstrumentFDS* m_pInstrument;
 
 protected:
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 
 public:
-	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd);
+	BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect,
+	              CWnd* pParentWnd);
 	virtual afx_msg void OnPaint();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

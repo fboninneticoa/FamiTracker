@@ -28,13 +28,13 @@ typedef void (CExportDialog::*exportFunc_t)();
 
 class CExportDialog : public CDialog
 {
-	DECLARE_DYNAMIC(CExportDialog)
+DECLARE_DYNAMIC(CExportDialog)
 
 public:
-	CExportDialog(CWnd* pParent = NULL);   // standard constructor
+	CExportDialog(CWnd* pParent = NULL); // standard constructor
 	virtual ~CExportDialog();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EXPORT };
 
 protected:
@@ -42,8 +42,8 @@ protected:
 
 protected:
 	static const exportFunc_t DEFAULT_EXPORT_FUNCS[];
-	static const LPTSTR		  DEFAULT_EXPORT_NAMES[];
-	static const int		  DEFAULT_EXPORTERS;
+	static const LPTSTR DEFAULT_EXPORT_NAMES[];
+	static const int DEFAULT_EXPORTERS;
 
 	static LPCTSTR NSF_FILTER[2];
 	static LPCTSTR NES_FILTER[2];
@@ -57,15 +57,15 @@ protected:
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	void CreateNSF();
 	void CreateNES();
 	void CreateBIN();
 	void CreatePRG();
 	void CreateASM();
-	void CreateCustom( CString name );
+	void CreateCustom(CString name);
 
-	DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedClose();
