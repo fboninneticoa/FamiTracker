@@ -134,6 +134,8 @@ void OPLL_getDefaultPatch(int32_t type, int32_t num, OPLL_PATCH *) ;
 uint32_t OPLL_setMask(OPLL *, uint32_t mask) ;
 uint32_t OPLL_toggleMask(OPLL *, uint32_t mask) ;
 
+int32_t OPLL_getchanvol(int i);
+
 #ifdef __cplusplus
 }
 #endif

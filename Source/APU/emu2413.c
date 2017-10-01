@@ -199,6 +199,8 @@ static int32_t rksTable[2][8][2];
 /* Phase incr table for PG */
 static uint32_t dphaseTable[512][8][16];
 
+int32_t opll_volumes[10];
+
 /***************************************************
  
                   Create tables
@@ -1721,4 +1723,11 @@ void
 OPLL_set_pan (OPLL * opll, uint32_t ch, uint32_t pan)
 {
   opll->pan[ch & 15] = pan & 3;
+}
+
+int32_t OPLL_getchanvol(int i)
+{
+	int retval = opll_volumes[i];
+	opll_volumes[i] = 0;
+	return retval;
 }
