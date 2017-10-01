@@ -23,6 +23,7 @@ extern "C"
 
     uint8_t reg[0x20];
     int32_t out;
+	int32_t cout[3];
 
     uint32_t clk, rate, base_incr, quality;
 
@@ -80,7 +81,9 @@ extern "C"
   void PSG_setVolumeMode (PSG * psg, int type);
   uint32_t PSG_setMask (PSG *, uint32_t mask);
   uint32_t PSG_toggleMask (PSG *, uint32_t mask);
-    
+
+  int32_t PSG_getchanvol(int i);
+
 #ifdef __cplusplus
 }
 #endif

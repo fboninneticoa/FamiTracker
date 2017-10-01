@@ -44,6 +44,8 @@ static uint8_t regmsk[16] = {
 
 #define GETA_BITS 24
 
+int32_t psg_volumes[3];
+
 static void
 internal_refresh (PSG * psg)
 {
@@ -203,6 +205,7 @@ update_output (PSG * psg)
 
   int i, noise;
   uint32_t incr;
+  uint32_t mix = 0;
 
   psg->base_count += psg->base_incr;
   incr = (psg->base_count >> GETA_BITS);
@@ -275,6 +278,8 @@ update_output (PSG * psg)
         psg->ch_out[i] += (psg->voltbl[psg->volume[i] & 31] << 4);
       else 
         psg->ch_out[i] += (psg->voltbl[psg->env_ptr] << 4);
+	    psg_volumes[i] = psg->cout[i];
+	    mix += psg->cout[i];
     }
 
     psg->ch_out[i] >>= 1;
@@ -371,4 +376,9 @@ PSG_writeReg (PSG * psg, uint32_t reg, uint32_t val)
   }
 
   return;
+}
+
+int32_t PSG_getchanvol(int i)
+{
+	return psg_volumes[i];
 }
